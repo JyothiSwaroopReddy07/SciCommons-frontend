@@ -29,11 +29,8 @@ const Testimonials = () => {
             <div className="relative z-10 max-w-screen-xl mx-auto px-4 md:px-8">
                 <div className="max-w-xl sm:text-center md:mx-auto">
                     <h3 className="text-gray-800 text-3xl font-semibold sm:text-4xl">
-                        Hear from our customers
+                        What our customers are saying
                     </h3>
-                    <p className="mt-3 text-gray-600">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc et est hendrerit, porta nunc vitae, gravida justo. Nunc fermentum magna lorem, euismod volutpat arcu volutpat et.
-                    </p>
                 </div>
                 <div className="mt-12">
                     <ul className="grid items-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -51,11 +48,11 @@ const Testimonials = () => {
                                                 {item.quote}
                                             </p>
                                         </blockquote>
-                                        <div className="flex items-center gap-x-4 p-4 mt-6 bg-indigo-50">
-                                            <img src={item.avatar} className="w-16 h-16 rounded-full border-2 border-indigo-500" />
+                                        <div className="flex items-center gap-x-4 p-4 mt-6 bg-amber-100">
+                                            <img src={item.avatar} className="w-16 h-16 rounded-full border-2 border-amber-500" />
                                             <div>
                                                 <span className="block text-gray-800 font-semibold">{item.name}</span>
-                                                <span className="block text-indigo-600 text-sm mt-0.5">{item.title}</span>
+                                                <span className="block text-amber-600 text-sm mt-0.5">{item.title}</span>
                                             </div>
                                         </div>
                                     </figure>
@@ -65,7 +62,7 @@ const Testimonials = () => {
                     </ul>
                 </div>
             </div>
-            <div className="absolute top-0 w-full h-[350px]" style={{ background: "linear-gradient(152.92deg, rgba(192, 132, 252, 0.2) 4.54%, rgba(232, 121, 249, 0.17) 34.2%, rgba(192, 132, 252, 0.1) 77.55%)" }}></div>
+            <div className="absolute top-0 w-full h-[350px]" style={{ background: "linear-gradient(152.92deg, rgba(251, 191, 36, 0.2) 4.54%, rgba(245, 158,11, 0.17) 34.2%, rgba(252, 211, 77, 0.1) 77.55%)" }}></div>
         </section>
     )
 }

@@ -64,13 +64,6 @@ const Footer = () => {
                             </div>
 
                             <div>
-                                <h3 class="text-amber-400 uppercase dark:text-white">Products</h3>
-                                <a href="#" class="block mt-2 text-sm text-amber-400 dark:text-amber-400 hover:underline">Mega cloud</a>
-                                <a href="#" class="block mt-2 text-sm text-amber-400 dark:text-amber-400 hover:underline">Aperion UI</a>
-                                <a href="#" class="block mt-2 text-sm text-amber-400 dark:text-amber-400 hover:underline">Meraki UI</a>
-                            </div>
-
-                            <div>
                                 <h3 class="text-amber-400 uppercase dark:text-white">Contact</h3>
                                 <span class="block mt-2 text-sm text-amber-400 dark:text-amber-400 hover:underline">+1 526 654 8965</span>
                                 <span class="block mt-2 text-sm text-amber-400 dark:text-amber-400 hover:underline">example@email.com</span>
@@ -82,7 +75,7 @@ const Footer = () => {
                 <hr class="h-px my-6 bg-gray-200 border-none dark:bg-gray-700"/>
 
                 <div>
-                    <p class="text-center text-amber-400 dark:text-amber-400">© Brand 2020 - All rights reserved</p>
+                    <p class="text-center text-amber-400 dark:text-amber-400">© SciCommons - All rights reserved</p>
                 </div>
             </div>
         </footer>
