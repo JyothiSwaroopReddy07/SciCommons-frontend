@@ -19,7 +19,7 @@ const Login = () => {
             'password': password.current.value,
         }
 
-        axios.post('http://127.0.0.1:8000/api/user/login/', data,{
+        axios.post('http://scicommons-backend.onrender.com/api/user/login/', data,{
             headers: {
                 'Content-Type': 'application/json'
             }
