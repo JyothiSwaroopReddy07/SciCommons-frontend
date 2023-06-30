@@ -28,7 +28,7 @@ const Register = () => {
             alert("Passwords do not match")
             return
         }
-        axios.post('http://scicommons-backend.onrender.com/api/user/', data,{
+        axios.post('https://scicommons-backend.onrender.com/api/user/', data,{
             headers: {
                 'Content-Type': 'application/json'
             }
