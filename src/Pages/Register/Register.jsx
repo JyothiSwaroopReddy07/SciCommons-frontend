@@ -38,8 +38,11 @@ const Register = () => {
         })
         .catch((error)=>{
             console.error(error)
+            try{
             console.log(error.response.data.non_field_errors)
-            alert(error.response.data.non_field_errors)
+            alert(error.response.data.non_field_errors)}catch(error){
+                alert("something went wrong!please try again")
+            }
         })
     }
 
