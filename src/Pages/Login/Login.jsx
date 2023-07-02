@@ -21,7 +21,7 @@ const Login = () => {
 
         try {
             const response = await axios.post(
-              'http://127.0.0.1:8000/api/user/login/',
+              'https://scicommons-backend.onrender.com/api/user/login/',
               data,
               {
                 headers: {
@@ -31,11 +31,8 @@ const Login = () => {
             );
         
             // Save the token to local storage
-            data = response.data.json();
-            console.log(data.token)
-            localStorage.setItem('token', response.data.token);
-            console.log(data.user)
-            localStorage.setItem('user', JSON.stringify(response.data.user));
+
+            localStorage.setItem('token', response.data.success.access);
             
             // Perform any additional actions after successful login, e.g., navigate to the home page
             navigate('/');
