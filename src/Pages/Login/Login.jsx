@@ -11,39 +11,54 @@ const Login = () => {
     const password = useRef(null)
     const [loading, setLoading] = useState(false)
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async(e) => {
         e.preventDefault()
-        setLoading(true)
+        setLoading(true); // Show the loader while the login request is in
         const data = {
-            'username': username.current.value,
-            'password': password.current.value,
-        }
+            username: username.current.value,
+            password: password.current.value,
+        };
 
-        axios.post('https://scicommons-backend.onrender.com/api/user/login/', data,{
-            headers: {
-                'Content-Type': 'application/json'
+        try {
+            const response = await axios.post(
+              'http://127.0.0.1:8000/api/user/login/',
+              data,
+              {
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+              }
+            );
+        
+            // Save the token to local storage
+            data = response.data.json();
+            console.log(data.token)
+            localStorage.setItem('token', response.data.token);
+            console.log(data.user)
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+            
+            // Perform any additional actions after successful login, e.g., navigate to the home page
+            navigate('/');
+          } catch (error) {
+            // Handle login error
+            console.error(error);
+            try{
+                console.log(error.response.data.non_field_errors[0]);
+                alert(error.response.data.non_field_errors[0]);
+            } catch (error) {
+                alert("Something went wrong. Please try again later.")
             }
-        }).then((response) => {
-              localStorage.setItem('token', response.data.token)
-              navigate('/')
-        })
-        .catch((error)=>{
-            console.error(error)
-            console.log(error.response.data.non_field_errors[0])
-            alert(error.response.data.non_field_errors[0])
-        })
-        setLoading(false)
+          } finally {
+            setLoading(false); // Hide the loader after the login request completes, whether it succeeded or failed
+        }
     }
   return (
     <>
-    <Fragment>
-    {loading ? (
-      <Loader />
-    ) : (
-        <Fragment>
-            <main className="w-full h-screen flex flex-col items-center bg-gray-700 justify-center px-4">
+      {loading && <Loader />}
+      {!loading && (
+            <main className="w-full h-screen flex flex-col items-center bg-green-50 justify-center px-4">
                 <div className="max-w-sm w-full text-gray-600">
-                    <div className="text-center">
+                    <div className="text-center" onClick={(e)=>{e.preventDefault();navigate("/")}}>
                         <img src={process.env.PUBLIC_URL + '/logo.png'} width={150} className="mx-auto" alt="logo" />
                     </div>
                     <br/>
@@ -92,32 +107,30 @@ const Login = () => {
                                         type={!isPasswordHidden ? "password" : "text"}
                                         id="password"
                                         ref={password}
-                                        className="w-full pr-12 pl-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-amber-600 shadow-sm rounded-lg"
+                                        className="w-full pr-12 pl-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                                 </div>
                             </div >
                             <div className="text-right">
-                                <a href="/forgotpassword" className="hover:text-amber-600">Forgot password?</a>
+                                <a href="/forgotpassword" className="hover:text-green-600">Forgot password?</a>
                             </div>
                             <br/>
                             
                             <button
-                                className="w-full px-4 py-2 text-white font-medium bg-amber-600 hover:bg-amber-500 active:bg-amber-600 rounded-lg duration-150"
+                                className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"
                                 onClick={handleSubmit}
                             >
                                 Sign in
                             </button>
                             <br/>
                             <hr className="my-6 border-gray-200 w-full" />
-                            <p className="text-center">Don't have an account? <a href="/register" className="font-medium text-amber-600 hover:text-amber-500">Register</a></p>
+                            <p className="text-center">Don't have an account? <a href="/register" className="font-medium text-green-600 hover:text-green-500">Register</a></p>
                     
                         </form>
                     </div>
                 </div>
             </main>
-        </Fragment>
-      )}
-    </Fragment>
+        )}
     </>
   )
 }

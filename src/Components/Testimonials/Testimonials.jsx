@@ -48,11 +48,11 @@ const Testimonials = () => {
                                                 {item.quote}
                                             </p>
                                         </blockquote>
-                                        <div className="flex items-center gap-x-4 p-4 mt-6 bg-amber-100">
-                                            <img src={item.avatar} className="w-16 h-16 rounded-full border-2 border-amber-500" />
+                                        <div className="flex items-center gap-x-4 p-4 mt-6 bg-green-100">
+                                            <img src={item.avatar} className="w-16 h-16 rounded-full border-2 border-green-500" alt="avatar" />
                                             <div>
                                                 <span className="block text-gray-800 font-semibold">{item.name}</span>
-                                                <span className="block text-amber-600 text-sm mt-0.5">{item.title}</span>
+                                                <span className="block text-green-600 text-sm mt-0.5">{item.title}</span>
                                             </div>
                                         </div>
                                     </figure>
@@ -62,7 +62,7 @@ const Testimonials = () => {
                     </ul>
                 </div>
             </div>
-            <div className="absolute top-0 w-full h-[350px]" style={{ background: "linear-gradient(152.92deg, rgba(251, 191, 36, 0.2) 4.54%, rgba(245, 158,11, 0.17) 34.2%, rgba(252, 211, 77, 0.1) 77.55%)" }}></div>
+            <div className="absolute top-0 w-full h-[350px]" style={{ background: "linear-gradient(152.92deg, rgba(187,247,208, 0.2) 4.54%, rgba(134,239,172, 0.17) 34.2%, rgba(74,222,128, 0.1) 77.55%)" }}></div>
         </section>
     )
 }

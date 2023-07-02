@@ -9,7 +9,7 @@ const HeroBanner = () => {
         <section className="mt-24 mx-auto max-w-screen-xl pb-12 px-4 items-center lg:flex md:px-8">
           <div className="space-y-4 flex-1 sm:text-center lg:text-left">
             <h1 className="text-white font-bold text-4xl xl:text-5xl">
-              <span className="text-amber-500"> Open peer Review</span>
+              <span className="text-green-500"> Open peer Review</span>
             </h1>
             <p className="text-gray-500 max-w-xl leading-relaxed sm:mx-auto lg:ml-0">
               SciCommons aims to eliminate the barriers to open peer review by
@@ -25,7 +25,7 @@ const HeroBanner = () => {
               </a>
               <a
                 href="javascript:void(0)"
-                className="px-7 py-3 w-full bg-amber-500 text-gray-200 text-center rounded-md block sm:w-auto"
+                className="px-7 py-3 w-full bg-green-500 text-gray-200 text-center rounded-md block sm:w-auto"
               >
                 Try it out
               </a>
@@ -40,32 +40,32 @@ const HeroBanner = () => {
         </section>
       </div>
       <div className="bg-white">
-        <section class="text-amber-500 body-font">
-          <div class="px-5 py-24 mx-auto">
-            <div class="flex flex-wrap -m-4 text-center">
-              <div class="p-4 sm:w-1/4 w-1/2">
-                <h2 class="title-font font-medium sm:text-4xl text-3xl text-amber-500">
+        <section className="text-green-500 body-font">
+          <div className="px-5 py-24 mx-auto">
+            <div className="flex flex-wrap -m-4 text-center">
+              <div className="p-4 sm:w-1/4 w-1/2">
+                <h2 className="title-font font-medium sm:text-4xl text-3xl text-green-500">
                   2.7K
                 </h2>
-                <p class="leading-relaxed">Users</p>
+                <p className="leading-relaxed">Users</p>
               </div>
-              <div class="p-4 sm:w-1/4 w-1/2">
-                <h2 class="title-font font-medium sm:text-4xl text-3xl text-amber-500">
+              <div className="p-4 sm:w-1/4 w-1/2">
+                <h2 className="title-font font-medium sm:text-4xl text-3xl text-green-500">
                   1.8K
                 </h2>
-                <p class="leading-relaxed">Subscribes</p>
+                <p className="leading-relaxed">Subscribes</p>
               </div>
-              <div class="p-4 sm:w-1/4 w-1/2">
-                <h2 class="title-font font-medium sm:text-4xl text-3xl text-amber-500">
+              <div className="p-4 sm:w-1/4 w-1/2">
+                <h2 className="title-font font-medium sm:text-4xl text-3xl text-green-500">
                   35
                 </h2>
-                <p class="leading-relaxed">Downloads</p>
+                <p className="leading-relaxed">Downloads</p>
               </div>
-              <div class="p-4 sm:w-1/4 w-1/2">
-                <h2 class="title-font font-medium sm:text-4xl text-3xl text-amber-500">
+              <div className="p-4 sm:w-1/4 w-1/2">
+                <h2 className="title-font font-medium sm:text-4xl text-3xl text-green-500">
                   4
                 </h2>
-                <p class="leading-relaxed">Products</p>
+                <p className="leading-relaxed">Products</p>
               </div>
             </div>
           </div>
