@@ -29,7 +29,7 @@ export default () => {
     };
 
     return (
-        <nav className="bg-green-50 md:text-sm">
+        <nav className="sticky top-0 bg-green-50 md:text-sm z-50">
             <div className="gap-x-7 items-center px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between py-5 md:block">
                     <a href="/">

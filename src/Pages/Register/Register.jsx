@@ -88,28 +88,28 @@ const Register = () => {
                                         required
                                         placeholder="Username"
                                         ref={username}
-                                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
+                                        className="w-full mt-2 px-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                                     <input
                                         type="text"
                                         required
                                         placeholder="First Name"
                                         ref={first_name}
-                                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
+                                        className="w-full mt-2 px-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                                     <input
                                         type="text"
                                         required
                                         placeholder="Last Name"
                                         ref={last_name}
-                                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
+                                        className="w-full mt-2 px-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                                     <input
                                         type="email"
                                         required
                                         placeholder="Email"
                                         ref={email}
-                                        className="w-full mt-2 px-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
+                                        className="w-full mt-2 px-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                                     <div className="relative max-w-screen mt-2">
                                         <button className="text-gray-400 absolute right-3 inset-y-0 my-auto active:text-gray-600"
@@ -134,7 +134,7 @@ const Register = () => {
                                             required
                                             placeholder="Password"
                                             ref={password}
-                                            className="w-full pr-12 pl-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
+                                            className="w-full pr-12 pl-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                         />
                                     </div>
                                     <div className="relative max-w-screen mt-2">
@@ -160,7 +160,7 @@ const Register = () => {
                                             required
                                             placeholder="Confirm Password"
                                             ref={password2}
-                                            className="w-full pr-12 pl-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
+                                            className="w-full pr-12 pl-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                         />
                                     </div>
                                 <button

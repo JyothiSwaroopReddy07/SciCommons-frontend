@@ -33,6 +33,7 @@ const Login = () => {
             // Save the token to local storage
 
             localStorage.setItem('token', response.data.success.access);
+            console.log(response.data.success.access)
             
             // Perform any additional actions after successful login, e.g., navigate to the home page
             navigate('/');
@@ -65,7 +66,7 @@ const Login = () => {
                                 <label for="username" className="block py-2 text-gray-500">
                                     Username
                                 </label>
-                                <div className="flex items-center text-gray-400 border rounded-md">
+                                <div className="flex items-center text-gray-700 border rounded-md">
                                     <div className="px-3 py-2.5 rounded-l-md bg-gray-50 border-r">
                                         @
                                     </div>
@@ -83,7 +84,7 @@ const Login = () => {
                                     Password
                                 </label>
                                 <div className="relative max-w-screen mt-2">
-                                    <button className="text-gray-400 absolute right-3 inset-y-0 my-auto active:text-gray-600"
+                                    <button className="text-gray-700 absolute right-3 inset-y-0 my-auto active:text-gray-600"
                                         onClick={(e) => {e.preventDefault(); setPasswordHidden(!isPasswordHidden);}}
                                     >
                                         {
@@ -104,7 +105,7 @@ const Login = () => {
                                         type={!isPasswordHidden ? "password" : "text"}
                                         id="password"
                                         ref={password}
-                                        className="w-full pr-12 pl-3 py-2 text-gray-500 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
+                                        className="w-full pr-12 pl-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                                 </div>
                             </div >
