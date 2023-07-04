@@ -33,7 +33,6 @@ const Login = () => {
             // Save the token to local storage
 
             localStorage.setItem('token', response.data.success.access);
-            console.log(response.data.success.access)
             
             // Perform any additional actions after successful login, e.g., navigate to the home page
             navigate('/');
@@ -41,7 +40,6 @@ const Login = () => {
             // Handle login error
             console.error(error);
             try{
-                console.log(error.response.data.non_field_errors[0]);
                 alert(error.response.data.non_field_errors[0]);
             } catch (error) {
                 alert("Something went wrong. Please try again later.")

@@ -2,15 +2,19 @@ import React, {useEffect, useState} from "react";
 import NavBar from "../../Components/NavBar/NavBar";
 import axios from "axios";
 import ArticleCard from "../../Components/ArticleCard/ArticleCard";
+import Loader from "../../Components/Loader/Loader";
 
 
 const AllArticlesPage = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [sortedArticles, setSortedArticles] = useState([]);
 
     useEffect(() => {
         const fetchArticles = async () => {
+            setLoading(true)
             const token = localStorage.getItem('token'); // Retrieve the token from local storage
             const config = {
                 headers: {
@@ -24,9 +28,12 @@ const AllArticlesPage = () => {
                 );
                 console.log(response.data.success.results)
                 setArticles(response.data.success.results);
+                setSortedArticles(response.data.success.results);
             } catch (error) {
                 console.error(error);
-            }
+            } finally {
+                setLoading(false)
+            }   
         };
         fetchArticles();
     }, [searchTerm]);
@@ -35,27 +42,35 @@ const AllArticlesPage = () => {
         e.preventDefault();
     }
     
-    const sortRated = async (e) => {
+    const sortRated = (e) => {
         e.preventDefault();
-        console.log(articles)
-        articles.sort((a, b) => (a.rating < b.rating) ? 1 : -1)
-        console.log(articles)
-        setArticles(articles)
+        setLoading(true)
+        const sortedByRating = [...articles].sort((a, b) => b.rating - a.rating);
+        setSortedArticles(sortedByRating);
+        setLoading(false)
     }
-    const sortFavourite = async (e) => {
+    const sortFavourite = (e) => {
         e.preventDefault();
-        articles.sort((a, b) => (a.favourite < b.favourite) ? 1 : -1)
-        setArticles(articles)
+        setLoading(true)
+        const sortedByFavourite = [...articles].sort((a, b) => b.favourites - a.favourites);
+        setSortedArticles(sortedByFavourite);
+
+        setLoading(false)
     }
-    const sortViews = async (e) => {
+    const sortViews = (e) => {
         e.preventDefault();
-        articles.sort((a, b) => (a.views < b.views) ? 1 : -1)
-        setArticles(articles)
+        setLoading(true)
+        const sortedByViews = [...articles].sort((a, b) => b.views - a.views);
+        setSortedArticles(sortedByViews);
+
+        setLoading(false)
     }
-    const sortDate = async (e) => {
+    const sortDate = (e) => {
         e.preventDefault();
-        articles.sort((a, b) => (a.Public_date > b.Public_date) ? 1 : -1)
-        setArticles(articles)
+        setLoading(true)
+        const sortedByDate = [...articles].sort((a, b) => b.Public_date - a.Public_date);
+        setSortedArticles(sortedByDate);
+        setLoading(false)
     }        
 
     return (
@@ -94,8 +109,9 @@ const AllArticlesPage = () => {
                     <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" onClick={sortDate}>Most Recent</button>
                 </div>
             </div>
+
             <div className="flex flex-col items-center justify-center w-full bg-gray-50">
-                <ArticleCard articles={articles} />
+                { loading ? <Loader /> :  <ArticleCard articles={sortedArticles} /> }
             </div>
 
         </>

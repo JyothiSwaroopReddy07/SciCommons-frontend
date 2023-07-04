@@ -1,8 +1,7 @@
 import React from "react";
 
-const ArticleCard = (props) => {
+const ArticleCard = ({articles}) => {
 
-    const { articles } = props;
 
     return (
         <ul className="mt-12 space-y-6 w-full md:w-4/5">
@@ -10,7 +9,7 @@ const ArticleCard = (props) => {
             articles.length !== 0 ? (
             articles.map((item) => (
             <li key={item.id} className="p-5 bg-white rounded-md shadow-sm">
-            <a href="#">
+            <a href="/article/${item.id}">
                 <div>
                 <div className="justify-between sm:flex">
                     <div className="flex-1">
@@ -19,7 +18,7 @@ const ArticleCard = (props) => {
                     </h3>
                     <p className="text-gray-500 mt-2 pr-2">
                         <span className="text-green-700">Authors : </span>
-                        {item.authors}
+                        {item.authors.map((author) => (<span className="font-bold mr-2">{author}</span>))}
                     </p>
                     <p className="text-gray-500 mt-2 pr-2">
                         <span className="text-green-700">Keywords : </span>
