@@ -18,7 +18,7 @@ const ArticleCard = ({articles}) => {
                     </h3>
                     <p className="text-gray-500 mt-2 pr-2">
                         <span className="text-green-700">Authors : </span>
-                        {item.authors.map((author) => (<span className="font-bold mr-2">{author}</span>))}
+                        {item.authors.map((author,index) => (<span key={index} className="font-bold mr-2">{author}</span>))}
                     </p>
                     <p className="text-gray-500 mt-2 pr-2">
                         <span className="text-green-700">Keywords : </span>
@@ -33,7 +33,7 @@ const ArticleCard = ({articles}) => {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className=" fill-gray-200 w-6 h-6 mr-2"
+                        className="w-4 h-4 mr-2"
                         >
                         <path
                             strokeLinecap="round"
@@ -50,7 +50,7 @@ const ArticleCard = ({articles}) => {
                     </span>
                     <span className="flex items-center text-gray-500">
                         <svg
-                        className="fill-pink-400 w-6 h-6 mr-2"
+                        className="text-rose-500 w-4 h-4 mr-2 fill-current"
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"

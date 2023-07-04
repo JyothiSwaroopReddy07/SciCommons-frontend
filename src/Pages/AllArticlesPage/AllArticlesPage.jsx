@@ -26,7 +26,6 @@ const AllArticlesPage = () => {
                     `https://scicommons-backend.onrender.com/api/article?search=${searchTerm}`,
                     config
                 );
-                console.log(response.data.success.results)
                 setArticles(response.data.success.results);
                 setSortedArticles(response.data.success.results);
             } catch (error) {
@@ -36,6 +35,10 @@ const AllArticlesPage = () => {
             }   
         };
         fetchArticles();
+        const intervalId = setInterval(fetchArticles, 60000);
+        return () => {
+            clearInterval(intervalId);
+        };
     }, [searchTerm]);
 
     const handleSearch = (e) => {
