@@ -10,6 +10,22 @@ const Login = () => {
     const username = useRef(null)
     const password = useRef(null)
     const [loading, setLoading] = useState(false)
+    const getCurrentUser = async () => {
+        try {
+            const token = localStorage.getItem('token'); 
+      
+            const response = await axios.get('https://scicommons-backend.onrender.com/api/user/get_current_user/', {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+            console.log(response.data.success); 
+            const user = response.data.success;
+            localStorage.setItem('user', JSON.stringify(user));
+        } catch (error) {
+          console.error(error);
+        }
+    };
 
     const handleSubmit = async(e) => {
         e.preventDefault()
@@ -33,6 +49,8 @@ const Login = () => {
             // Save the token to local storage
 
             localStorage.setItem('token', response.data.success.access);
+            localStorage.setItem('refresh', response.data.success.refresh);
+            getCurrentUser();
             
             // Perform any additional actions after successful login, e.g., navigate to the home page
             navigate('/');
