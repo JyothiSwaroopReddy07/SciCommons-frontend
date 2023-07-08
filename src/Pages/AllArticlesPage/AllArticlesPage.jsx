@@ -3,6 +3,7 @@ import NavBar from "../../Components/NavBar/NavBar";
 import axios from "axios";
 import ArticleCard from "../../Components/ArticleCard/ArticleCard";
 import Loader from "../../Components/Loader/Loader";
+import Footer from "../../Components/Footer/Footer";
 
 
 const AllArticlesPage = () => {
@@ -113,10 +114,10 @@ const AllArticlesPage = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col items-center justify-center w-full bg-gray-50">
+            <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
                 { loading ? <Loader /> :  <ArticleCard articles={sortedArticles} /> }
             </div>
-
+            <Footer />
         </>
     )
 }

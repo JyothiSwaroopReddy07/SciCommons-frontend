@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import './NavBar.css'
+import {FaUserAlt} from 'react-icons/fa';
+import {MdNotifications} from 'react-icons/md';
 
-export default () => {
+const NavBar = () => {
 
     const [state, setState] = useState(false)
     const [isAuth,setIsAuth] = useState(localStorage.getItem('token')?true:false)
@@ -63,7 +65,7 @@ export default () => {
                         {
                             navigation.map((item, idx) => {
                                 return (
-                                    <li key={idx} className="text-lg text-green-500 font-semibold hover:text-green-800">
+                                    <li key={idx} className="text-lg text-green-600 font-semibold hover:text-green-800">
                                         <a href={item.path} className="block">
                                             {item.title}
                                         </a>
@@ -75,16 +77,11 @@ export default () => {
                     <div className="profile flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         {isAuth && (
                             <>
-                                <a href="/MyActivity" className="block text-base text-green-500 font-semibold hover:text-green-700">
-                                    MyActivity
-                                </a>
-                                <a href="/notifications" className="block text-base text-green-500 font-semibold hover:text-green-700">
-                                    Notifications
+                                <a href="/notifications" className="block text-base font-semibold hover:text-green-700">
+                                    <MdNotifications  className="h-5 w-5 mx-2 active:shadow-none"/>
                                 </a>
                                 <div className="profile-icon" onClick={(e) => {e.preventDefault();setIsOpen(!isOpen)}}> 
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                                    </svg>
+                                    <FaUserAlt className="h-5 w-5 mx-2 active:shadow-none"/>
                                 </div>
                             </>
                         )}
@@ -93,6 +90,11 @@ export default () => {
                                 <div className="profile-dropdown-item">
                                     <a href="/profile" className="block text-base text-green-400 hover:text-green-700">
                                         Profile
+                                    </a>
+                                </div>
+                                <div className="profile-dropdown-item">
+                                    <a href="/MyActivity" className="block text-base text-green-500 hover:text-green-700">
+                                        MyActivity
                                     </a>
                                 </div>
                                 <div className="profile-dropdown-item">
@@ -126,3 +128,5 @@ export default () => {
         </nav>
     )
 }
+
+export default NavBar;

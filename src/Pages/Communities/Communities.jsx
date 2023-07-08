@@ -4,6 +4,7 @@ import axios from 'axios';
 import CommunityCard from '../../Components/CommunityCard/CommunityCard';
 import Loader from '../../Components/Loader/Loader';
 import './Communities.css';
+import Footer from '../../Components/Footer/Footer';
 
 const Communities = () => {
 
@@ -79,7 +80,7 @@ const Communities = () => {
                     />
                 </div>
             </form>
-            <div className="flex flex-col items-center justify-center w-full bg-gray-50">
+            <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
             { loading ? (<Loader />): 
                 (<ul className="mt-12 space-y-6 w-full md:w-4/5">
                 {
@@ -92,6 +93,7 @@ const Communities = () => {
             }
             </div>
         </div>
+        <Footer />
                 
     </>
   )

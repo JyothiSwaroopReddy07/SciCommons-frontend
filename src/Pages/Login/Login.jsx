@@ -79,7 +79,7 @@ const Login = () => {
                     <div className="bg-white shadow p-4 py-6 sm:p-6 sm:rounded-lg">
                         <form>
                             <div className="max-w-md mx-auto">
-                                <label for="username" className="block py-2 text-gray-500">
+                                <label htmlFor="username" className="block py-2 text-gray-500">
                                     Username
                                 </label>
                                 <div className="flex items-center text-gray-700 border rounded-md">

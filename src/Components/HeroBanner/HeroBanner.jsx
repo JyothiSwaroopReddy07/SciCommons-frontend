@@ -18,13 +18,13 @@ const HeroBanner = () => {
             </p>
             <div className="pt-10 items-center justify-center space-y-3 sm:space-x-6 sm:space-y-0 sm:flex lg:justify-start">
               <a
-                href="javascript:void(0)"
+                href="#"
                 className="px-7 py-3 w-full bg-white text-gray-800 text-center rounded-md shadow-md block sm:w-auto"
               >
                 Get started
               </a>
               <a
-                href="javascript:void(0)"
+                href="#"
                 className="px-7 py-3 w-full bg-green-500 text-gray-200 text-center rounded-md block sm:w-auto"
               >
                 Try it out

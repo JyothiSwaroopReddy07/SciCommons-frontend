@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const CommunityCard = ({index, onDataChange, community}) => {
 
+    console.log(community.subscribed);
     const [subscribed, setSubscribed] = useState(community.subscribed);
     const [loading , setLoading] = useState(false);
 
@@ -24,18 +25,22 @@ const CommunityCard = ({index, onDataChange, community}) => {
             const userString = localStorage.getItem('user');
             console.log(userString)
             const user = JSON.parse(userString);
-            console.log(user.username)
+            console.log(user.id)
             if(subscribed === 0){
                 console.log("subscribed")
-                const response = await axios.post('https://scicommons-backend.onrender.com/api/community/subscribe',config,  { user: user.id, community: community.Community_name });
-                console.log(response.data)
+                const response = await axios.post(
+                    'https://scicommons-backend.onrender.com/api/community/subscribe/',
+                    { user: user.id, community_name: community.Community_name }, 
+                    config
+                );
+                console.log(response.data.success)
                 if (response.status === 200) {
                     onDataChange(index);
                     setSubscribed(updatedStatus);
                 }
             } else {
                 console.log("unsubscribed")
-                const response = await axios.delete('https://scicommons-backend.onrender.com/api/community/unsubscribe', config, { user: user.id, community: community.Community_name });
+                const response = await axios.delete('https://scicommons-backend.onrender.com/api/community/unsubscribe/', { user: user.id, community_name : community.Community_name }, config);
                 console.log(response.data)
                 if (response.status === 200) {
                     onDataChange(index);
@@ -85,7 +90,7 @@ const CommunityCard = ({index, onDataChange, community}) => {
                             <span className="text-gray-600">{community.membercount}</span>
                         </div>
                     </div>
-                    <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center md:justify-between mb-2">
                         <div>
                             <div className="flex items-center mb-2">
                                 <FaBook className="w-5 h-5 mr-2 text-gray-500" />
@@ -101,7 +106,7 @@ const CommunityCard = ({index, onDataChange, community}) => {
                                 subscribed
                                 ? 'bg-gray-400 text-gray-700 cursor-default'
                                 : 'bg-green-500 hover:bg-green-600 text-white'
-                            } font-bold py-2 px-4 rounded mt-4`}
+                            } font-bold rounded mt-4 py-1 px-2`}
                             onClick={handleSubscribe}
                             disabled={subscribed}
                             >
