@@ -26,7 +26,6 @@ const Communities = () => {
                     `https://scicommons-backend.onrender.com/api/community?search=${searchTerm}`,
                     config
                 );
-                console.log(response.data.success.results);
                 setCommunities(response.data.success.results);
             } catch (error) {
                 console.error(error);
@@ -45,9 +44,9 @@ const Communities = () => {
         e.preventDefault();
     }
 
-    const handleDataChange = (index) => {
+    const handleDataChange = (index, id) => {
         var newData = [...communities];
-        newData[index].subscribed = !newData[index].subscribed;
+        newData[index].subscribed = id;
         setCommunities(newData);
     };
 

@@ -18,8 +18,7 @@ const Login = () => {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
-            });
-            console.log(response.data.success); 
+            }); 
             const user = response.data.success;
             localStorage.setItem('user', JSON.stringify(user));
         } catch (error) {

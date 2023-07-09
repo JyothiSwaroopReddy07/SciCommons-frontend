@@ -5,8 +5,7 @@ import axios from 'axios';
 
 const CommunityCard = ({index, onDataChange, community}) => {
 
-    console.log(community.subscribed);
-    const [subscribed, setSubscribed] = useState(community.subscribed);
+    const [subscribed, setSubscribed] = useState(community.subscribed > 0 ? true : false);
     const [loading , setLoading] = useState(false);
 
     const handleSubscribe = async (e) => {
@@ -21,29 +20,24 @@ const CommunityCard = ({index, onDataChange, community}) => {
                 Authorization: `Bearer ${token}`, // Include the token in the Authorization header
                 },
             };
-            console.log(subscribed)
             const userString = localStorage.getItem('user');
-            console.log(userString)
             const user = JSON.parse(userString);
-            console.log(user.id)
-            if(subscribed === 0){
+            if(subscribed === false){
                 console.log("subscribed")
                 const response = await axios.post(
-                    'https://scicommons-backend.onrender.com/api/community/subscribe/',
-                    { user: user.id, community_name: community.Community_name }, 
+                    'https://scicommons-backend.onrender.com/api/subscribe/',
+                    { User: user.id, community: community.id }, 
                     config
                 );
-                console.log(response.data.success)
                 if (response.status === 200) {
-                    onDataChange(index);
+                    onDataChange(index,response.data.id);
                     setSubscribed(updatedStatus);
                 }
             } else {
                 console.log("unsubscribed")
-                const response = await axios.delete('https://scicommons-backend.onrender.com/api/community/unsubscribe/', { user: user.id, community_name : community.Community_name }, config);
-                console.log(response.data)
+                const response = await axios.delete(`https://scicommons-backend.onrender.com/api/subscribe/${community.subscribed}/`, config);
                 if (response.status === 200) {
-                    onDataChange(index);
+                    onDataChange(index, 0);
                     setSubscribed(updatedStatus);
                 }
             }
@@ -75,7 +69,7 @@ const CommunityCard = ({index, onDataChange, community}) => {
       
           return (
             <>
-              {subscribed ? 'Unsubscribe' : 'Subscribe'}
+              {subscribed === false ? 'Unsubscribe' : 'Subscribe'}
             </>
           );
     };
@@ -103,12 +97,11 @@ const CommunityCard = ({index, onDataChange, community}) => {
                         </div>
                         <button
                             className={`${
-                                subscribed
+                                !subscribed
                                 ? 'bg-gray-400 text-gray-700 cursor-default'
                                 : 'bg-green-500 hover:bg-green-600 text-white'
                             } font-bold rounded mt-4 py-1 px-2`}
                             onClick={handleSubscribe}
-                            disabled={subscribed}
                             >
                             {getButtonLabel()}
                         </button>
