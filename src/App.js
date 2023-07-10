@@ -6,6 +6,8 @@ import ErrorPage from './Pages/ErrorPage/ErrorPage';
 import AllArticlesPage from './Pages/AllArticlesPage/AllArticlesPage';
 import Communities from './Pages/Communities/Communities';
 import SubmitArticle from './Pages/SubmitArticle/SubmitArticle';
+import SuccessfulSubmission from './Components/SuccessfulSubmission';
+import SuccessfulRegistration from './Components/SuccessfulRegistration';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -18,6 +20,8 @@ function App() {
         <Route path='/articles' element={<AllArticlesPage />} />
         <Route path='/communities' element={<Communities/>}/>
         <Route path='/submitarticle' element={<SubmitArticle/>}/>
+        <Route path='/articlesuccessfulsubmission' element={<SuccessfulSubmission/>}/>
+        <Route path='/registersuccessful' element={<SuccessfulRegistration/>}/>
         <Route path = "*" element={<ErrorPage/>} />
       </Routes>
     </Router>

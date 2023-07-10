@@ -47,7 +47,7 @@ const Register = () => {
             alert("Account created successfully!!! Please login to continue.")
             
             // Perform any additional actions after successful register, e.g., navigate to the home page
-            navigate('/login');
+            navigate('/registersuccessful');
           } catch (error) {
             // Handle register error
             if (error.response && error.response.data && error.response.data.username && error.response.data.username[0]) {
