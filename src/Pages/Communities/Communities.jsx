@@ -79,13 +79,15 @@ const Communities = () => {
                     />
                 </div>
             </form>
-            <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
+            <div className="flex flex-col items-center justify-center w-full bg-gray-50 p-5">
             { loading ? (<Loader />): 
-                (<ul className="mt-12 space-y-6 w-full md:w-4/5">
+                (<ul className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-12 w-full md:w-4/5">
                 {
                     communities.length !== 0 ? (
                     communities.map((item, index) => (
-                        <CommunityCard index={index} onDataChange={handleDataChange} community={item} />
+                        <li>
+                            <CommunityCard index={index} onDataChange={handleDataChange} community={item} />
+                        </li>
                     ))):(<h1 className="text-2xl font-bold text-gray-500">No Communities Found</h1>)
                 }
                 </ul>)
