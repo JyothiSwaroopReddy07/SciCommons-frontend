@@ -42,9 +42,7 @@ const Register = () => {
                 },
               }
             );
-        
-            // Save the token to local storage
-            alert("Account created successfully!!! Please login to continue.")
+
             
             // Perform any additional actions after successful register, e.g., navigate to the home page
             navigate('/registersuccessful');

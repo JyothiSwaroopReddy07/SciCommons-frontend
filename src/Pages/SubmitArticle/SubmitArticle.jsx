@@ -93,16 +93,16 @@ const SubmitArticle = () => {
     }
     return true;
   }
+
+  // const validateKeywords(keywordString) => {
+  //   // return false if string contains anything except letters , ',', ' ' 
+
   const submitForm = async(e) => {
     e.preventDefault();
     setAuthorIds([]);
     setCommunityIds([]);
     const form_data = new FormData(e.target);
     const token = localStorage.getItem('token');
-    if(communities.length === 0) {
-      alert("Please enter atleast one community name")
-      return;
-    }
     var res = await validateUser(token)
     if( res === false){
       alert("Please enter the correct usernames")
@@ -113,6 +113,10 @@ const SubmitArticle = () => {
       alert("Please enter the correct community names")
       return;
     }
+    // if(validateKeywords(form_data.get('keywords'))=== false){
+    //   alert("Please enter the correct keywords following the format specified");
+    //   return;
+    // }
 
     form_data.delete('authors');
     form_data.delete('communities');
@@ -122,9 +126,12 @@ const SubmitArticle = () => {
       form_data.append(`authors[${i}]`, JSON.stringify(authorIds[i]));
     }
 
+    form_data.append('communities[0]', JSON.stringify(0));
+
     for(let i=0;i<communityIds.length;i++){
-      form_data.append(`communities[${i}]`, JSON.stringify(communityIds[i]));
+      form_data.append(`communities[${i+1}]`, JSON.stringify(communityIds[i]));
     }
+
 
 
 
