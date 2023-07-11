@@ -43,8 +43,7 @@ const SubmitArticle = () => {
     e.preventDefault();
     const form_data = new FormData(e.target);
     const token = localStorage.getItem('token');
-    console.log(authors)
-    console.log(communities)
+
     var authorIds = [];
     var communityIds = [];
     if(validateKeywords(form_data.get('keywords'))=== false){
@@ -66,7 +65,6 @@ const SubmitArticle = () => {
               Authorization: `Bearer ${token}`,
             },
           })
-          console.log(response.data.success.results[0].id)
           if(response.data.success.results.length === 0 || (response.data.success.results[0].username !== authors[i].username)){
             return;
           }
@@ -94,7 +92,6 @@ const SubmitArticle = () => {
               Authorization: `Bearer ${token}`,
             },
           })
-          console.log(response.data.success.results[0].id)
           if(response.data.success.results.length === 0 || (response.data.success.results[0].Community_name !== communities[i].name)){
             return;
           }
@@ -203,7 +200,7 @@ const SubmitArticle = () => {
       </p>
     </div>
     <div className="m-10 flex justify-center">
-      <form onSubmit={(e) => submitForm(e)} enctype="multipart/form-data">
+      <form onSubmit={(e) => submitForm(e)} encType="multipart/form-data">
         <div className="grid gap-6 mb-6 ">
           <div>
             <label
@@ -360,7 +357,7 @@ const SubmitArticle = () => {
           />
         </div>
         <div className="mb-6">
-            <label htmlfor="file" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File</label>
+            <label htmlFor="file" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File</label>
 
             <input type="file" required name="article_file" accept="application/pdf" className="block w-full px-3 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full dark:file:bg-gray-800 dark:file:text-gray-200 dark:text-gray-300 placeholder-gray-400/70 dark:placeholder-gray-500 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:focus:border-blue-300" />
         </div>
@@ -372,7 +369,7 @@ const SubmitArticle = () => {
             Abstract
           </label>
           <textarea
-            id="absctract"
+            id="abstract"
             name="abstract"
             rows={4}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
@@ -390,15 +387,14 @@ const SubmitArticle = () => {
             </label>
             <select
               className="w-full p-2.5 text-gray-500 bg-gray-50 border rounded-md shadow-sm outline-none appearance-none focus:border-green-600"
+              value={status}
               onChange={(e) => {
                 setStatus(e.target.value);
               }}
               name="status"
             >
-              <option selected value={"public"}>
-                Public
-              </option>
-              <option value={"private"}>Private</option>
+              <option value="public">Public</option>
+              <option value="private">Private</option>
             </select>
           </div>
         </div>
