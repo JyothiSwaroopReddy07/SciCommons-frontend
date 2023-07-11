@@ -4,6 +4,7 @@ import { MdAddBox,MdRemoveCircle } from "react-icons/md";
 import "./SubmitArticle.css";
 import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
+import Loader from "../../Components/Loader/Loader";
 import axios from "axios";
 
 const SubmitArticle = () => {
@@ -20,18 +21,39 @@ const SubmitArticle = () => {
     name: "",
   }]);
 
-  const [authorIds, setAuthorIds] = useState([]);
-  const [communityIds, setCommunityIds] = useState([]);
   const [status, setStatus] = useState("public");
+  const [loading, setLoading] = useState(false);
   
 
   const navigate = useNavigate();
 
-  const validateUser = async(token) => {
+  const validateKeywords = (value) => {
+    // Regular expression to match characters other than alphabets, commas, and spaces
+    const regex = /[^a-zA-Z, ]/;
+  
+    // Check if the value contains any invalid characters
+    if (regex.test(value)) {
+      return false;
+    }
+  
+    return true;
+  } 
 
+  const submitForm = async(e) => {
+    e.preventDefault();
+    const form_data = new FormData(e.target);
+    const token = localStorage.getItem('token');
+    console.log(authors)
+    console.log(communities)
+    var authorIds = [];
+    var communityIds = [];
+    if(validateKeywords(form_data.get('keywords'))=== false){
+      alert("Please enter the correct keywords following the format specified");
+      return;
+    }
     for(let i=0; i < authors.length; i++){
       if(authors[i].username === ""){
-        return false;
+        return;
       }
       else{
         try{
@@ -46,25 +68,20 @@ const SubmitArticle = () => {
           })
           console.log(response.data.success.results[0].id)
           if(response.data.success.results.length === 0 || (response.data.success.results[0].username !== authors[i].username)){
-            return false;
+            return;
           }
           else {
-            const newAuthorIds = [...authorIds, response.data.success.results[0].id];
-            setAuthorIds(newAuthorIds);
+            authorIds.push(response.data.success.results[0].id);
           }
         } catch(error){
           console.log(error)
-          return false;
+          return;
         }
       }
     }
-    return true;
-  }
-
-  const validateCommunity = async(token) => {
     for(let i=0; i<communities.length; i++){
       if(communities[i].name === ""){
-        return false;
+        return;
       }
       else{
         try{
@@ -79,52 +96,29 @@ const SubmitArticle = () => {
           })
           console.log(response.data.success.results[0].id)
           if(response.data.success.results.length === 0 || (response.data.success.results[0].Community_name !== communities[i].name)){
-            return false;
+            return;
           }
           else {
-            const newCommunityIds = [...communityIds, response.data.success.results[0].id];
-            setCommunityIds(newCommunityIds);
+            communityIds.push(response.data.success.results[0].id);
           }
         } catch(error){
           console.log(error)
-          return false;
+          return;
         }
       }
     }
-    return true;
-  }
 
-  // const validateKeywords(keywordString) => {
-  //   // return false if string contains anything except letters , ',', ' ' 
-
-  const submitForm = async(e) => {
-    e.preventDefault();
-    setAuthorIds([]);
-    setCommunityIds([]);
-    const form_data = new FormData(e.target);
-    const token = localStorage.getItem('token');
-    var res = await validateUser(token)
-    if( res === false){
-      alert("Please enter the correct usernames")
-      return;
-    }
-    res = await validateCommunity(token)
-    if(res === false){
-      alert("Please enter the correct community names")
-      return;
-    }
-    // if(validateKeywords(form_data.get('keywords'))=== false){
-    //   alert("Please enter the correct keywords following the format specified");
-    //   return;
-    // }
 
     form_data.delete('authors');
     form_data.delete('communities');
     form_data.delete('username');
 
+    form_data.append('authors[0]', JSON.stringify(0));
+  
     for(let i=0;i<authorIds.length;i++){
-      form_data.append(`authors[${i}]`, JSON.stringify(authorIds[i]));
+      form_data.append(`authors[${i+1}]`, JSON.stringify(authorIds[i]));
     }
+
 
     form_data.append('communities[0]', JSON.stringify(0));
 
@@ -132,9 +126,7 @@ const SubmitArticle = () => {
       form_data.append(`communities[${i+1}]`, JSON.stringify(communityIds[i]));
     }
 
-
-
-
+    setLoading(true);
     try {
       const response = await axios.post(baseURL, form_data, {
         headers: {
@@ -149,6 +141,7 @@ const SubmitArticle = () => {
       console.log(error);
       return;
     }
+    setLoading(false);
 
     navigate('/articlesuccessfulsubmission');
   };
@@ -165,7 +158,7 @@ const SubmitArticle = () => {
   const removeAuthor = (index) => {
     const newAuthors = [...authors];
     newAuthors.splice(index, 1);
-    setAuthors(newAuthors);
+    setAuthors([...newAuthors]);
    };
 
    const addCommunity = () => {
@@ -180,24 +173,27 @@ const SubmitArticle = () => {
   const removeCommunity = (index) => {
     const newCommunities = [...communities];
     newCommunities.splice(index, 1);
-    setCommunities(newCommunities);
+    setCommunities([...newCommunities]);
   };
 
   const changeAuthor = (e, index) => {
     const newAuthors = [...authors];
     newAuthors[index].username = e.target.value;
-    setAuthors(newAuthors);
+    setAuthors([...newAuthors]);
   };
 
   const changeCommunity = (e, index) => {
     const newCommunities = [...communities];
     newCommunities[index].name = e.target.value;
-    setCommunities(newCommunities);
+    setCommunities([...newCommunities]);
   };
 
   return (
     <>
     <NavBar/>
+    {
+      loading ? (<Loader/>) :
+    (<>
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-4xl font-bold mb-4 mt-4 text-center text-gray-500">
         Submit Your Article
@@ -439,6 +435,8 @@ const SubmitArticle = () => {
         </button>
       </form>
     </div>
+    </>)
+    }
     <Footer/>
     </>
   );
