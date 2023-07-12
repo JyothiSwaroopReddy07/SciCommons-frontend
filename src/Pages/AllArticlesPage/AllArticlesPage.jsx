@@ -72,7 +72,12 @@ const AllArticlesPage = () => {
     const sortDate = (e) => {
         e.preventDefault();
         setLoading(true)
-        const sortedByDate = [...articles].sort((a, b) => b.Public_date - a.Public_date);
+        console.log(articles[0].Public_date)
+        const sortedByDate = [...articles].sort((a, b) => {
+            const dateA = new Date(a.Public_date);
+            const dateB = new Date(b.Public_date);
+            return dateB - dateA;
+        });
         setSortedArticles(sortedByDate);
         setLoading(false)
     }        

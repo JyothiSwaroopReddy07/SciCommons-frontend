@@ -4,6 +4,13 @@ import './ArticleCard.css'
 
 const ArticleCard = ({articles}) => {
 
+    const handleDate = (dateString) => {
+        const date = new Date(dateString);
+
+        const formatter = new Intl.DateTimeFormat("en-US");
+        const formattedDate2 = formatter.format(date);
+        return formattedDate2.toString();
+    }
 
     return (
         <ul className="mt-12 space-y-6 w-full md:w-4/5">
@@ -25,6 +32,10 @@ const ArticleCard = ({articles}) => {
                     <p className="text-gray-500 mt-2 pr-2">
                         <span className="text-green-700">Keywords : </span>
                         {item.keywords.replace(/[\[\]"_\|\|]/g, "")}
+                    </p>
+                    <p className="text-gray-500 mt-2 pr-2">
+                        <span className="text-green-700">Added On : </span>
+                        {handleDate(item.Public_date)}
                     </p>
                     </div>
                     <div className="mt-5 space-y-4 text-sm sm:mt-0 sm:space-y-2">
@@ -117,7 +128,7 @@ const ArticleCard = ({articles}) => {
                         <path d="M12 1l2.753 8.472h8.938l-7.251 5.269 2.753 8.472L12 18.208l-7.193 5.005 2.753-8.472L.309 9.472h8.938z" />
                         </svg>
                         <span className="font-bold ml-3">
-                        {item.rating == null ? 0 : item.rating}/5
+                            {item.rating == null ? 0 : item.rating}/5
                         </span>
                     </div>
                     </div>

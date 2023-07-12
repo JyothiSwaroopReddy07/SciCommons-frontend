@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import './NavBar.css'
 import {FaUserAlt} from 'react-icons/fa';
 import {MdNotifications} from 'react-icons/md';
+import Popper from "popper.js";
 
 const NavBar = () => {
 
@@ -27,8 +28,8 @@ const NavBar = () => {
         localStorage.removeItem('token')
         setIsAuth(false)
         setIsOpen(false)
-
     };
+
 
     return (
         <nav className="sticky top-0 bg-green-50 md:text-sm z-50">
@@ -80,35 +81,10 @@ const NavBar = () => {
                                 <a href="/notifications" className="block text-base font-semibold hover:text-green-700">
                                     <MdNotifications  className="h-5 w-5 mx-2 active:shadow-none"/>
                                 </a>
-                                <div className="profile-icon" onClick={(e) => {e.preventDefault();setIsOpen(!isOpen)}}> 
-                                    <FaUserAlt className="h-5 w-5 mx-2 active:shadow-none"/>
-                                </div>
+                                <Dropdown color="orange" onLogout={handleLogout}/>
                             </>
                         )}
-                        {isOpen && (
-                            <div className="profile-dropdown">
-                                <div className="profile-dropdown-item">
-                                    <a href="/profile" className="block text-base text-green-400 hover:text-green-700">
-                                        Profile
-                                    </a>
-                                </div>
-                                <div className="profile-dropdown-item">
-                                    <a href="/MyActivity" className="block text-base text-green-500 hover:text-green-700">
-                                        MyActivity
-                                    </a>
-                                </div>
-                                <div className="profile-dropdown-item">
-                                    <a href="/settings" className="block text-base text-green-400 hover:text-green-700">
-                                        Settings
-                                    </a>
-                                </div>
-                                <div className="profile-dropdown-item">
-                                    <a href="/" onClick={handleLogout} className="block text-base text-green-400 hover:text-green-700">
-                                        Log out
-                                    </a>
-                                </div>
-                            </div>
-                        )}
+ 
                         {!isAuth && (
                             <>
                             <a href="/login" className="block text-base text-green-500 font-semibold hover:text-green-700">
@@ -127,6 +103,96 @@ const NavBar = () => {
             </div>
         </nav>
     )
-}
+};
+
+const Dropdown = ({ color, onLogout }) => {
+
+    const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
+    const btnDropdownRef = React.createRef();
+    const popoverDropdownRef = React.createRef();
+    const openDropdownPopover = () => {
+      new Popper(btnDropdownRef.current, popoverDropdownRef.current, {
+        placement: "bottom-start"
+      });
+      setDropdownPopoverShow(true);
+    };
+    const closeDropdownPopover = () => {
+      setDropdownPopoverShow(false);
+    };
+    // bg colors
+    let bgColor;
+    color === "white"
+      ? (bgColor = "bg-gray-800")
+      : (bgColor = "bg-" + color + "-500");
+    
+
+    return (
+      <>
+        <div className="flex flex-wrap">
+          <div className="w-full sm:w-6/12 md:w-4/12 px-4">
+            <div className="relative inline-flex align-middle w-full">
+              <button
+                className={
+                  "text-white font-bold uppercase text-sm px-6 rounded outline-none focus:outline-none " +
+                  bgColor
+                }
+                style={{ transition: "all .15s ease" }}
+                type="button"
+                ref={btnDropdownRef}
+                onClick={() => {
+                  dropdownPopoverShow
+                    ? closeDropdownPopover()
+                    : openDropdownPopover();
+                }}
+              >
+                <FaUserAlt className="text-black w-5 h-5"/>
+              </button>
+              <div
+                ref={popoverDropdownRef}
+                className={
+                  (dropdownPopoverShow ? "block " : "hidden ") +
+                  "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
+                }
+                style={{ minWidth: "12rem" }}
+              >
+                <a
+                  href="/profile"
+                  className={
+                    "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-white text-gray-800 hover:bg-gray-200"
+                  }
+                >
+                  Your Profile
+                </a>
+                <a
+                  href="/activity"
+                  className={
+                    "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-white text-gray-800 hover:bg-gray-200"
+                  }
+                >
+                  Your Activity
+                </a>
+                <a
+                  href="/settings"
+                  className={
+                    "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-white text-gray-800 hover:bg-gray-200"
+                  }
+                >
+                  Settings
+                </a>
+                <button
+                  className={
+                    "text-sm py-2 px-4 font-normal bg-white text-gray-800 hover:bg-gray-200"
+                  }
+                  onClick={(e)=>{onLogout(e)}}
+                >
+                  Log Out
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  };
 
 export default NavBar;
