@@ -4,6 +4,8 @@ import "./CreateCommunity.css";
 import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
 import axios from "axios";
+import ToastMaker from 'toastmaker';
+import "toastmaker/dist/toastmaker.css";
 
 const CreateCommunity = () => {
 
@@ -37,7 +39,13 @@ const CreateCommunity = () => {
     } catch (error) {
       setLoading(false)
       if(error.response.data.error){
-        alert(error.response.data.error)
+        ToastMaker(error.response.data.error, 3500,{
+            valign: 'top',
+            styles : {
+                backgroundColor: 'red',
+                fontSize: '20px',
+            }
+        })
         return;
       }
       setErrors(error.response.data)

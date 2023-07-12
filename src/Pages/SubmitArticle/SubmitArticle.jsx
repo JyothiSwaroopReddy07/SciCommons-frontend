@@ -6,6 +6,8 @@ import NavBar from "../../Components/NavBar/NavBar";
 import Footer from "../../Components/Footer/Footer";
 import Loader from "../../Components/Loader/Loader";
 import axios from "axios";
+import ToastMaker from 'toastmaker';
+import "toastmaker/dist/toastmaker.css";
 
 const SubmitArticle = () => {
 
@@ -47,7 +49,13 @@ const SubmitArticle = () => {
     var authorIds = [];
     var communityIds = [];
     if(validateKeywords(form_data.get('keywords'))=== false){
-      alert("Please enter the correct keywords following the format specified");
+      ToastMaker("Please enter the correct keywords following the format specified", 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
       return;
     }
     for(let i=0; i < authors.length; i++){
@@ -73,6 +81,13 @@ const SubmitArticle = () => {
           }
         } catch(error){
           console.log(error)
+          ToastMaker("Please enter the correct usernames!!!", 3500,{
+            valign: 'top',
+              styles : {
+                  backgroundColor: 'red',
+                  fontSize: '20px',
+              }
+          })
           return;
         }
       }
@@ -100,6 +115,13 @@ const SubmitArticle = () => {
           }
         } catch(error){
           console.log(error)
+          ToastMaker("Please enter the correct community names!!!", 3500,{
+            valign: 'top',
+              styles : {
+                  backgroundColor: 'red',
+                  fontSize: '20px',
+              }
+          })
           return;
         }
       }
@@ -134,7 +156,13 @@ const SubmitArticle = () => {
       console.log(response.data);
     } catch (error) {
       console.log(error.response.data)
-      alert(error.response.data.error);
+      ToastMaker(error.response.data.error, 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
       console.log(error);
       return;
     }

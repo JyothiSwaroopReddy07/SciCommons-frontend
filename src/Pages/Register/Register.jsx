@@ -3,6 +3,9 @@ import './Register.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../Components/Loader/Loader';
+import ToastMaker from 'toastmaker';
+import "toastmaker/dist/toastmaker.css";
+
 
 const Register = () => {
 
@@ -28,7 +31,13 @@ const Register = () => {
             'last_name': last_name.current.value
         }
         if(password.current.value !== password2.current.value){
-            alert("Passwords do not match")
+            ToastMaker("Passwords do not match", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
             setLoading(false)
             return
         }
@@ -43,7 +52,7 @@ const Register = () => {
               }
             );
 
-            
+            console.log(response.data)
             // Perform any additional actions after successful register, e.g., navigate to the home page
             navigate('/registersuccessful');
           } catch (error) {
@@ -51,11 +60,24 @@ const Register = () => {
             if (error.response && error.response.data && error.response.data.username && error.response.data.username[0]) {
                 // Handle specific username error
                 console.error('Username error:', error.response.data.username[0]);
-                alert(error.response.data.username[0])
+                ToastMaker(error.response.data.username[0], 3500,{
+                    valign: 'top',
+                    styles : {
+                        backgroundColor: 'red',
+                        fontSize: '20px',
+                    }
+                })
               } else if (error.response && error.response.data) {
                 // Handle general error
                 console.error('General error:', error.response.data);
-                alert(error.response.data)
+                ToastMaker(error.response.data, 3500,{
+                    valign: 'top',
+                    styles : {
+                        backgroundColor: 'red',
+                        fontSize: '20px',
+                    }
+                })
+
               } else {
                 // Handle other errors
                 console.error(error);

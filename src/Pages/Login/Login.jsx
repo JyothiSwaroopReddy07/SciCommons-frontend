@@ -3,6 +3,9 @@ import './Login.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../Components/Loader/Loader';
+import ToastMaker from 'toastmaker';
+import "toastmaker/dist/toastmaker.css";
+
 
 const Login = () => {
     const navigate = useNavigate()
@@ -57,9 +60,21 @@ const Login = () => {
             // Handle login error
             console.error(error);
             try{
-                alert(error.response.data.non_field_errors[0]);
+                ToastMaker(error.response.data.non_field_errors[0], 3500,{
+                    valign: 'top',
+                      styles : {
+                          backgroundColor: 'red',
+                          fontSize: '20px',
+                      }
+                  })
             } catch (error) {
-                alert("Something went wrong. Please try again later.")
+                ToastMaker("Something went wrong. Please try again later!!!", 3500,{
+                    valign: 'top',
+                      styles : {
+                          backgroundColor: 'red',
+                          fontSize: '20px',
+                      }
+                  })
             }
           } finally {
             setLoading(false); // Hide the loader after the login request completes, whether it succeeded or failed
