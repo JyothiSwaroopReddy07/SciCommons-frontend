@@ -9,7 +9,9 @@ import SubmitArticle from './Pages/SubmitArticle/SubmitArticle';
 import SuccessfulSubmission from './Components/SuccessfulSubmission';
 import SuccessfulRegistration from './Components/SuccessfulRegistration';
 import CommunityCreation from './Components/CommunityCreation';
-import CreateCommunity from './Pages/CreateCommunity/CreateCommunity'
+import CreateCommunity from './Pages/CreateCommunity/CreateCommunity';
+import Notifications from './Pages/Notifications/Notifications';
+import Feed from './Pages/Feed/Feed';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -25,7 +27,9 @@ function App() {
         <Route path='/articlesuccessfulsubmission' element={<SuccessfulSubmission/>}/>
         <Route path='/registersuccessful' element={<SuccessfulRegistration/>}/>
         <Route path='/createcommunity' element={<CreateCommunity/>}/>
-        <Route path='/communitysuccessfulcreated' element={<CommunityCreation/>}/>'
+        <Route path='/communitysuccessfulcreated' element={<CommunityCreation/>}/>
+        <Route path='/notifications' element={<Notifications/>}/>
+        <Route path='/myfeed' element={<Feed/>}/>
         <Route path = "*" element={<ErrorPage/>} />
       </Routes>
     </Router>

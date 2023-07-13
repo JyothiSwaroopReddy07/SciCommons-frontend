@@ -3,9 +3,11 @@ import './NavBar.css'
 import {FaUserAlt} from 'react-icons/fa';
 import {MdNotifications} from 'react-icons/md';
 import Popper from "popper.js";
+import {useNavigate} from 'react-router-dom';
 
 const NavBar = () => {
 
+    const navigate = useNavigate();
     const [state, setState] = useState(false)
     const [isAuth,setIsAuth] = useState(localStorage.getItem('token')?true:false)
     const [isOpen, setIsOpen] = useState(false);
@@ -28,6 +30,7 @@ const NavBar = () => {
         localStorage.removeItem('token')
         setIsAuth(false)
         setIsOpen(false)
+        navigate('/');
     };
 
 
