@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import './NavBar.css'
-import {FaUserAlt} from 'react-icons/fa';
-import {MdNotifications} from 'react-icons/md';
+import {SlUser} from 'react-icons/sl';
+import {RiNotification3Line} from 'react-icons/ri';
 import Popper from "popper.js";
 import {useNavigate} from 'react-router-dom';
+import {CiMenuFries} from 'react-icons/ci';
+import SideNav from '../SideNav/SideNav';
 
 const NavBar = () => {
 
     const navigate = useNavigate();
     const [state, setState] = useState(false)
+    const [Menu, setMenu] = useState(false)
     const [isAuth,setIsAuth] = useState(localStorage.getItem('token')?true:false)
     const [isOpen, setIsOpen] = useState(false);
 
@@ -33,11 +36,21 @@ const NavBar = () => {
         navigate('/');
     };
 
+    const handleChange = () => {
+      setMenu(!Menu)
+    }
 
     return (
+      <>
         <nav className="sticky top-0 bg-green-50 md:text-sm z-50">
             <div className="gap-x-7 items-center px-4 md:flex md:px-8">
+
+
                 <div className="flex items-center justify-between py-5 md:block">
+                  <div className="flex flex-row items-center  justify-between">
+                    <button onClick={handleChange}>
+                      <CiMenuFries id="menu" className="h-5 w-5 mx-2 active:shadow-none"/>
+                    </button>
                     <a href="/">
                         <img
                             src={process.env.PUBLIC_URL + '/logo.png'}
@@ -46,6 +59,7 @@ const NavBar = () => {
                             alt="logo"
                         />
                     </a>
+                    </div>
                     <div className="md:hidden">
                         <button className="menu-btn text-gray-500 hover:text-gray-800"
                             onClick={() => setState(!state)}
@@ -82,7 +96,7 @@ const NavBar = () => {
                         {isAuth && (
                             <>
                                 <a href="/notifications" className="block text-base font-semibold hover:text-green-700">
-                                    <MdNotifications  className="h-5 w-5 mx-2 active:shadow-none"/>
+                                  <RiNotification3Line className="text-gray-700 w-6 h-6" />
                                 </a>
                                 <Dropdown color="orange" onLogout={handleLogout}/>
                             </>
@@ -105,6 +119,8 @@ const NavBar = () => {
                 </div>
             </div>
         </nav>
+        {Menu && <SideNav onMenuChange={handleChange} />}
+      </>
     )
 };
 
@@ -148,13 +164,13 @@ const Dropdown = ({ color, onLogout }) => {
                     : openDropdownPopover();
                 }}
               >
-                <FaUserAlt className="text-black w-5 h-5"/>
+                <SlUser className="text-gray-700 w-6 h-6" />
               </button>
               <div
                 ref={popoverDropdownRef}
                 className={
                   (dropdownPopoverShow ? "block " : "hidden ") +
-                  "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
+                  "text-base z-50 float-left py-2 pr-5 list-none text-left rounded shadow-lg mt-1 bg-white"
                 }
                 style={{ minWidth: "12rem" }}
               >

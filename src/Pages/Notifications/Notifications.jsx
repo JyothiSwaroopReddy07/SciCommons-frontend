@@ -59,7 +59,7 @@ const Notifications = () => {
                 Notifications
             </h1>
         </div>
-        <div className="container mx-auto m-8 p-8">
+        <div className="container mx-auto m-8 p-8 w-1/2">
             {
                 notifications.length === 0 && (
                 <>

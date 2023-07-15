@@ -11,6 +11,8 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "dayjs": "^1.11.9",
+    "flowbite": "^1.7.0",
+    "flowbite-react": "^0.4.11",
     "heroicons": "^2.0.18",
     "heroicons-react": "^1.4.1",
     "mdb-react-ui-kit": "^6.1.0",

@@ -32,10 +32,12 @@ const HeroBanner = () => {
             </div>
           </div>
           <div className="flex-1 text-center mt-7 lg:mt-0 lg:ml-3">
-            <img
-              src="https://i.postimg.cc/HxHyt53c/undraw-heatmap-uyye.png"
-              className="w-full mx-auto sm:w-10/12  lg:w-full"
-            />
+            <video className="w-full border-0" autoPlay loop muted playsInline>
+              <source 
+                  src={process.env.PUBLIC_URL + "./logoafter.mp4"}
+                  type="video/mp4"
+              />
+            </video>
           </div>
         </section>
       </div>
