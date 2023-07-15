@@ -27,7 +27,8 @@ const NavBar = () => {
             const target = e.target;
             if (!target.closest(".menu-btn")) setState(false);
         };
-    }, [])
+        setIsAuth(localStorage.getItem('token')?true:false)
+    }, [isAuth]);
 
     const handleLogout = (e) => {
         localStorage.removeItem('token')
@@ -101,7 +102,7 @@ const NavBar = () => {
                                 <Dropdown color="orange" onLogout={handleLogout}/>
                             </>
                         )}
- 
+
                         {!isAuth && (
                             <>
                             <a href="/login" className="block text-base text-green-500 font-semibold hover:text-green-700">
