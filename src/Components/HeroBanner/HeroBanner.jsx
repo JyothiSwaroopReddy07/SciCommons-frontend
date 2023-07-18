@@ -18,13 +18,13 @@ const HeroBanner = () => {
             </p>
             <div className="pt-10 items-center justify-center space-y-3 sm:space-x-6 sm:space-y-0 sm:flex lg:justify-start">
               <a
-                href="#"
+                href="/"
                 className="px-7 py-3 w-full bg-white text-gray-800 text-center rounded-md shadow-md block sm:w-auto"
               >
                 Get started
               </a>
               <a
-                href="#"
+                href="/"
                 className="px-7 py-3 w-full bg-green-500 text-gray-200 text-center rounded-md block sm:w-auto"
               >
                 Try it out
@@ -32,7 +32,7 @@ const HeroBanner = () => {
             </div>
           </div>
           <div className="flex-1 text-center mt-7 lg:mt-0 lg:ml-3">
-            <video className="w-full border-0" autoPlay loop muted playsInline>
+            <video className="w-full border-2 border-white" autoPlay loop muted playsInline>
               <source 
                   src={process.env.PUBLIC_URL + "./logoafter.mp4"}
                   type="video/mp4"

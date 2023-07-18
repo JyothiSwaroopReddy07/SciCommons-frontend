@@ -7,14 +7,14 @@ const Footer = () => {
                 <div className="lg:flex">
                     <div className="w-full -mx-6 lg:w-2/5">
                         <div className="px-6">
-                            <a href="#">
+                            <a href="/">
                                 <img className="w-auto h-7" src={process.env.PUBLIC_URL + '/logo.png'} alt=""/>
                             </a>
 
                             <p className="max-w-sm mt-2 text-green-400 dark:text-green-400">Join 31,000+ other and never miss out on new tips, tutorials, and more.</p>
 
                             <div className="flex mt-6 -mx-2">
-                                <a href="#"
+                                <a href="/"
                                     className="mx-2 text-green-400 transition-colors duration-300 dark:text-green-400 hover:text-blue-500 dark:hover:text-blue-400"
                                     aria-label="Reddit">
                                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -24,7 +24,7 @@ const Footer = () => {
                                     </svg>
                                 </a>
                             
-                                <a href="#"
+                                <a href="/"
                                     className="mx-2 text-green-400 transition-colors duration-300 dark:text-green-400 hover:text-blue-500 dark:hover:text-blue-400"
                                     aria-label="Facebook">
                                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +34,7 @@ const Footer = () => {
                                     </svg>
                                 </a>
                             
-                                <a href="#"
+                                <a href="/"
                                     className="mx-2 text-green-400 transition-colors duration-300 dark:text-green-400 hover:text-blue-500 dark:hover:text-blue-400"
                                     aria-label="Github">
                                     <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,16 +51,16 @@ const Footer = () => {
                         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
                             <div>
                                 <h3 className="text-green-400 uppercase dark:text-white">About</h3>
-                                <a href="#" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Company</a>
-                                <a href="#" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">community</a>
-                                <a href="#" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Careers</a>
+                                <a href="/" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Company</a>
+                                <a href="/" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">community</a>
+                                <a href="/" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Careers</a>
                             </div>
 
                             <div>
                                 <h3 className="text-green-400 uppercase dark:text-white">Blog</h3>
-                                <a href="#" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Tec</a>
-                                <a href="#" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Music</a>
-                                <a href="#" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Videos</a>
+                                <a href="/" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Tec</a>
+                                <a href="/" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Music</a>
+                                <a href="/" className="block mt-2 text-sm text-green-400 dark:text-green-400 hover:underline">Videos</a>
                             </div>
 
                             <div>

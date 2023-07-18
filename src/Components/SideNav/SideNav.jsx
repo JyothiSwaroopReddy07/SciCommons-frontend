@@ -21,32 +21,32 @@ const SideNav = ({onMenuChange}) => {
           <Sidebar.ItemGroup>
             <div className="flex flex-row items-center justify-between">
                 <Sidebar.Item href="/">
-                <p className="text-3xl font-bold text-green-600">Sci Commons</p>
+                <p className="text-3xl font-bold text-green-600">Scicommons</p>
                 </Sidebar.Item>
                 <button onClick={onMenuChange}>
                     <RxCross2 className="h-5 w-5 mt-2 active:shadow-none text-gray-500"/>
                 </button>
             </div>
             <Sidebar.Item href="/myfeed" icon={CgFeed} className="mt-5">
-              <p>My Feed</p>
+              <p className="font-semibold">My Feed</p>
             </Sidebar.Item>
             <Sidebar.Item href="/createcommunity" icon={AiOutlineUsergroupAdd}>
-              <p>Create Community</p>
+              <p className="font-semibold">Create Community</p>
             </Sidebar.Item>
             <Sidebar.Item href="/mycommunity" icon={HiUserGroup}>
-              <p>MyCommunity</p>
+              <p className="font-semibold">MyCommunity</p>
             </Sidebar.Item>
             <Sidebar.Item href="/events" icon={MdEventNote}>
-              <p>Events</p>
+              <p className="font-semibold">Events</p>
             </Sidebar.Item>
             <Sidebar.Item href="/messages" icon={TbMessageCircle2}>
-              <p>Messages</p>
+              <p className="font-semibold">Messages</p>
             </Sidebar.Item>
             <Sidebar.Item href="/forums" icon={MdOutlineForum}>
-              <p>Forums</p>
+              <p className="font-semibold">Forums</p>
             </Sidebar.Item>
-            <Sidebar.Item href="#" icon={ImBlog}>
-              <p>Blogs</p>
+            <Sidebar.Item href="/blogs" icon={ImBlog}>
+              <p className="font-semibold">Blogs</p>
             </Sidebar.Item>
           </Sidebar.ItemGroup>
         </Sidebar.Items>
