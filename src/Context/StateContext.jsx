@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 
 
 const AppContext = React.createContext()
@@ -8,13 +8,13 @@ const AppContext = React.createContext()
 
 const AppProvider = ({ children }) => {
 
-  const [User, setUser] = useState(localStorage.getItem("User") || null);
+  const User = useRef(localStorage.getItem("User") || null);
   const [Menu, setMenu] = useState(localStorage.getItem("Menu") ||false);
 
 
   return (
     <AppContext.Provider value={{
-      User, setUser,
+      User,
       Menu, setMenu,
     }}>
       {children}

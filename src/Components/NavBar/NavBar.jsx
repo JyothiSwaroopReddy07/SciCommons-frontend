@@ -22,6 +22,8 @@ const NavBar = () => {
         { title: "About", path: "/about" }
     ]
 
+    const User = JSON.parse(localStorage.getItem('user'))
+
     useEffect(() => {
         document.onclick = (e) => {
             const target = e.target;
@@ -32,6 +34,9 @@ const NavBar = () => {
 
     const handleLogout = (e) => {
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
+        localStorage.removeItem('refresh')
+        localStorage.removeItem('Menu')
         setIsAuth(false)
         setIsOpen(false)
         navigate('/');
@@ -99,7 +104,8 @@ const NavBar = () => {
                                 <a href="/notifications" className="block text-base font-semibold hover:text-green-700">
                                   <RiNotification3Line className="text-gray-700 w-6 h-6" />
                                 </a>
-                                <Dropdown color="orange" onLogout={handleLogout}/>
+                               <Dropdown color="orange" onLogout={handleLogout} User={User.profile_pic_url} />
+
                             </>
                         )}
 
@@ -125,12 +131,14 @@ const NavBar = () => {
     )
 };
 
-const Dropdown = ({ color, onLogout }) => {
+const Dropdown = ({ color, onLogout,User}) => {
+  
 
     const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
     const btnDropdownRef = React.createRef();
     const popoverDropdownRef = React.createRef();
     const openDropdownPopover = () => {
+      console.log(User)
       new Popper(btnDropdownRef.current, popoverDropdownRef.current, {
         placement: "bottom-start"
       });
@@ -139,7 +147,7 @@ const Dropdown = ({ color, onLogout }) => {
     const closeDropdownPopover = () => {
       setDropdownPopoverShow(false);
     };
-    // bg colors
+
     let bgColor;
     color === "white"
       ? (bgColor = "bg-gray-800")
@@ -165,7 +173,13 @@ const Dropdown = ({ color, onLogout }) => {
                     : openDropdownPopover();
                 }}
               >
-                <SlUser className="text-gray-700 w-6 h-6" />
+                <span className="w-8 h-8 inline-block ml-1">
+                  {
+                    (User === null) ?
+                    (<SlUser className="text-black w-6 h-6 inline-block ml-1" />):
+                    (<img className="object-cover w-8 h-8 rounded-full ring ring-gray-300 dark:ring-gray-600" src={User} alt="avatar"/>)
+                  }
+                </span>
               </button>
               <div
                 ref={popoverDropdownRef}

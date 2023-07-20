@@ -12,6 +12,7 @@ import CommunityCreation from './Components/CommunityCreation';
 import CreateCommunity from './Pages/CreateCommunity/CreateCommunity';
 import Notifications from './Pages/Notifications/Notifications';
 import Feed from './Pages/Feed/Feed';
+import CommunityPage from './Pages/CommunityPage/CommunityPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path='/communitysuccessfulcreated' element={<CommunityCreation/>}/>
         <Route path='/notifications' element={<Notifications/>}/>
         <Route path='/myfeed' element={<Feed/>}/>
+        <Route path="/community/:communityName" element={<CommunityPage/>}/>
         <Route path = "*" element={<ErrorPage/>} />
       </Routes>
     </Router>

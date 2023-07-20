@@ -1,76 +1,232 @@
-import React,{useState, useEffect} from 'react';
-import axios from 'axios';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { GiSettingsKnobs } from "react-icons/gi";
+import { BsFillImageFill } from "react-icons/bs";
+import { AiOutlineArrowUp } from "react-icons/ai";
+import AsideLeft from "../../Components/AsideLeft/AsideLeft";
+import AsideRight from "../../Components/AsideRight/AsideRight";
+import MobileNavBar from "../../Components/MobileNavBar/MobileNavBar";
+import Post  from "../../Components/Post/Post";
+import Loader from '../../Components/Loader/Loader';
+import {useGlobalContext} from '../../Context/StateContext';
 import NavBar from '../../Components/NavBar/NavBar';
-import Footer from '../../Components/Footer/Footer';
+import axios from "axios";
 
-const feedCard = (props) => {
+const Feed = () => {
+    const [usersFeedPosts, setUsersFeedPosts] = useState([]);
+
+    const [showFilterPostModal, setShowFilterModal] = useState(false);
+
+    const [sortPostBy, setSortPostBy] = useState("Latest");
+
+    const [content, setContent] = useState("");
+
+    const [postImageUrl, setPostImageUrl] = useState("");
+    
+    const [loading,setLoading] = useState(false);
+    const {User} = useGlobalContext()
+
+    const getUserName = (username) => users.filter(user => user.username === username)[0];
+
+    // const [posts, setPosts] = useState([]);
+
+    // useEffect(()=>{
+    //     setLoading(true);
+    //     const fetchPosts = async () => {
+    //         const token = JSON.parse(localStorage.getItem('token'));
+    //         const res = await axios.get("https://scicommons-backend.onrender.com/api/feed",{
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 Authorization: `Bearer ${token}`,
+    //         });
+    //         setPosts(response.data.results
+    //     setTimeout(()=>{
+    //         setLoading(false);
+    //     },2000)
+    // })
+    
+    const [users, setUsers] = useState([])
+    const getSortedPosts = () => {
+
+         const temp = []
+        //  userFeedPosts.slice();
+
+        if (sortPostBy === "Latest") {
+            temp.sort((a, b) => new Date(b?.createdAt) - new Date(a?.createdAt));
+        }
+
+        if (sortPostBy === "Oldest") {
+            temp.sort((a, b) => new Date(a?.createdAt) - new Date(b?.createdAt));
+        }
+
+        if (sortPostBy === "Trending") {
+            temp.sort((a, b) => b?.likes?.likeCount - a?.likes?.likeCount);
+        }
+        return temp;
+    }
+
+    const sortedPosts = getSortedPosts();
+    const [isLoading, setIsLoading] = useState(false)
+
+
+    useEffect(() => {
+        // if(postImageUrl) {
+        //     loading && toast("Adding Post", { position: toast.POSITION.TOP_CENTER, autoClose: 2000 });
+        // } else {
+        //     loading && toast("Adding Post", { position: toast.POSITION.TOP_CENTER, autoClose: 1000 });
+        // }
+        console.log("error")
+    }, [isLoading]);
+
+    const postHandler = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        
+        if (postImageUrl) {
+            const file = postImageUrl;
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("upload_preset", "alcon-social");
+            formData.append("folder", "alcon");
+
+            try {
+                // const res = await fetch(cloudinaryUrl, {
+                //     method: "POST",
+                //     body: formData,
+                // });
+
+                // const { url } = await res.json();
+                console.log("error")
+
+                // dispatch(createPost({ postData: { content, postImageUrl: url }, token }));
+                // setIsFetching(false);
+
+            } catch (err) {
+                console.error("error occured", err);
+            }
+            
+        } else {
+            // dispatch(createPost({ postData: { content }, token }));
+            console.log("error");
+        }
+        setContent("");
+        setPostImageUrl("");
+    }
+
     return (
-        <div className="flex flex-col items-center justify-center w-full bg-gray-50 p-5">
-            <div className="flex flex-col items-center justify-center w-full bg-gray-50 p-5">
-                <div className="flex items-center justify-between w-full">
-                    <div className="flex items-center space-x-4">
-                        <div>
-                            <h3 className="font-medium text-lg">{props.message}</h3>
-                            <p className="text-gray-500">{props.formattedDate}</p>
-                        </div>
-                    </div>
-                    <a
-                        href={props.link}
-                        className="text-blue-500 hover:text-blue-700 transition-colors duration-300"
-                    >
-                        View
+        <>
+            <NavBar />
+        <div>
+
+            <MobileNavBar />
+
+            <div className="flex justify-center px-5 sm:px-32 md:mt-4">
+                <div className="flex h-screen w-screen">
+
+                    <AsideLeft />
+
+                    <main className="md:mx-4 w-full sm:basis-2/3">
+
+                        <header className="m-4 hidden sm:flex">
+                            <h1 className="text-xl font-semi-bold">Home</h1>
+                        </header>
+
+                        <header className="text-xl font-bold flex py-4 text-blue-600 sm:hidden">
+                            <Link to="/home" id="hero-logo"> ALCON </Link>
+                        </header>
+
+                        {/* create post */}
+
+                        <>
+                            <div className="border sm:ml-3 sm:mr-0 flex px-2 py-3">
+
+                                <div className="mt-3 w-12 h-12 text-lg flex-none">
+                                    <img src={User?.profile_picture === null ? '/': User.profile_picture} className="flex-none w-12 h-12 rounded-full" alt="avatar" />
+                                </div>
+
+                                <div className="w-full px-4">
+                                    <textarea
+                                        value={content}
+                                        placeholder="What's happening?"
+                                        className="resize-none mt-3 pb-3 w-full h-28 bg-slate-100 focus:outline-none rounded-xl p-2"
+                                        onChange={(e) => setContent(e.target.value)} >
+                                    </textarea>
+                                    <div className="max-w-xl max-h-80 mx-auto rounded-md">
+                                        <img
+                                            src={postImageUrl ? URL.createObjectURL(postImageUrl) : ""}
+                                            className={postImageUrl ? "block max-w-full max-h-20 rounded-md my-2 cursor-pointer" : "hidden"}
+                                            alt="avatar"
+                                        />
+                                    </div>
+
+                                    <div className="flex justify-between">
+                                        <label className="flex m-2">
+                                            <input
+                                                className="hidden"
+                                                type="file"
+                                                onChange={(e) => setPostImageUrl(e.target.files[0])}
+                                            />
+                                            <BsFillImageFill className="text-2xl mt-1 text-blue-700 cursor-pointer" />
+                                        </label>
+                                        <button
+                                            disabled={!content.trim().length && !postImageUrl}
+                                            className="p-2.5 bg-blue-600 hover:bg-blue-800 text-white rounded-xl shadow-md hover:shadow-lg transition duration-150 ease-in-out disabled:cursor-not-allowed"
+                                            onClick={postHandler}>
+                                            Post
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            {/* filter posts by date and trending */}
+
+                            <div className="flex pl-0.5 pr-0.5 sm:pr-6 sm:px-5 py-3 justify-between relative">
+
+                                <h1 className="text-xl">{sortPostBy} Posts</h1>
+
+                                <GiSettingsKnobs
+                                    className="fill-blue-600 stroke-0 hover:stroke-2 text-2xl cursor-pointer"
+                                    onClick={() => setShowFilterModal(prev => !prev)}>
+                                </GiSettingsKnobs>
+
+                                {/* filter modal */}
+
+                                {showFilterPostModal && <div className="w-30 h-22 px-1 shadow-xl bg-slate-100 border border-slate-300 text-slate-600 font-semibold absolute right-11 top-4 z-20 rounded-xl">
+                                    <ul className="p-2 cursor-pointer text-start">
+                                        <li className="p-1 hover:bg-slate-200 rounded" onClick={() => { setSortPostBy("Latest"); setShowFilterModal(false); }}>Latest</li>
+                                        <li className="p-1 hover:bg-slate-200 rounded" onClick={() => { setSortPostBy("Oldest"); setShowFilterModal(false); }}>Oldest</li>
+                                        <li className="p-1 hover:bg-slate-200 rounded" onClick={() => { setSortPostBy("Trending"); setShowFilterModal(false); }}>Trending</li>
+                                    </ul>
+                                </div>
+                                }
+                            </div>
+
+                            {/* Show Posts */}
+
+                            {isLoading ? (
+                                <div className="z-20">
+                                    <Loader show={isLoading} />
+                                </div>
+                            ) : (
+                                !sortedPosts.length ?
+                                    <h1 className="text-2xl font-bold text-center mt-8">No Posts, Add one!</h1> :
+                                    sortedPosts?.map(post => <Post key={post._id} post={post} />
+                                    )
+                            )}
+
+                        </>
+
+                    </main>
+
+                    <AsideRight />
+                    <a href="#">
+                        <AiOutlineArrowUp className="hidden sm:block fixed bottom-0 right-20 bg-blue-300 text-slate-50 text-5xl p-3 rounded-full mb-2 mr-20 hover:bg-blue-500" />
                     </a>
                 </div>
             </div>
         </div>
+        </>
     )
-}
-
-const Feed = () => {
-
-    const [feed, setFeed] = useState([]);
-
-    useEffect(() => {
-        if (!localStorage.getItem('token')) {
-          window.location.href = '/login';
-        }
-        const fetchFeed = async () => {
-            const response = await axios.get('https://scicommons-backend.onrender.com/api/notification/', {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-            });
-            const data = response.data.success;
-            setFeed(data.results);
-        }
-        fetchFeed();
-    },[feed]);
-
-
-  return (
-    <div>
-        <NavBar />
-        <div className="flex flex-col items-center justify-center">
-            {
-                feed.length === 0 ? (<h1 className="text-2xl font-bold text-gray-500">No Posts to Show</h1>):(
-                    <>
-                        {
-                            feed.map((item, index) => {
-                                return (
-                                    <feedCard
-                                        key={index}
-                                        message={item.message}
-                                        formattedDate={item.formattedDate}
-                                        link={item.link}
-                                    />
-                                )
-                            })
-                        }
-                    </>
-                )
-            }
-        </div>
-        <Footer/>
-    </div>
-  )
-}
-
-export default Feed
+};
+export default Feed;

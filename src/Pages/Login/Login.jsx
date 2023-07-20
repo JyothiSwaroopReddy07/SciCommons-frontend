@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import Loader from '../../Components/Loader/Loader';
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
+import { useGlobalContext} from '../../Context/StateContext';
 
 
 const Login = () => {
@@ -13,6 +14,7 @@ const Login = () => {
     const username = useRef(null)
     const password = useRef(null)
     const [loading, setLoading] = useState(false)
+    const {User} = useGlobalContext();
     const getCurrentUser = async () => {
         try {
             const token = localStorage.getItem('token'); 
@@ -23,6 +25,8 @@ const Login = () => {
                 },
             }); 
             const user = response.data.success;
+            console.log(user)
+            User.current = user;
             localStorage.setItem('user', JSON.stringify(user));
         } catch (error) {
           console.error(error);
@@ -51,8 +55,7 @@ const Login = () => {
             // Save the token to local storage
 
             localStorage.setItem('token', response.data.success.access);
-            localStorage.setItem('refresh', response.data.success.refresh);
-            getCurrentUser();
+            await getCurrentUser();
             
             // Perform any additional actions after successful login, e.g., navigate to the home page
             navigate('/');

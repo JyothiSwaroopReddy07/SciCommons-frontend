@@ -44,12 +44,6 @@ const Communities = () => {
         e.preventDefault();
     }
 
-    const handleDataChange = (index, id) => {
-        var newData = [...communities];
-        newData[index].subscribed = id;
-        setCommunities(newData);
-    };
-
   return (
     <>
         <NavBar />
@@ -86,7 +80,7 @@ const Communities = () => {
                     communities.length !== 0 ? (
                     communities.map((item, index) => (
                         <li>
-                            <CommunityCard index={index} onDataChange={handleDataChange} community={item} />
+                            <CommunityCard index={index} community={item} />
                         </li>
                     ))):(<h1 className="text-2xl font-bold text-gray-500">No Communities Found</h1>)
                 }
