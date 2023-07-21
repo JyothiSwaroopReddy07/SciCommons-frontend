@@ -25,7 +25,6 @@ const Login = () => {
                 },
             }); 
             const user = response.data.success;
-            console.log(user)
             User.current = user;
             localStorage.setItem('user', JSON.stringify(user));
         } catch (error) {

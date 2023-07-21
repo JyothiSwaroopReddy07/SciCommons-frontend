@@ -129,7 +129,7 @@ const CommunityDescription = ({community, onDataChange}) => {
                             >
                             {getButtonLabel()}
                         </button>
-                    <button className="bg-blue-500 text-white px-4 font-bold py-2 rounded-xl" onClick={()=> navigate(`/${community.Community_name}/join-community`)}>Join Community</button>
+                    <button className="bg-blue-500 text-white px-4 font-bold py-2 rounded-xl" onClick={()=> navigate(`/join-community/${community.Community_name}`)}>Join Community</button>
                 </div>
         </div>
     </>

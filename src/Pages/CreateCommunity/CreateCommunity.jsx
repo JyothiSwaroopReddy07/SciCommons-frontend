@@ -27,7 +27,7 @@ const CreateCommunity = () => {
     try {
       const response = await axios.post(baseURL, form_data, {
         headers: {
-          "Content-Type": "multipart/form-data",
+          "Content-type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
       });

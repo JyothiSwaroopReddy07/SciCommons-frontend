@@ -72,7 +72,6 @@ const AllArticlesPage = () => {
     const sortDate = (e) => {
         e.preventDefault();
         setLoading(true)
-        console.log(articles[0].Public_date)
         const sortedByDate = [...articles].sort((a, b) => {
             const dateA = new Date(a.Public_date);
             const dateB = new Date(b.Public_date);

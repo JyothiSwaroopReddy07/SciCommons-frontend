@@ -104,7 +104,7 @@ const NavBar = () => {
                                 <a href="/notifications" className="block text-base font-semibold hover:text-green-700">
                                   <RiNotification3Line className="text-gray-700 w-6 h-6" />
                                 </a>
-                               <Dropdown color="orange" onLogout={handleLogout} User={User.profile_pic_url} />
+                               <Dropdown color="orange" onLogout={handleLogout} User={User.profile_pic_url === null ? null: User.profile_pic_url} />
 
                             </>
                         )}
@@ -138,7 +138,6 @@ const Dropdown = ({ color, onLogout,User}) => {
     const btnDropdownRef = React.createRef();
     const popoverDropdownRef = React.createRef();
     const openDropdownPopover = () => {
-      console.log(User)
       new Popper(btnDropdownRef.current, popoverDropdownRef.current, {
         placement: "bottom-start"
       });
