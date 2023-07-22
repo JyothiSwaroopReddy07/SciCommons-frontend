@@ -1,47 +1,96 @@
-import React, {useState} from 'react';
-import axios from 'axios';
+import React,{useEffect} from 'react';
+import { useState } from 'react'; 
 import NavBar from '../../Components/NavBar/NavBar';
-import Footer from '../../Components/Footer/Footer';
+import CommunityEditPage from '../../Components/CommunityEditPage/CommunityEditPage';
+import JoinRequests from '../../Components/JoinRequests/JoinRequests'
+import axios from "axios"
+import Loader from '../../Components/Loader/Loader';
 
-const CommunityAdminPage = () => {
-  return (
+
+const  CommunityAdminPage =()=>{
+
+const [currentState, setcurrentState] = useState(1);
+const [community,setCommunity] = useState(null);
+const [loading, setLoading] = useState(false);
+const loadData = async (res) => {
+    setCommunity(res);
+}
+useEffect(() => {
+    setLoading(true)
+    const getCommunity = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const res = await axios.get('https://scicommons-backend.onrender.com/api/community/mycommunity',config)
+            await loadData(res.data.success)
+    
+        } catch (error) {
+            console.log(error)
+        }
+    }
+    getCommunity()
+
+    setLoading(false)
+},[])
+
+const onclickFuntion = (indext)=>{
+  setcurrentState(indext);
+};
+
+  return(
     <>
         <NavBar/>
-        
-        <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="myTab" data-tabs-toggle="#myTabContent" role="tablist">
-                <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
-                </li>
-                <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Dashboard</button>
-                </li>
-                <li class="mr-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Settings</button>
-                </li>
-                <li role="presentation">
-                    <button class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="contacts-tab" data-tabs-target="#contacts" type="button" role="tab" aria-controls="contacts" aria-selected="false">Contacts</button>
-                </li>
-            </ul>
-        </div>
-        <div id="myTabContent">
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Profile tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+        {loading && <Loader/>}
+
+        {!loading && 
+        community!==null && (<div>
+            <div className='w-full md:w-4/5 flex mx-auto mt-4'>
+                <button className={currentState === 1 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
+                    onClick={()=> onclickFuntion(1)}>
+                     Community Info
+                </button>
+                <button className={currentState === 2 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200  py-2'} 
+                    onClick={()=> onclickFuntion(2)}>
+                        Articles
+                </button>
+                <button className={currentState === 3 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 md:px-5 py-2  border-b-2 border-green-600' : 'mb-2 text-sm md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
+                    onClick={()=> onclickFuntion(3)}>
+                        Members
+                </button>
+                <button className={currentState === 4 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
+                    onClick={()=> onclickFuntion(4)}>
+                        Join Requests
+                </button>
+
             </div>
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="dashboard" role="tabpanel" aria-labelledby="dashboard-tab">
-                <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Dashboard tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
+            <div>
+                <div className={ currentState === 1? ' p-3 w-full md:w-4/5 mx-auto' : ' p-3 hidden'}>
+                    <CommunityEditPage/>
+                </div>
+                <div className={ currentState === 2? ' p-3 w-full md:w-4/5 mx-auto' : ' p-3 hidden'}>
+                    
+                </div>
+                <div className={ currentState === 3? ' p-3 w-full md:w-4/5 mx-auto' : ' p-3 hidden'}>
+                    
+                </div>
+                <div className={ currentState === 4? ' p-3 w-full md:w-4/5 mx-auto' : ' p-3 hidden'}>
+                   <JoinRequests community={community?.Community_name}/>
+                </div>
+
             </div>
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="settings" role="tabpanel" aria-labelledby="settings-tab">
-                <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Settings tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-            </div>
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
-                <p class="text-sm text-gray-500 dark:text-gray-400">This is some placeholder content the <strong class="font-medium text-gray-800 dark:text-white">Contacts tab's associated content</strong>. Clicking another tab will toggle the visibility of this one for the next. The tab JavaScript swaps classes to control the content visibility and styling.</p>
-            </div>
-        </div>
-        <Footer/>
+        </div>)}
+        {!loading && community===null && (<div className='w-full md:w-4/5 mx-auto mt-4'>
+            <div className='text-center text-2xl font-bold'>You are not an admin of any community</div>
+            </div>)}
 
     </>
-  )
-}
 
-export default CommunityAdminPage
+
+    )
+};
+
+export default CommunityAdminPage;

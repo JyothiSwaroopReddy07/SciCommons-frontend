@@ -147,10 +147,6 @@ const Dropdown = ({ color, onLogout,User}) => {
       setDropdownPopoverShow(false);
     };
 
-    let bgColor;
-    color === "white"
-      ? (bgColor = "bg-gray-800")
-      : (bgColor = "bg-" + color + "-500");
     
 
     return (
@@ -160,8 +156,7 @@ const Dropdown = ({ color, onLogout,User}) => {
             <div className="relative inline-flex align-middle w-full">
               <button
                 className={
-                  "text-white font-bold uppercase text-sm px-6 rounded outline-none focus:outline-none " +
-                  bgColor
+                  "text-white font-bold uppercase text-sm px-6 rounded outline-none focus:outline-none bg-green-50"
                 }
                 style={{ transition: "all .15s ease" }}
                 type="button"
@@ -184,7 +179,7 @@ const Dropdown = ({ color, onLogout,User}) => {
                 ref={popoverDropdownRef}
                 className={
                   (dropdownPopoverShow ? "block " : "hidden ") +
-                  "text-base z-50 float-left py-2 pr-5 list-none text-left rounded shadow-lg mt-1 bg-white"
+                  "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
                 }
                 style={{ minWidth: "12rem" }}
               >
