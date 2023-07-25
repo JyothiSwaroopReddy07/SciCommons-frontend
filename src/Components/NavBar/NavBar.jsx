@@ -6,6 +6,7 @@ import Popper from "popper.js";
 import {useNavigate} from 'react-router-dom';
 import {CiMenuFries} from 'react-icons/ci';
 import SideNav from '../SideNav/SideNav';
+import {FiLogOut} from 'react-icons/fi';
 
 const NavBar = () => {
 
@@ -181,7 +182,7 @@ const Dropdown = ({ color, onLogout,User}) => {
                   (dropdownPopoverShow ? "block " : "hidden ") +
                   "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
                 }
-                style={{ minWidth: "12rem" }}
+                style={{ minWidth: "8rem" }}
               >
                 <a
                   href="/profile"
@@ -209,11 +210,11 @@ const Dropdown = ({ color, onLogout,User}) => {
                 </a>
                 <button
                   className={
-                    "text-sm py-2 px-4 font-normal bg-white text-gray-800 hover:bg-gray-200"
+                    "text-sm py-2 px-4 w-full font-normal flex bg-white text-gray-800 hover:bg-gray-200"
                   }
                   onClick={(e)=>{onLogout(e)}}
                 >
-                  Log Out
+                 <FiLogOut className="w-4 h-4 mr-1"/>Log Out
                 </button>
               </div>
             </div>
