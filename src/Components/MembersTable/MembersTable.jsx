@@ -105,6 +105,20 @@ const MembersTable = ({community}) => {
         await loadData(newMembers)
     }
 
+    const handleSelect = (e) => {
+        const search = e.target.value
+        if(search === "all"){
+            setSortedMembers(members)
+        }
+        else{
+            const filteredMembers = members.filter(member => {
+                return handleRole(member).toLowerCase().includes(search.toLowerCase())
+            })
+            setSortedMembers(filteredMembers)
+        }
+
+    }
+
   return (
     <>
     {loading && <Loader/>}  
@@ -122,7 +136,7 @@ const MembersTable = ({community}) => {
             </div>
             <div className="w-full flex flex-row items-center justify-between mb-3">
                 <input type="text" onChange={handleChange} className="w-1/2 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Search members"/>
-                <select className="w-1/4 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent">
+                <select onChange={handleSelect} className="w-1/4 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent">
                     <option value="all">All</option>
                     <option value="admin">Admin</option>
                     <option value="moderator">Moderator</option>
@@ -252,7 +266,7 @@ const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRo
                     Authorization: `Bearer ${token}`
                 }
             }
-            const res = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community}/promote_member/`,{
+            const res = await axios.post(`http://127.0.0.1:8000/api/community/${community}/promote_member/`,{
                 username: member.username,
                 role: role.current.toLowerCase()
 
