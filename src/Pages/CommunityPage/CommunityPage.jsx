@@ -90,7 +90,7 @@ const CommunityPage = () => {
             if(subscribed === false){
                 console.log("subscribed")
                 const response = await axios.post(
-                    `http://127.0.0.1:8000/api/community/${community.Community_name}/subscribe/`,{
+                    `https://scicommons-backend.onrender.com/api/community/${community.Community_name}/subscribe/`,{
                         "user": User.id
                     },
                     config
@@ -200,56 +200,55 @@ const CommunityPage = () => {
         { loading && (<Loader/>)}
         { !loading &&    (
             <>
-                <div className="w-4/5 md:w-2/3 flex flex-col justify-center mx-auto">
+                <div className="w-4/5 md:w-2/3 flex flex-col justify-center mx-auto rounded-2xl shadow-2xl bg-green-50 mt-4 p-3 mb-8 md:p-6">
                     <div className="m-4 flex flex-col justify-center">
-                        <h1 className="text-7xl font-bold text-center text-gray-500">{community?.Community_name}</h1>
+                        <h1 className="text-xl md:text-7xl font-bold text-center text-gray-500">{community?.Community_name}</h1>
                     </div>
                     <div className="mt-4">
-                        <p className="text-md text-left text-gray-500"><span className="text-lg text-left font-bold text-green-700">Subtitle : </span>{community?.subtitle}</p>
-                        <p className="text-md text-left text-gray-500"><span className="text-lg text-center font-bold text-green-700">Description : </span>{community?.description}</p>
-                        <p className="text-md text-left text-gray-500"><span className="text-lg text-center font-bold text-green-700">Admins : </span>{community?.admins.map((admin) => admin).join(', ')}</p>
+                        <p className="test-sm md:text-md text-left text-gray-500"><span className="text-sm md:text-lg text-left font-bold text-green-700">Subtitle : </span>{community?.subtitle}</p>
+                        <p className="test-sm md:text-md text-left text-gray-500"><span className="test-sm md:text-lg text-left font-bold text-green-700">Description : </span>{community?.description}</p>
+                        <p className="test-sm md:text-md text-left text-gray-500"><span className="test-sm md:text-lg text-left font-bold text-green-700">Admins : </span>{community?.admins.map((admin) => admin).join(', ')}</p>
                     </div>
                         <div className="mt-4 flex flex-wrap justify-between">
                             <div className="mt-4 flex">
-                                <MdLocationPin className="text-xl text-green-700 mr-3" /> <span className="text-md text-left text-gray-500">{community?.location}</span>
+                                <MdLocationPin className="text-xl text-green-700 md:mr-3" /> <span className="text-sm md:text-md text-left text-gray-500">{community?.location}</span>
                             </div>
                             <div className="mt-4 flex">
-                                <BsGithub className="text-xl text-green-700 mr-3" /> <a className="text-md text-left text-gray-500" href={community?.github}>{community?.github}</a>
+                                <BsGithub className="text-xl text-green-700 md:mr-3" /> <a className="text-sm md:text-md text-left text-gray-500" href={community?.github}>{community?.github}</a>
                             </div>
                             <div className="mt-4 flex">
-                                <BiLogoGmail className="text-xl text-green-700 mr-3" /> <span className="text-md text-left text-gray-500">{community?.email}</span>
+                                <BiLogoGmail className="text-xl text-green-700 md:mr-3" /> <span className="text-sm md:text-md text-left text-gray-500">{community?.email}</span>
                             </div>
                             <div className="mt-4 flex">
-                                <CgWebsite className="text-xl text-green-700 mr-3" /> <a className="text-md text-left text-gray-500" href={community?.website}>{community?.website}</a>
+                                <CgWebsite className="text-xl text-green-700 md:mr-3" /> <a className="text-sm md:text-md text-left text-gray-500" href={community?.website}>{community?.website}</a>
                             </div>
                         </div>
                         <div className="mt-4 flex flex-wrap justify-between">
                             <div className="mt-4 flex">
-                                <FaUsers className="text-xl text-green-700 mr-3" /> <span className="text-md text-left text-gray-500">{community?.membercount}</span>
+                                <FaUsers className="text-xl text-green-700 md:mr-3" /> <span className="text-sm md:text-md text-left text-gray-500">{community?.membercount}</span>
                             </div>
                             <div className="mt-4 flex">
-                                <FaPencilAlt className="text-xl text-green-700 mr-3" /> <a className="text-md text-left text-gray-500" href={community?.github}>{community?.evaluatedcount}</a>
+                                <FaPencilAlt className="text-xl text-green-700 md:mr-3" /> <a className="text-sm md:text-md text-left text-gray-500" href={community?.github}>{community?.evaluatedcount}</a>
                             </div>
                             <div className="mt-4 flex">
-                                <FaBook className="text-xl text-green-700 mr-3" /> <span className="text-md text-left text-gray-500">{community?.publishedcount}</span>
+                                <FaBook className="text-xl text-green-700 md:mr-3" /> <span className="text-sm md:text-md text-left text-gray-500">{community?.publishedcount}</span>
                             </div>
                             <div className="mt-4 flex">
-                                <MdSubscriptions className="text-xl text-green-700 mr-3" /> <span className="text-md text-left text-gray-500">{community?.subscribed}</span>
+                                <MdSubscriptions className="text-xl text-green-700 md:mr-3" /> <span className="text-sm md:text-md text-left text-gray-500">{community?.subscribed}</span>
                             </div>
                         </div>
                         <div className="mt-8 flex flex-row justify-end">
-                                <button className="bg-teal-500 text-white px-4 py-2 rounded-xl mr-3" onClick={()=> navigate(`/join-community/${community.Community_name}`)}>Join Community</button>
+                                <button className="bg-teal-500 text-white md:px-4 md:py-2 rounded-xl mr-3 p-1" onClick={()=> navigate(`/join-community/${community.Community_name}`)}>Join Community</button>
                                     <button
                                         className={`${
                                             subscribed
                                             ? 'bg-gray-400 text-gray-700 cursor-default'
                                             : 'bg-red-500 hover:bg-red-600 text-white'
-                                        } rounded-xl py-2 px-4`}
+                                        } rounded-xl p-1 md:py-2 md:px-4`}
                                         onClick={handleSubscribe}
                                         >
                                         {getButtonLabel()}
                                     </button>
-                        
                         </div>
                 </div>
                 <div className="flex flex-col items-center justify-center w-full bg-gray-50">

@@ -85,11 +85,11 @@ const NavBar = () => {
                     </div>
                 </div>
                 <div className={`flex-1 items-center mt-8 md:mt-0 md:flex ${state ? 'block' : 'hidden'} `}>
-                    <ul className="justify-center items-center space-y-6 md:flex md:space-x-6 md:space-y-0">
+                    <ul className="justify-center items-center space-y-6 md:flex space-x-3 md:space-x-6 md:space-y-0">
                         {
                             navigation.map((item, idx) => {
                                 return (
-                                    <li key={idx} className="text-lg text-green-600 font-semibold hover:text-green-800">
+                                    <li key={idx} className="text-sm md:text-lg text-green-600 font-semibold hover:text-green-800">
                                         <a href={item.path} className="block">
                                             {item.title}
                                         </a>

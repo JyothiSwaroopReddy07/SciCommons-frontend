@@ -41,7 +41,7 @@ const JoinRequest = () => {
       } catch (error) {
         setLoading(false)
 
-        ToastMaker("Could not submit your request", 3500,{
+        ToastMaker(error.response.data.error, 3500,{
               valign: 'top',
               styles : {
                   backgroundColor: 'red',

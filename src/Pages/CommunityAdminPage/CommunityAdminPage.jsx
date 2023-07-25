@@ -5,6 +5,7 @@ import CommunityEditPage from '../../Components/CommunityEditPage/CommunityEditP
 import JoinRequests from '../../Components/JoinRequests/JoinRequests'
 import axios from "axios"
 import Loader from '../../Components/Loader/Loader';
+import MembersTable from '../../Components/MembersTable/MembersTable';
 
 
 const  CommunityAdminPage =()=>{
@@ -42,7 +43,7 @@ const onclickFuntion = (indext)=>{
 };
 
   return(
-    <>
+    <div className="w-full">
         <NavBar/>
         {loading && <Loader/>}
 
@@ -75,7 +76,7 @@ const onclickFuntion = (indext)=>{
                     
                 </div>
                 <div className={ currentState === 3? ' p-3 w-full md:w-4/5 mx-auto' : ' p-3 hidden'}>
-                    
+                    <MembersTable community={community?.Community_name}/>
                 </div>
                 <div className={ currentState === 4? ' p-3 w-full md:w-4/5 mx-auto' : ' p-3 hidden'}>
                    <JoinRequests community={community?.Community_name}/>
@@ -87,7 +88,7 @@ const onclickFuntion = (indext)=>{
             <div className='text-center text-2xl font-bold'>You are not an admin of any community</div>
             </div>)}
 
-    </>
+    </div>
 
 
     )

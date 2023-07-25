@@ -107,7 +107,7 @@ const Login = () => {
                                         placeholder="Suresh Krishna"
                                         id="username"
                                         ref={username}
-                                        className="w-full p-2.5 ml-2 bg-transparent outline-none"
+                                        className="w-full bg-transparent outline-none"
                                     />
                                 </div>
                             </div>

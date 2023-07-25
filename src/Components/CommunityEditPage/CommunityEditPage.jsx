@@ -3,6 +3,11 @@ import axios from 'axios';
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
 import Loader from '../Loader/Loader';
+import {MdLocationPin, MdSubscriptions} from 'react-icons/md';
+import {BsGithub} from 'react-icons/bs';
+import {BiLogoGmail} from 'react-icons/bi';
+import {CgWebsite} from 'react-icons/cg';
+import {FaUsers, FaBook, FaPencilAlt} from 'react-icons/fa';
 
 const CommunityEditPage = () => {
 
@@ -26,6 +31,10 @@ const CommunityEditPage = () => {
         setWebsite(res.website)
         setEmail(res.email)
         setName(res.Community_name)
+    }
+
+    const loadData1 = async(res)=>{
+        setCommunity(res)
     }
     useEffect(() => {
         setLoading(true)
@@ -67,7 +76,7 @@ const CommunityEditPage = () => {
           if(response.data.success){
             setLoading(false)
             setShowModal(false)
-            setCommunity(response.data.success)
+            await loadData1(response.data.success)
             ToastMaker("Community Details Updated Successfully", 3500,{
                 valign: 'top',
                   styles : {
@@ -117,29 +126,34 @@ const CommunityEditPage = () => {
     {loading && <div className="w-full"><Loader/></div> }
     {!loading &&
         <div className="w-full">
-                <div className="flex m-4">
-                    <span className="text-green-500 text-sm md:text-md font-semibold">Name:&nbsp;</span> <p className="text-sm md:text-md">{community?.Community_name}</p>
+                <div className="w-full bg-green-50 p-3 md:p-6 rounded-xl shadow-2xl">
+                    <div className="w-4/5 md:w-2/3 flex flex-col justify-center mx-auto mb-10">
+                        <div className="m-4 flex flex-col justify-center">
+                            <h1 className="text-7xl font-bold text-center text-gray-500">{community?.Community_name}</h1>
+                        </div>
+                        <div className="mt-4">
+                            <p className="text-md text-left text-gray-500"><span className="text-lg text-left font-bold text-green-700">Subtitle : </span>{community?.subtitle}</p>
+                            <p className="text-md text-left text-gray-500"><span className="text-lg text-center font-bold text-green-700">Description : </span>{community?.description}</p>
+                        </div>
+                            <div className="mt-4 flex flex-wrap justify-between">
+                                <div className="mt-4 flex">
+                                    <MdLocationPin className="text-xl text-green-700 md:mr-3" /> <span className="text-sm md:text-md text-left text-gray-500">{community?.location}</span>
+                                </div>
+                                <div className="mt-4 flex">
+                                    <BsGithub className="text-xl text-green-700 md:mr-3" /> <a className="text-sm md:text-md text-left text-gray-500" href={community?.github}>{community?.github}</a>
+                                </div>
+                                <div className="mt-4 flex">
+                                    <BiLogoGmail className="text-xl text-green-700 md:mr-3" /> <span className="text-sm md:text-md text-left text-gray-500">{community?.email}</span>
+                                </div>
+                                <div className="mt-4 flex">
+                                    <CgWebsite className="text-xl text-green-700 md:mr-3" /> <a className="text-sm md:text-md text-left text-gray-500" href={community?.website}>{community?.website}</a>
+                                </div>
+                            </div>
+                    </div>
+                    <div className="flex flex-row justify-center">
+                        <button className="bg-green-600 text-white text-sm md:text-lg font-semibold py-2 px-2 rounded-xl" style={{width:'auto'}} onClick={() => setShowModal(true)}>Edit Details</button>
+                    </div>
                 </div>
-                <div className="flex m-4">
-                    <span className="text-green-500 text-sm md:text-md font-semibold">Subtitle:&nbsp;</span> <p className="text-sm md:text-md">{community?.subtitle}</p>
-                </div>
-                <div className="flex m-4">
-                    <span className="text-green-500 text-sm md:text-md font-semibold">Description:&nbsp;</span> <p className="text-sm md:text-md">{community?.description}</p>
-                </div>
-                <div className="flex m-4">
-                    <span className="text-green-500 text-sm md:text-md font-semibold">Email:&nbsp;</span> <p className="text-sm md:text-md">{community?.email}</p>
-                </div>
-                <div className="flex m-4">
-                    <span className="text-green-500 text-sm md:text-md font-semibold">Website:&nbsp;</span> <p className="text-sm md:text-md">{community?.website}</p>
-                </div>
-                <div className="flex m-4">
-                    <span className="text-green-500 text-sm md:text-md font-semibold">GitHub:&nbsp;</span> <p className="text-sm md:text-md">{community?.github}</p>
-                </div>
-                <div className="flex m-4">
-                    <span className="text-green-500 text-sm md:text-md font-semibold">Location:&nbsp;</span> <p className="text-sm md:text-md">{community?.location}</p>
-                </div>
-
-                <button className="bg-green-100 text-sm md:text-lg font-semibold py-2 px-2 rounded" style={{width:'auto'}} onClick={() => setShowModal(true)}>Edit Details</button>
 
             {showModal ? (
                 <div className="w-full">

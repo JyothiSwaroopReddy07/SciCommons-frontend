@@ -1,0 +1,354 @@
+import React,{useState, useEffect, useRef} from 'react'
+import axios from 'axios'
+import Loader from "../Loader/Loader"
+import {AiOutlineEdit,AiOutlineDelete,AiOutlineUserAdd} from 'react-icons/ai'
+
+
+const MembersTable = ({community}) => {
+
+    const [loading, setLoading] = useState(false)
+    const [members, setMembers] = useState([])
+    const [sortedMembers, setSortedMembers] = useState([])
+    const [showDeleteModal, setShowDeleteModal] = useState(false)
+    const [deleteModalData, setDeleteModalData] = useState(null)
+    const [showEditModal, setShowEditModal] = useState(false)
+    const [editModalData, setEditModalData] = useState(null)
+    const [showAddModal, setShowAddModal] = useState(false)
+    const [addModalData, setAddModalData] = useState(null)    
+
+    const loadData = async (res) => {
+        setMembers(res)
+        setSortedMembers(res)
+    }
+
+    const getCommunity = async () => {
+        setLoading(true)
+        try {
+            const token = localStorage.getItem('token')
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const res = await axios.get(`https://scicommons-backend.onrender.com/api/community/${community}/members/`,config)
+            await loadData(res.data.success)
+    
+        } catch (error) {
+            console.log(error)
+        }
+        setLoading(false)
+    }
+
+    useEffect(()=> {
+
+        getCommunity()
+        const interval = setInterval(() => {
+          getCommunity();
+        }, 60000);
+        return () => clearInterval(interval);
+
+    },[])
+
+    const handleRole = (member) => {
+        if(member.is_admin===true){
+            return "Admin";
+        }
+        else if (member.is_moderator===true){
+            return "Moderator";
+        }
+        else if (member.is_reviewer===true){
+            return "Reviewer";
+        }
+        return "Member"
+    }
+
+
+    const handleChange = (e) => {
+        const search = e.target.value
+        const filteredMembers = members.filter(member => {
+            return member.username.toLowerCase().includes(search.toLowerCase())
+        })
+
+        setSortedMembers(filteredMembers)
+    }
+
+    const onDelete = async (index) => {
+        const newMembers = [...members]
+        newMembers.splice(index, 1)
+        await loadData(newMembers)
+    }
+    
+    const onEdit = async (index, role) => {
+        const newMembers = [...members]
+        if(role === "Admin"){
+            newMembers[index].is_admin = true
+            newMembers[index].is_moderator = false
+            newMembers[index].is_reviewer = false
+        }
+        else if(role === "Moderator"){
+            newMembers[index].is_admin = false
+            newMembers[index].is_moderator = true
+            newMembers[index].is_reviewer = false
+        }
+        else if(role === "Reviewer"){
+            newMembers[index].is_admin = false
+            newMembers[index].is_moderator = false
+            newMembers[index].is_reviewer = true
+        }
+        else{
+            newMembers[index].is_admin = false
+            newMembers[index].is_moderator = false
+            newMembers[index].is_reviewer = false
+        }
+        await loadData(newMembers)
+    }
+
+  return (
+    <>
+    {loading && <Loader/>}  
+    {!loading && (
+        <>
+        <div className="w-full">
+            <div className="w-full flex flex-row items-center justify-between mb-3">
+                <h1 className=" text-lg md:text-2xl font-bold text-green-700">{community} Members</h1>
+                <button className="text-sm font-semibold text-white p-2 rounded-lg bg-green-600 flex" onClick={() => {
+                    setShowAddModal(true)
+                    setAddModalData({
+                        community: community
+                    })
+                }}><AiOutlineUserAdd className="w-6 h-6"/> Member</button>
+            </div>
+            <div className="w-full flex flex-row items-center justify-between mb-3">
+                <input type="text" onChange={handleChange} className="w-1/2 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Search members"/>
+                <select className="w-1/4 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent">
+                    <option value="all">All</option>
+                    <option value="admin">Admin</option>
+                    <option value="moderator">Moderator</option>
+                    <option value="reviewer">Reviewer</option>
+                    <option value="member">Member</option>
+                </select>
+            </div>
+        </div>
+        <div className="text-gray-900 bg-gray-200">
+            <div className="px-3 py-4 flex justify-center">
+                <table className="w-full text-sm md:text-md bg-white shadow-md rounded mb-4">
+                    <tbody>
+                                <tr className="border-b">
+                                    
+                                    <th className="text-left p-1 px-1 md:p-3 md:px-5 ">Username</th>
+                                    <th className="text-left p-1 px-1 md:p-3 md:px-5">Email</th>
+                                    <th className="text-left p-1 px-1 md:p-3 md:px-5">Role</th>
+                                    <th></th>
+                                </tr>
+                        {sortedMembers.length!==0 ?(sortedMembers.map((member, index) => (
+                                <tr key={index} className="border-b hover:bg-green-100 bg-gray-100">
+                                    <td className="p-1 px-1 md:p-3 px-0 md:px-5 flex"><img src={member.profile_pic_url} className="w-6 h-6 rounded-lg mr-3 hover:text-green-600"/><a href={`/profile/${member.username}`}>{member.username}</a></td>
+                                    <td className="p-1 text-sm md:text-md px-1 md:p-3 md:px-5">{member.email}</td>
+                                    <td className="p-1 text-sm md:text-md px-1 md:p-3 md:px-5">{handleRole(member)}</td>
+                                    <td className="p-1 text-sm md:text-md px-1 md:p-3 md:px-5 flex justify-end">
+                                        <button type="button" onClick={()=> {
+                                            setShowEditModal(true)
+                                            setEditModalData({
+                                                member: member,
+                                                index: index,
+                                            })
+                                        }} className="mr-0 md:mr-3 text-smtext-white py-1 px-1 md:px-2  rounded focus:outline-none focus:shadow-outline"><AiOutlineEdit className="w-6 h-6"/></button>
+                                        <button type="button" onClick={()=> {setShowDeleteModal(true); setDeleteModalData({
+                                                username: member.username,
+                                                userId: member.user_id,
+                                                index: index,
+                                        })}} className="text-sm text-white py-1 px-1 md:px-2 rounded focus:outline-none focus:shadow-outline">
+                                                <AiOutlineDelete className="w-6 h-6 text-black"/>
+                                        </button>
+                                    </td>
+                                </tr>
+                        ))):(<tr className="border-b flex hover:bg-green-100 justify-center text-green-600 bg-gray-100">
+                                    No Members Found
+                            </tr>)}
+                        {showDeleteModal && (<DeleteModal community={community} username={deleteModalData.username} userId={deleteModalData.userId} index={deleteModalData.index} setShowDeleteModal={setShowDeleteModal} onDelete={onDelete} loading={loading} setLoading={setLoading}/>)}
+                        {showEditModal && (<EditModal community={community} setShowEditModal={setShowEditModal} member={editModalData.member} index={editModalData.index} onEdit={onEdit} handleRole={handleRole} loading={loading} setLoading={setLoading}/>)}
+                        {showAddModal && (<AddModal community={community} setShowAddModal={setShowAddModal} loading={loading} setLoading={setLoading}/>)}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </>)
+    }
+    </>
+  )
+}
+
+export default MembersTable
+
+const DeleteModal = ({username,community, onDelete, userId,index, setShowDeleteModal,loading, setLoading}) => {
+
+
+    const handleDelete = async () => {
+        setLoading(true)
+        try {
+            const token = localStorage.getItem('token')
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const res = await axios.delete(`https://scicommons-backend.onrender.com/api/community/${community}/remove_member/${userId}`, config)
+            if(res.status === 200){
+                await onDelete(index)
+            }
+        } catch (error) {
+            console.log(error)
+        }
+        setShowDeleteModal(false)
+        setLoading(false)
+    }
+
+    return (
+        <>
+        {loading && <Loader/>}
+        {!loading && (
+            <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
+                <div className="w-full h-full flex flex-col items-center justify-center">
+                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Are you sure you want to delete this member?</h1>
+                        <div className="w-full flex flex-row items-center justify-center">
+                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" onClick={handleDelete}>Yes</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" onClick={() => {setShowDeleteModal(false)}}>No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
+    )
+}
+
+const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRole,loading, setLoading}) => {
+
+    const role = useRef(handleRole(member))
+    
+    const handleEdit = async () => {
+        setLoading(true)
+        try {
+            const token = localStorage.getItem('token')
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community}/promote_member/`,{
+                user_id: member.user_id,
+                role: role.current.toLowerCase()
+
+            }, config)
+            if(res.status === 200){
+                await onEdit(index, role.current)
+            }
+        } catch (error) {
+            console.log(error)
+        
+        }
+        setShowEditModal(false)
+        setLoading(false)
+    }
+    
+
+    const handleChange = async(e) => {
+        role.current = e.target.value
+    }
+
+    return (
+        <>
+        {loading && <Loader/>}
+        {!loading && (
+            <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
+                <div className="w-full h-full flex flex-col items-center justify-center">
+                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Edit Role</h1>
+                        <div className="w-full flex flex-col items-center justify-center">
+                            <div className="flex flex-row mt-4">
+                                <span className='text-lg font-semibold text-gray-800 mr-5 mt-1'>UserName: </span>
+                                <input type="text" disabled value={member.username} className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
+                            </div>
+                            <div className="flex flex-row mt-4">
+                                <span className="text-lg font-semibold text-gray-800 mr-5 mt-1">Email: </span>
+                                <input type="text" disabled value={member.email} className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
+                            </div>
+                            <div className="flex flex-row mt-4">
+                                <span className="text-lg font-semibold text-gray-800 mr-5 mt-1">Role:</span>
+                                <select onChange={(e)=>handleChange(e)} defaultValue={handleRole(member)} className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent">
+                                    <option value="Admin">Admin</option>
+                                    <option value="Moderator">Moderator</option>
+                                    <option value="Reviewer">Reviewer</option>
+                                    <option value="Member">Member</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div className="w-full flex flex-row items-center justify-center mt-4">
+                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" onClick={handleEdit}>Make Changes</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" onClick={() => {setShowEditModal(false)}}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
+    )
+}
+
+const AddModal = ({community, setShowAddModal, loading, setLoading}) => {
+
+    
+    const handleAdd = async () => {
+        setLoading(true)
+        try {
+            const token = localStorage.getItem('token')
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community}/promote_member/`,{
+                user_id: 1,
+                role: "member",
+            }, config);
+            if(res.status === 200){
+                console.log("added")
+            }
+        } catch (error) {
+            console.log(error)
+        
+        }
+        setShowAddModal(false)
+        setLoading(false)
+    }
+
+    return (
+        <>
+        {loading && <Loader/>}
+        {!loading && (
+            <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
+                <div className="w-full h-full flex flex-col items-center justify-center">
+                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Add Member</h1>
+                        <div className="w-full flex flex-col items-center justify-center">
+                            <div className="flex flex-row mt-4">
+                                <span className='text-lg font-semibold text-gray-800 mr-5 mt-1'>UserName: </span>
+                                <input type="text" disabled className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
+                            </div>
+                            <div className="flex flex-row mt-4">
+                                <span className="text-lg font-semibold text-gray-800 mr-5 mt-1">Email: </span>
+                                <input type="text" disabled className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
+                            </div>
+                        </div>
+                        <div className="w-full flex flex-row items-center justify-center mt-4">
+                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" onClick={handleAdd}>Add Member</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" onClick={() => {setShowAddModal(false)}}>Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )}
+        </>
+    )
+}
