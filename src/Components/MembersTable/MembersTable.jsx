@@ -2,6 +2,8 @@ import React,{useState, useEffect, useRef} from 'react'
 import axios from 'axios'
 import Loader from "../Loader/Loader"
 import {AiOutlineEdit,AiOutlineDelete,AiOutlineUserAdd} from 'react-icons/ai'
+import ToastMaker from 'toastmaker';
+import "toastmaker/dist/toastmaker.css";
 
 
 const MembersTable = ({community}) => {
@@ -195,9 +197,23 @@ const DeleteModal = ({username,community, onDelete, userId,index, setShowDeleteM
             const res = await axios.delete(`https://scicommons-backend.onrender.com/api/community/${community}/remove_member/${userId}`, config)
             if(res.status === 200){
                 await onDelete(index)
+                ToastMaker(res.data.success, 3500,{
+                    valign: 'top',
+                      styles : {
+                          backgroundColor: 'green',
+                          fontSize: '20px',
+                      }
+                  })
             }
         } catch (error) {
             console.log(error)
+            ToastMaker(error.response.data.error, 3500,{
+                valign: 'top',
+                  styles : {
+                      backgroundColor: 'red',
+                      fontSize: '20px',
+                  }
+              })
         }
         setShowDeleteModal(false)
         setLoading(false)
@@ -237,15 +253,30 @@ const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRo
                 }
             }
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community}/promote_member/`,{
-                user_id: member.user_id,
+                username: member.username,
                 role: role.current.toLowerCase()
 
             }, config)
             if(res.status === 200){
                 await onEdit(index, role.current)
+                ToastMaker(res.data.success, 3500,{
+                    valign: 'top',
+                      styles : {
+                          backgroundColor: 'green',
+                          fontSize: '20px',
+                      }
+                  })
+
             }
         } catch (error) {
             console.log(error)
+            ToastMaker(error.response.data.error, 3500,{
+                valign: 'top',
+                  styles : {
+                      backgroundColor: 'red',
+                      fontSize: '20px',
+                  }
+              })
         
         }
         setShowEditModal(false)
@@ -298,7 +329,9 @@ const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRo
 
 const AddModal = ({community, setShowAddModal, loading, setLoading}) => {
 
-    
+
+    const username = useRef(null)
+
     const handleAdd = async () => {
         setLoading(true)
         try {
@@ -309,14 +342,28 @@ const AddModal = ({community, setShowAddModal, loading, setLoading}) => {
                 }
             }
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community}/promote_member/`,{
-                user_id: 1,
+                username: username.current,
                 role: "member",
             }, config);
             if(res.status === 200){
                 console.log("added")
+                ToastMaker(res.data.success, 3500,{
+                    valign: 'top',
+                      styles : {
+                          backgroundColor: 'green',
+                          fontSize: '20px',
+                      }
+                  })
             }
         } catch (error) {
             console.log(error)
+            ToastMaker(error.response.data.error, 3500,{
+                valign: 'top',
+                  styles : {
+                      backgroundColor: 'green',
+                      fontSize: '20px',
+                  }
+              })
         
         }
         setShowAddModal(false)
@@ -334,11 +381,7 @@ const AddModal = ({community, setShowAddModal, loading, setLoading}) => {
                         <div className="w-full flex flex-col items-center justify-center">
                             <div className="flex flex-row mt-4">
                                 <span className='text-lg font-semibold text-gray-800 mr-5 mt-1'>UserName: </span>
-                                <input type="text" disabled className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
-                            </div>
-                            <div className="flex flex-row mt-4">
-                                <span className="text-lg font-semibold text-gray-800 mr-5 mt-1">Email: </span>
-                                <input type="text" disabled className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
+                                <input type="text" id="username" onChange={(e)=> {username.current = e.target.value}} placeHolder="enter the username" className="w-full p-2 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
                             </div>
                         </div>
                         <div className="w-full flex flex-row items-center justify-center mt-4">
