@@ -266,7 +266,7 @@ const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRo
                     Authorization: `Bearer ${token}`
                 }
             }
-            const res = await axios.post(`http://127.0.0.1:8000/api/community/${community}/promote_member/`,{
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community}/promote_member/`,{
                 username: member.username,
                 role: role.current.toLowerCase()
 

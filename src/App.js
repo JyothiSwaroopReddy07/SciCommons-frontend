@@ -14,7 +14,9 @@ import Notifications from './Pages/Notifications/Notifications';
 import Feed from './Pages/Feed/Feed';
 import CommunityPage from './Pages/CommunityPage/CommunityPage';
 import JoinRequest from './Pages/JoinRequest/JoinRequest';
+import SinglePost from './Pages/SinglePost/SinglePost';
 import CommunityAdminPage from './Pages/CommunityAdminPage/CommunityAdminPage';
+import Profile from './Pages/Profile/Profile';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -36,6 +38,8 @@ function App() {
         <Route path="/community/:communityName" element={<CommunityPage/>}/>
         <Route path="/join-community/:communityName" element={<JoinRequest/>}/>
         <Route path="/mycommunity" element={<CommunityAdminPage/>}/>
+        <Route path="/post/:postId" element={<SinglePost/>}/>
+        <Route path="/profile/:username" element={<Profile/>}/>
         <Route path = "*" element={<ErrorPage/>} />
       </Routes>
     </Router>
