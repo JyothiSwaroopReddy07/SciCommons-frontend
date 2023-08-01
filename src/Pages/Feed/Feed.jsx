@@ -9,12 +9,14 @@ import 'react-toggle/style.css';
 import axios from 'axios';
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
+import Loader from '../../Components/Loader/Loader';
 
 
 const Post = ({ post }) => {
   const [liked, setLiked] = useState(post.liked);
   const [bookmark, setBookmark] = useState(post.isbookmarked);
   const [likes, setLikes] = useState(post.likes);
+  const [bookmarks, setBookmarks] = useState(post.bookmarks);
   const navigate = useNavigate();
 
   const handleLike = async(e) => {
@@ -26,26 +28,24 @@ const Post = ({ post }) => {
         },
     }
     if(liked) {
-        const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/unlike/`,{post: post.id}, config)
-        if(res.data.success)
-        {
+        try{
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/unlike/`,{post: post.id}, config)
             setLiked((prevLiked) => !prevLiked)
             setLikes((prevLikes) => prevLikes - 1)
+        } catch(err) {
+            console.log(err)
         }
-        else{
-            console.log(res.data)
-        }
+        
     }
     else {
-        const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/like/`,{post: post.id}, config)
-        if(res.data.success)
-        {
+        try{
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/like/`,{post: post.id}, config)
             setLiked((prevLiked) => !prevLiked)
             setLikes((prevLikes) => prevLikes + 1)
+        } catch(err) {
+            console.log(err)
         }
-        else{
-            console.log(res.data)
-        }
+
     }
     
   };
@@ -66,27 +66,30 @@ const Post = ({ post }) => {
         },
     }
     if(bookmark) {
-        const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/unbookmark/`,{post: post.id}, config)
-        if(res.data.success)
-        {
+        try{
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/unbookmark/`,{post: post.id}, config)
             setBookmark((prevBookmark) => !prevBookmark)
+            setBookmarks((prevBookmarks) => prevBookmarks - 1)
+        } catch(err) {
+            console.log(err)
         }
-        else{
-            console.log(res.data)
-        }
+
+
     }
     else {
-        const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/bookmark/`,{post: post.id}, config)
-        if(res.data.success)
-        {
+        try{
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/bookmark/`,{post: post.id}, config)
             setBookmark((prevBookmark) => !prevBookmark)
+            setBookmarks((prevBookmarks) => prevBookmarks + 1)
+        } catch(err) {
+            console.log(err)
         }
-        else{
-            console.log(res.data)
-        }
+
     }
     
   };
+
+
 
   const handleProfile = (e) => {
     e.preventDefault()
@@ -136,11 +139,13 @@ const Post = ({ post }) => {
             return `Just now`
         }
     }
-    
+
 
   return (
-    <Link to={`/post/${post.id}`}>
+    <>
+    
     <div className="border rounded-lg p-4 my-4 rounded-xl shadow-xl bg-white">
+    <Link to={`/post/${post.id}`}>
       <div className="flex items-center">
         <img
           src={post.avatar}
@@ -152,26 +157,31 @@ const Post = ({ post }) => {
             <span className="text-sm">{findTime(post.created_at)}</span>
         </div>
       </div>
+    </Link>
       {/* Conditionally render image section */}
       <p className="w-full text-sm md:text-xl my-4">{post.body}</p>
       {!post.image_url.includes("None") && <img src={post.image_url} alt={post.caption} className="w-full my-4" />}
       {/* Display text content */}
-      <div className="flex justify-between">
+      <Link to={`/post/${post.id}`}>
+      <div className="w-full">
         <div className="flex flex-row justify-between">
           {/* Like Button */}
-          <button onClick={handleLike} className="mr-4">
+          <button onClick={handleLike} className="flex">
             {(liked) ? (
               <IoHeart className="text-xl text-red-500" />
             ) : (
               <IoHeartOutline className="text-xl" />
             )}
+            <span className="text-sm md:ml-2">{likes}</span>
           </button>
           {/* Comment Button */}
-          <button onClick={handleComment} className="mr-4">
+          <button onClick={handleComment} className="flex">
             <IoChatbubbleOutline className="text-xl" />
+            <span className="text-sm md:ml-2">{post.comments_count}</span>
+            
           </button>
           {/* Bookmark Button */}
-          <button onClick={handleBookmark} className="mr-4">
+          <button onClick={handleBookmark} className="flex">
             {
                 (bookmark) ? (
                     <IoBookmark className="text-xl text-gray-800" />
@@ -179,6 +189,7 @@ const Post = ({ post }) => {
                     <IoBookmarkOutline className="text-xl" />
                 )
             }
+            <span className="text-sm md:ml-2">{bookmarks}</span>
           </button>
           {/* Share Button */}
           <button onClick={handleShare}>
@@ -186,26 +197,26 @@ const Post = ({ post }) => {
           </button>
         </div>
       </div>
-      <div className="mt-3">
-          {/* Display the number of likes */}
-          <p className="font-bold">{likes} likes</p>
-        </div>
+      </Link>
     </div>
-    </Link>
+    </>
   );
 };
 
 const Feed = () => {
   // Sample data for posts
 
-  const [posts,setPosts] = useState([])
+  const [posts,setPosts] = useState([]);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
 
   const loadData = async(res) => {
     setPosts(res)
   }
 
   const getPosts = async() => {
+    setLoading(true)
     const config = {
         headers: {
             "Content-Type": "application/json",
@@ -215,20 +226,76 @@ const Feed = () => {
     try{
         const res = await axios.get("https://scicommons-backend.onrender.com/api/feed/", config)
         console.log(res.data.success)
-        await loadData(res.data.success.results)
+        if(res.data.success.results.length === 0) {
+          await loadData([])
+        }else {
+          await loadData(res.data.success.results)
+        }
         
     } catch(err) {
         console.log(err)
     }
+    setLoading(false)
 
+  }
+
+  const loadMore = async() => {
+    setLoadingMore(true)
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    }
+    try{
+        const res = await axios.get(`https://scicommons-backend.onrender.com/api/feed/?limit=20&offset=${posts.length}`, config)
+        console.log(res.data.success)
+        if(res.data.success.results.length === 0){
+            setLoadingMore(false)
+            ToastMaker("No more posts to load", 3500,{
+                valign: 'top',
+                  styles : {
+                      backgroundColor: 'red',
+                      fontSize: '20px',
+                  }
+                }
+            )
+        }
+        await loadData([...posts, ...res.data.success.results])
+
+    } catch(err) {
+        console.log(err)
+    }
+    setLoadingMore(false)
   }
   useEffect(() => {
     getPosts()
+    const interval = setInterval(() => {
+        getPosts();
+      }, 600000);
+  
+
+      return () => clearInterval(interval);
   },[])
 
   const handleSubmit = async(e) => {
     e.preventDefault();
     const form_data = new FormData(e.target);
+
+    const file = form_data.get('image');
+    if (file && file.size > 10485760) {
+      ToastMaker('File size is too large. Maximum allowed size is 10 MB', 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      e.target.reset()
+      return;
+    } else {
+      console.log('File size is ok')
+    }
     const token = localStorage.getItem("token");
     const config = {
         headers: {
@@ -237,15 +304,17 @@ const Feed = () => {
     
         },
     };
-    const res = await axios.post("https://scicommons-backend.onrender.com/api/feed/", form_data, config);
-    if(res.data.success)
-    {
-        setPosts((prevPosts) => [res.data.success, ...prevPosts])
+    try{
+        const res = await axios.post("https://scicommons-backend.onrender.com/api/feed/", form_data, config);
+        await getPosts()
         ToastMaker("Post Added Successfully", "success")
+        setIsAccordionOpen(false)
+        e.target.reset()
     }
-    else{
-        console.log(res.data)
+    catch(err) {
+        console.log(err)
     }
+
 
   };
 
@@ -253,6 +322,8 @@ const Feed = () => {
   return (
     <>
     <NavBar />
+    { !loading &&
+        <> 
         <div className="p-4 w-full md:w-1/2 mx-auto">
         <div className="flex items-center mb-2">
             <Toggle
@@ -267,7 +338,7 @@ const Feed = () => {
         </div>
         {isAccordionOpen && (
             <div className="p-4 bg-slate-100 rounded-md shadow-md">
-            <form onSubmit={handleSubmit} encType="multipart/form-data">
+            <form onSubmit={(e)=>handleSubmit(e)} encType="multipart/form-data">
                 <textarea
                 className="w-full p-2 mb-4 resize-none border rounded"
                 rows="3"
@@ -293,10 +364,25 @@ const Feed = () => {
         )}
         </div>
         <div className="container mx-auto px-4 w-full md:w-1/2">
-        {posts.map((post) => (
-            <Post key={post.id} post={post} />
-        ))}
+          {posts.length && posts.map((post) => (
+              <Post key={post.id} post={post} />
+          ))}
+          {posts.length>0 && <div className="flex justify-center">
+              <button onClick={loadMore} className="bg-green-500 hover:bg-green-700 text-white h-8 px-2 rounded my-4">
+                  {loadingMore ? "Loading..." : "Load More"}
+              </button>
+            </div>
+          }
+          {
+            posts.length === 0 && <div className="flex justify-center h-screen">
+              <p className="text-2xl font-semibold">No Posts to show</p>
+            </div>
+          }
+
         </div>
+        </>
+        }
+        {loading && <Loader/>}
     </>
   );
 };

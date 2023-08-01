@@ -1,45 +1,23 @@
-// src/SinglePost.js
+// src/Feed.js
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { FiSend } from 'react-icons/fi';
+import { IoHeartOutline, IoHeart, IoChatbubbleOutline, IoBookmarkOutline,IoBookmark, IoPaperPlaneOutline } from 'react-icons/io5';
 import NavBar from '../../Components/NavBar/NavBar';
-import {useNavigate} from 'react-router-dom'
-import { IoHeartOutline, IoHeart, IoBookmarkOutline,IoBookmark, IoPaperPlaneOutline } from 'react-icons/io5';
+import { Link, useNavigate } from 'react-router-dom';
+import {AiOutlinePlus, AiOutlineMinus} from 'react-icons/ai';
+import Toggle from 'react-toggle';
+import 'react-toggle/style.css';
 import axios from 'axios';
+import ToastMaker from 'toastmaker';
+import "toastmaker/dist/toastmaker.css";
+import Loader from '../../Components/Loader/Loader';
 
-const SinglePost = () => {
-  const [liked, setLiked] = useState(false);
-  const [bookmark, setBookmark] = useState(false);
-  const [likes, setLikes] = useState(false);
-  const [bookmarks, setBookmarks] = useState(false);
-  const [post,setPost] = useState(null)
+
+const Post = ({ post }) => {
+  const [liked, setLiked] = useState(post.liked);
+  const [bookmark, setBookmark] = useState(post.isbookmarked);
+  const [likes, setLikes] = useState(post.likes);
+  const [bookmarks, setBookmarks] = useState(post.bookmarks);
   const navigate = useNavigate();
-
-
-  const {postId} = useParams()
-  useEffect(()=>{
-    const fetchPost = async() => {
-      const config = {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-      try{
-        const res = await axios.get(`https://scicommons-backend.onrender.com/api/feed/${postId}/`, config)
-        console.log(res.data.success)
-        setLiked(res.data.success.liked)
-        setBookmark(res.data.success.isbookmarked)
-        setLikes(res.data.success.likes)
-        setBookmarks(res.data.success.bookmarks)
-        setPost(res.data.success)
-      } catch(err) {
-        console.log(err)
-      }
-    }
-
-    fetchPost()
-  },[])
 
   const handleLike = async(e) => {
     e.preventDefault()
@@ -51,7 +29,7 @@ const SinglePost = () => {
     }
     if(liked) {
         try{
-            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/unlike/`,{post: postId}, config)
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/unlike/`,{post: post.id}, config)
             setLiked((prevLiked) => !prevLiked)
             setLikes((prevLikes) => prevLikes - 1)
         } catch(err) {
@@ -61,7 +39,7 @@ const SinglePost = () => {
     }
     else {
         try{
-            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/like/`,{post: postId}, config)
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/like/`,{post: post.id}, config)
             setLiked((prevLiked) => !prevLiked)
             setLikes((prevLikes) => prevLikes + 1)
         } catch(err) {
@@ -89,7 +67,7 @@ const SinglePost = () => {
     }
     if(bookmark) {
         try{
-            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/unbookmark/`,{post: postId}, config)
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/unbookmark/`,{post: post.id}, config)
             setBookmark((prevBookmark) => !prevBookmark)
             setBookmarks((prevBookmarks) => prevBookmarks - 1)
         } catch(err) {
@@ -100,7 +78,7 @@ const SinglePost = () => {
     }
     else {
         try{
-            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/bookmark/`,{post: postId}, config)
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/feed/bookmark/`,{post: post.id}, config)
             setBookmark((prevBookmark) => !prevBookmark)
             setBookmarks((prevBookmarks) => prevBookmarks + 1)
         } catch(err) {
@@ -165,8 +143,9 @@ const SinglePost = () => {
 
   return (
     <>
-    <NavBar/>
+    
     <div className="border rounded-lg p-4 my-4 rounded-xl shadow-xl bg-white">
+    <Link to={`/post/${post.id}`}>
       <div className="flex items-center">
         <img
           src={post.avatar}
@@ -178,11 +157,12 @@ const SinglePost = () => {
             <span className="text-sm">{findTime(post.created_at)}</span>
         </div>
       </div>
-
+    </Link>
       {/* Conditionally render image section */}
       <p className="w-full text-sm md:text-xl my-4">{post.body}</p>
       {!post.image_url.includes("None") && <img src={post.image_url} alt={post.caption} className="w-full my-4" />}
       {/* Display text content */}
+      <Link to={`/post/${post.id}`}>
       <div className="w-full">
         <div className="flex flex-row justify-between">
           {/* Like Button */}
@@ -193,6 +173,12 @@ const SinglePost = () => {
               <IoHeartOutline className="text-xl" />
             )}
             <span className="text-sm md:ml-2">{likes}</span>
+          </button>
+          {/* Comment Button */}
+          <button onClick={handleComment} className="flex">
+            <IoChatbubbleOutline className="text-xl" />
+            <span className="text-sm md:ml-2">{post.comments_count}</span>
+            
           </button>
           {/* Bookmark Button */}
           <button onClick={handleBookmark} className="flex">
@@ -211,9 +197,116 @@ const SinglePost = () => {
           </button>
         </div>
       </div>
+      </Link>
     </div>
     </>
   );
 };
 
-export default SinglePost;
+const Timeline = () => {
+  // Sample data for posts
+
+  const [posts,setPosts] = useState([]);
+  const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  const loadData = async(res) => {
+    setPosts(res)
+  }
+
+  const getPosts = async() => {
+    setLoading(true)
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    }
+    try{
+        const res = await axios.get("https://scicommons-backend.onrender.com/api/feed/timeline/", config)
+        console.log(res.data.success)
+        if(res.data.success.length === 0){
+            console.log("No posts")
+            await loadData([])
+        } else{
+            await loadData(res.data.success.results)
+        }
+        
+    } catch(err) {
+        console.log(err)
+    }
+    setLoading(false)
+
+  }
+
+  const loadMore = async() => {
+    setLoadingMore(true)
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+    }
+    try{
+        const res = await axios.get(`https://scicommons-backend.onrender.com/api/feed/timeline/?limit=20&offset=${posts.length}`, config)
+        console.log(res.data.success)
+        if(res.data.success.length === 0){
+            setLoadingMore(false)
+            ToastMaker("No more posts to load", 3500,{
+                valign: 'top',
+                  styles : {
+                      backgroundColor: 'red',
+                      fontSize: '20px',
+                  }
+                }
+            )
+        }
+        await loadData([...posts, ...res.data.success.results])
+
+    } catch(err) {
+        console.log(err)
+    }
+    setLoadingMore(false)
+  }
+  useEffect(() => {
+    getPosts()
+    const interval = setInterval(() => {
+        getPosts();
+      }, 600000);
+  
+
+      return () => clearInterval(interval);
+  },[])
+
+
+  return (
+    <>
+    <NavBar />
+    { !loading &&
+        <> 
+        <div className="container mx-auto px-4 w-full md:w-1/2 mt-2">
+            {posts.length > 0 && posts.map((post) => (
+                <Post key={post.id} post={post} />
+            ))}
+            {posts.length>0 && <div className="flex justify-center">
+              <button onClick={loadMore} className="bg-green-500 hover:bg-green-700 text-white h-8 px-2 rounded my-4">
+                  {loadingMore ? "Loading..." : "Load More"}
+              </button>
+            </div>}
+            {posts.length === 0 &&
+                <div className="flex flex-col justify-center items-center h-screen">
+                    <p className="text-2xl font-semibold">No posts to show</p>
+                    <p className="text-md ">Follow someone to view their posts here.</p>
+                </div>
+            }
+
+        </div>
+        </>
+        }
+        {loading && <Loader/>}
+    </>
+  );
+};
+
+export default Timeline;

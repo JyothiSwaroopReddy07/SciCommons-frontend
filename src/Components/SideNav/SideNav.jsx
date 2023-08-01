@@ -7,7 +7,7 @@ import {
 import {AiOutlineUsergroupAdd} from 'react-icons/ai';
 import { CgFeed } from "react-icons/cg";
 import {RxCross2} from 'react-icons/rx';
-import {MdEventNote} from 'react-icons/md';
+import {MdEventNote, MdExplore} from 'react-icons/md';
 import {TbMessageCircle2} from 'react-icons/tb';
 import {MdOutlineForum} from 'react-icons/md';
 import {ImBlog} from 'react-icons/im';
@@ -27,8 +27,11 @@ const SideNav = ({onMenuChange}) => {
                     <RxCross2 className="h-5 w-5 mt-2 active:shadow-none text-gray-500"/>
                 </button>
             </div>
-            <Sidebar.Item href="/myfeed" icon={CgFeed} className="mt-5">
-              <p className="font-semibold">My Feed</p>
+            <Sidebar.Item href="/mytimeline" icon={CgFeed} className="mt-5">
+              <p className="font-semibold">My TimeLine</p>
+            </Sidebar.Item>
+            <Sidebar.Item href="/explore" icon={MdExplore}>
+              <p className="font-semibold">Explore</p>
             </Sidebar.Item>
             <Sidebar.Item href="/createcommunity" icon={AiOutlineUsergroupAdd}>
               <p className="font-semibold">Create Community</p>

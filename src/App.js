@@ -17,6 +17,7 @@ import JoinRequest from './Pages/JoinRequest/JoinRequest';
 import SinglePost from './Pages/SinglePost/SinglePost';
 import CommunityAdminPage from './Pages/CommunityAdminPage/CommunityAdminPage';
 import Profile from './Pages/Profile/Profile';
+import Timeline from './Pages/Timeline/Timeline';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -34,7 +35,8 @@ function App() {
         <Route path='/createcommunity' element={<CreateCommunity/>}/>
         <Route path='/communitysuccessfulcreated' element={<CommunityCreation/>}/>
         <Route path='/notifications' element={<Notifications/>}/>
-        <Route path='/myfeed' element={<Feed/>}/>
+        <Route path='/explore' element={<Feed/>}/>
+        <Route path='/mytimeline' element={<Timeline/>}/>
         <Route path="/community/:communityName" element={<CommunityPage/>}/>
         <Route path="/join-community/:communityName" element={<JoinRequest/>}/>
         <Route path="/mycommunity" element={<CommunityAdminPage/>}/>
