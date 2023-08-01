@@ -364,7 +364,7 @@ const Feed = () => {
         )}
         </div>
         <div className="container mx-auto px-4 w-full md:w-1/2">
-          {posts.length && posts.map((post) => (
+          {posts.length > 0 && posts.map((post) => (
               <Post key={post.id} post={post} />
           ))}
           {posts.length>0 && <div className="flex justify-center">
