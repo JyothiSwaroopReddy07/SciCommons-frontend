@@ -225,7 +225,6 @@ const Feed = () => {
     }
     try{
         const res = await axios.get("https://scicommons-backend.onrender.com/api/feed/", config)
-        console.log(res.data.success)
         if(res.data.success.results.length === 0) {
           await loadData([])
         }else {
