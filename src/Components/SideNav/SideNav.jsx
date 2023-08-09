@@ -11,6 +11,7 @@ import {MdEventNote, MdExplore} from 'react-icons/md';
 import {TbMessageCircle2} from 'react-icons/tb';
 import {MdOutlineForum} from 'react-icons/md';
 import {ImBlog} from 'react-icons/im';
+import {BsBookmarkCheck} from 'react-icons/bs';
 
 
 const SideNav = ({onMenuChange}) => {
@@ -39,8 +40,8 @@ const SideNav = ({onMenuChange}) => {
             <Sidebar.Item href="/mycommunity" icon={HiUserGroup}>
               <p className="font-semibold">MyCommunity</p>
             </Sidebar.Item>
-            <Sidebar.Item href="/events" icon={MdEventNote}>
-              <p className="font-semibold">Events</p>
+            <Sidebar.Item href="/bookmarks" icon={BsBookmarkCheck}>
+              <p className="font-semibold">Bookmarks</p>
             </Sidebar.Item>
             <Sidebar.Item href="/messages" icon={TbMessageCircle2}>
               <p className="font-semibold">Messages</p>

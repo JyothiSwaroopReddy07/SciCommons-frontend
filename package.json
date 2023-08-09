@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@coreui/react": "^4.9.2",
     "@heroicons/react": "^1.0.6",
     "@iconify/icons-heroicons-solid": "^1.2.6",
     "@material-tailwind/react": "^2.0.7",
@@ -25,6 +26,7 @@
     "react-responsive-modal": "^6.4.2",
     "react-router-dom": "^6.14.0",
     "react-scripts": "5.0.1",
+    "react-spinners": "^0.13.8",
     "react-toggle": "^4.1.3",
     "toastmaker": "^1.0.9",
     "tw-elements-react": "^1.0.0-alpha1",

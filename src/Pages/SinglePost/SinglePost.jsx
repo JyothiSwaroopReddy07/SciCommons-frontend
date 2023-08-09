@@ -10,20 +10,110 @@ import {
   IoBookmark,
   IoPaperPlaneOutline,
 } from "react-icons/io5";
-import { AiOutlineSend,AiFillLike,AiOutlineLike } from "react-icons/ai";
+import {
+  AiOutlineSend,
+  AiFillLike,
+  AiOutlineLike,
+  AiOutlineClose,
+} from "react-icons/ai";
 import axios from "axios";
 import Loader from "../../Components/Loader/Loader";
+import ToastMaker from "toastmaker";
+import "toastmaker/dist/toastmaker.css";
+import { CSpinner } from "@coreui/react";
+import { BsSortNumericDown } from "react-icons/bs";
 
-const Comment = ({comment}) => {
+const ReplyModal = ({ comment, setShowReply }) => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [loading, setLoading] = useState(false);
+  const { postId } = useParams();
+
+  const handleComment = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const body = document.getElementsByName("reply")[0].value;
+    console.log(body);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+    try {
+      const res = await axios.post(
+        `https://scicommons-backend.onrender.com/api/feedcomment/`,
+        { post: postId, comment: body, parent_comment: comment.id },
+        config
+      );
+      console.log(res.data.success);
+      ToastMaker("Replied!!!", 3000, {
+        valign: "top",
+        styles: {
+          backgroundColor: "green",
+          fontSize: "20px",
+        },
+      });
+      setShowReply(false);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
+  };
+
+  const handleClose = () => {
+    setShowReply(false);
+  };
+
+  return (
+    <>
+      <div className="flex flex-row items-center justify-between mb-2 mt-2">
+        <img
+          src={user.profile_pic_url}
+          alt={user.username}
+          className="w-8 h-8 rounded-full mr-4"
+        />
+        <input
+          type="text"
+          placeholder="Add a comment..."
+          className="w-full border rounded-lg p-2 mr-2 rounded-xl"
+          name="reply"
+        />
+        <button
+          onClick={handleComment}
+          className="bg-green-400 rounded-lg p-2 mr-2"
+        >
+          {loading ? (
+            <span>loading...</span>
+          ) : (
+            <AiOutlineSend className="text-xl" />
+          )}
+        </button>
+        <button onClick={handleClose} className="bg-red-400 rounded-lg p-2">
+          <AiOutlineClose className="text-xl" />
+        </button>
+      </div>
+    </>
+  );
+};
+
+const Comment = ({ comment }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [liked, setLiked] = useState(comment.commentliked);
   const [likes, setLikes] = useState(comment.commentlikes);
   const [loading, setLoading] = useState(false);
+  const [showReply, setShowReply] = useState(false);
+  const [replyData, setReplyData] = useState([]);
+  const { postId } = useParams();
 
   const handleProfile = (e) => {
     e.preventDefault();
     navigate(`/profile/${comment.username}`);
+  };
+
+  const loadData = async (res) => {
+    const newReply = [...replyData, ...res];
+    setReplyData(newReply);
   };
 
   const handleLike = async (e) => {
@@ -38,7 +128,7 @@ const Comment = ({comment}) => {
       try {
         const res = await axios.post(
           `https://scicommons-backend.onrender.com/api/feedcomment/unlike/`,
-          { comment: comment.id},
+          { comment: comment.id },
           config
         );
         setLiked((prevLiked) => !prevLiked);
@@ -50,7 +140,7 @@ const Comment = ({comment}) => {
       try {
         const res = await axios.post(
           `https://scicommons-backend.onrender.com/api/feedcomment/like/`,
-          { comment: comment.id},
+          { comment: comment.id },
           config
         );
         setLiked((prevLiked) => !prevLiked);
@@ -59,6 +149,31 @@ const Comment = ({comment}) => {
         console.log(err);
       }
     }
+  };
+
+  const handleReply = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      params: {
+        comment: comment.id,
+        post: comment.post,
+      },
+    };
+    try {
+      const res = await axios.get(
+        `https://scicommons-backend.onrender.com/api/feedcomment/?limit=20&offset=${replyData.length}`,
+        config
+      );
+      await loadData(res.data.success.results);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
   };
 
   const findTime = (date) => {
@@ -88,41 +203,84 @@ const Comment = ({comment}) => {
     }
   };
 
+  const fillLoad = () => {
+    if(replyData.length===0){
+      return `Load replies`
+    }
+    else if(comment.replies>replyData.length){
+      return `Load ${comment.replies-replyData.length} more replies`
+    }
+    else{
+      return ""
+    }
+  }
 
   return (
     <>
-      <div key={comment.id} className="border rounded-lg p-2 my-2 bg-white">
-            <div className="flex justify-between mb-2">
-              <div className="flex flex-row items-center">
-              <img
-                src={comment.commentavatar}
-                alt={comment.username}
-                className="w-6 h-6 rounded-full mr-2"
-              />
-                <p className="font-medium text-sm" onClick={handleProfile}>
-                  {comment.username}
-                </p>
-              </div>
+      <div
+        key={comment.id}
+        className="rounded-lg pl-2 my-2 mt-2 bg-white border-l-2"
+      >
+        <div className="flex mb-2">
+          <div className="flex flex-row items-center">
+            <img
+              src={comment.commentavatar}
+              alt={comment.username}
+              className="w-6 h-6 rounded-full mr-2"
+            />
+            <div className="flex flex-col">
+              <p
+                className="font-medium text-sm text-green-600"
+                onClick={handleProfile}
+              >
+                {comment.username}
+              </p>
               <span className="text-xs">{findTime(comment.created_at)}</span>
             </div>
-            <p className="w-full text-sm mb-2 pl-8">{comment.comment}</p>
-            <div className="w-full ml-10">
-              <div className="flex flex-row items-center">
-                <button onClick={handleLike} className="flex">
-                  {liked ? (
-                    <AiFillLike className="text-md" />
-                  ) : (
-                    <AiOutlineLike className="text-md" />
-                  )}
-                </button>
-                <span className="text-sm">{likes}</span>
-              </div>
-            </div>
           </div>
+        </div>
+        <p className="w-full text-sm mb-2 pl-8 text-slate-600">{comment.comment}</p>
+        <div className="w-full ml-10 flex flex-row items-center">
+          <div className="flex flex-row items-center mr-3">
+            <button onClick={handleLike} className="flex">
+              {liked ? (
+                <AiFillLike className="text-md" />
+              ) : (
+                <AiOutlineLike className="text-md" />
+              )}
+            </button>
+            <span className="text-sm">{likes}</span>
+          </div>
+          <span
+            className="text-xs underline"
+            onClick={() => {
+              setShowReply(true);
+              setReplyData(comment);
+            }}
+          >
+            Reply
+          </span>
+        </div>
+        {showReply && (
+          <ReplyModal comment={comment} setShowReply={setShowReply} />
+        )}
+        <div className="ml-10">
+          {replyData.length > 0 &&
+            replyData.map((reply) => <Comment comment={reply} />)}
+        </div>
+        {comment.replies > 0 && (
+          <button onClick={handleReply} className="ml-10 text-xs mt-2">
+            {loading ? (
+              <span className="text-green-600">Loading...</span>
+            ) : (
+              <span className="text-green-600 font-bold">{fillLoad()}</span>
+            )}
+          </button>
+        )}
+      </div>
     </>
-  )
-}
-
+  );
+};
 
 const SinglePost = () => {
   const [liked, setLiked] = useState(false);
@@ -133,6 +291,8 @@ const SinglePost = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [comments, setComments] = useState([]);
+  const [loadSubmit, setLoadSubmit] = useState(false);
+  const [loadComments, setLoadComments] = useState(false);
   const navigate = useNavigate();
 
   const { postId } = useParams();
@@ -143,6 +303,34 @@ const SinglePost = () => {
     setBookmarks(res.bookmarks);
     setPost(res);
     setComments(res.comments);
+  };
+
+  const loadCommentsData = async (res) => {
+    setComments(res);
+  }
+
+  const loadMore = async () => {
+    setLoadComments(true);
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      params: {
+        post: postId,
+      },
+    };
+    try {
+      const res = await axios.get(
+        `https://scicommons-backend.onrender.com/api/feedcomment/?limit=20&offset=${comments.length}`,
+        config
+      );
+      console.log(res.data.success);
+      await loadCommentsData([...comments, ...res.data.success.results]);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoadComments(false);
   };
 
   const fetchPost = async () => {
@@ -205,8 +393,9 @@ const SinglePost = () => {
     }
   };
 
-  const handleComment = async(e) => {
+  const handleComment = async (e) => {
     e.preventDefault();
+    setLoadSubmit(true);
     const comment = document.getElementsByName("comment")[0].value;
     const config = {
       headers: {
@@ -214,13 +403,27 @@ const SinglePost = () => {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     };
-    try{
-      const res = await axios.post(`https://scicommons-backend.onrender.com/api/feedcomment/`, {post: postId, comment: comment}, config)
-      console.log(res.data.success)
-      fetchPost();
-    } catch(err){
-      console.log(err)
+    try {
+      const res = await axios.post(
+        `https://scicommons-backend.onrender.com/api/feedcomment/`,
+        { post: postId, comment: comment },
+        config
+      );
+      console.log(res.data.success);
+      await fetchPost();
+      document.getElementsByName("comment")[0].value = "";
+      ToastMaker("Comment added successfully!!!!", 3000, {
+        valign: "top",
+        styles: {
+          backgroundColor: "green",
+          fontSize: "20px",
+        },
+      });
+      setLoadSubmit(false);
+    } catch (err) {
+      console.log(err);
     }
+    setLoadSubmit(false);
   };
 
   const handleBookmark = async (e) => {
@@ -296,13 +499,28 @@ const SinglePost = () => {
     }
   };
 
+  const fillLoad = () => {
+    if(comments.length===0){
+      return `Load comments`
+    }
+    else if(post.comments>comments.length){
+      return `Load ${post.comments-comments.length} more comments`
+    }
+    else{
+      return ""
+    }
+  }
+
   return (
-    <>
+    <div className="min-w-[600px]">
       <NavBar />
       {loading && <Loader />}
       {!loading && post !== null && (
         <>
-          <div className="border shadow-2xl p-4 mt-2 bg-white w-full md:w-1/2 mx-auto">
+          <div
+            key={postId}
+            className="border shadow-2xl p-4 mt-2 bg-white w-full md:w-1/2 mx-auto"
+          >
             <div className="flex items-center">
               <img
                 src={post.avatar}
@@ -349,7 +567,7 @@ const SinglePost = () => {
             </div>
           </div>
           <div className="border p-4 shadow-2xl bg-white w-full md:w-1/2 mx-auto">
-            {/* <div className="flex flex-row items-center justify-between mb-2">
+            <div className="flex flex-row items-center justify-between mb-2">
               <img
                 src={user.profile_pic_url}
                 alt={user.username}
@@ -365,19 +583,28 @@ const SinglePost = () => {
                 onClick={handleComment}
                 className="bg-green-400 rounded-lg p-2"
               >
-                <AiOutlineSend className="text-xl" />
+                {loadSubmit ? (
+                  <CSpinner />
+                ) : (
+                  <AiOutlineSend className="text-xl" />
+                )}
               </button>
-            </div> */}
-            <div className="text-2xl font-semibold">Comments</div>
-            {
-              comments.length>0 && comments.map((comment) => (
-                <Comment comment={comment} />
-              ))
-            }
+            </div>
+          </div>
+          <div className="border p-4 shadow-2xl bg-white ml-2 flex-grow">
+            <div className="text-3xl font-semibold text-green-600">
+              Comments
+            </div>
+            {comments.length > 0 &&
+              comments.map((comment) => <Comment comment={comment} />)}
+              <button onClick={loadMore} className="p-2 text-green-500 text-center font-bold mt-2">
+                {loadComments ? 
+                  "Loading...": fillLoad()}
+              </button>
           </div>
         </>
       )}
-    </>
+    </div>
   );
 };
 

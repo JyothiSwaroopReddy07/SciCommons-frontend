@@ -18,6 +18,7 @@ import SinglePost from './Pages/SinglePost/SinglePost';
 import CommunityAdminPage from './Pages/CommunityAdminPage/CommunityAdminPage';
 import Profile from './Pages/Profile/Profile';
 import Timeline from './Pages/Timeline/Timeline';
+import BookMarks from './Pages/Bookmarks/Bookmarks';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path='/notifications' element={<Notifications/>}/>
         <Route path='/explore' element={<Feed/>}/>
         <Route path='/mytimeline' element={<Timeline/>}/>
+        <Route path='/bookmarks' element={<BookMarks/>}/>
         <Route path="/community/:communityName" element={<CommunityPage/>}/>
         <Route path="/join-community/:communityName" element={<JoinRequest/>}/>
         <Route path="/mycommunity" element={<CommunityAdminPage/>}/>
