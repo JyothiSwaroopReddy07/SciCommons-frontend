@@ -10,6 +10,7 @@ import axios from 'axios';
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
 import Loader from '../../Components/Loader/Loader';
+import {SlUser} from "react-icons/sl";
 
 
 const Post = ({ post }) => {
@@ -147,11 +148,13 @@ const Post = ({ post }) => {
     <div className="border rounded-lg p-4 my-4 rounded-xl shadow-xl bg-white">
     <Link to={`/post/${post.id}`}>
       <div className="flex items-center">
-        <img
-          src={post.avatar}
-          alt={post.username}
-          className="w-10 h-10 rounded-full mr-4"
-        />
+        {post.avatar.includes("None")?<SlUser className="w-6 h-6 mr-2"/>:
+            <img
+            src={post.avatar}
+            alt={post.username}
+            className="w-10 h-10 rounded-full mr-4"
+          />
+        }
         <div className="flex flex-col">
             <p className="font-bold" onClick={handleProfile}>{post.username}</p>
             <span className="text-sm">{findTime(post.created_at)}</span>

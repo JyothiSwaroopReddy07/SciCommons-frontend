@@ -2,6 +2,7 @@ import React,{useState, useEffect} from 'react'
 import axios from 'axios'
 import Loader from '../Loader/Loader'
 import { TECollapse } from "tw-elements-react"
+import {SlUser} from "react-icons/sl";
 
 
 const JoinRequests = ({community}) => {
@@ -119,7 +120,9 @@ const JoinRequests = ({community}) => {
                                         aria-expanded="true"
                                         aria-controls="collapseOne"
                                         >
-                                        <img className="object-cover w-8 h-8 rounded-full mr-3 ring ring-gray-300 dark:ring-gray-600" src={request.profile_pic_url} alt="avatar"/>
+                                        { request.profile_pic_url.includes("None")?<SlUser className="w-6 h-6 mr-2"/>:
+                                            <img className="object-cover w-8 h-8 rounded-full mr-3 ring ring-gray-300 dark:ring-gray-600" src={request.profile_pic_url} alt="avatar"/>
+                                        }
                                         <span className="text-lg font-semibold"><a href={`/profile/${request.username}`} >{request.username}</a></span>
                                         <span
                                             className={`${
@@ -152,7 +155,9 @@ const JoinRequests = ({community}) => {
                                         <div className=" w-full px-5 py-4 bg-green-50 p-2">
                                             <div className="flex flex-row items-center">
                                                 <div className="flex flex-col items-center mr-6">
-                                                    <img className="object-cover w-10 h-10 md:w-20 md:h-20 rounded-full mr-3 ring ring-gray-300 dark:ring-gray-600" src={request.profile_pic_url} alt="avatar"/>
+                                                    {request.profile_pic_url.includes("None")?<SlUser className="w-10 h-10 md:w-20 md:h-20 mr-3"/>:
+                                                        <img className="object-cover w-10 h-10 md:w-20 md:h-20 rounded-full mr-3 ring ring-gray-300 dark:ring-gray-600" src={request.profile_pic_url} alt="avatar"/>
+                                                    }
                                                     <span className="text-lg font-semibold"><a href={`/profile/${request.username}`} >{request.username}</a></span>
                                                 </div>
                                                 <div className="flex flex-col max-w-md">

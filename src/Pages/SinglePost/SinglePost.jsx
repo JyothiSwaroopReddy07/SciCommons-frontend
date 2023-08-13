@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import NavBar from "../../Components/NavBar/NavBar";
 import { useNavigate } from "react-router-dom";
+import {SlUser} from 'react-icons/sl';
 import {
   IoHeartOutline,
   IoHeart,
@@ -23,7 +24,7 @@ import "toastmaker/dist/toastmaker.css";
 import { CSpinner } from "@coreui/react";
 import { BsSortNumericDown } from "react-icons/bs";
 
-const ReplyModal = ({ comment, setShowReply }) => {
+const ReplyModal = ({ comment, setShowReply, handleReply }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [loading, setLoading] = useState(false);
   const { postId } = useParams();
@@ -54,6 +55,7 @@ const ReplyModal = ({ comment, setShowReply }) => {
         },
       });
       setShowReply(false);
+      await handleReply(e);
     } catch (err) {
       console.log(err);
     }
@@ -169,6 +171,7 @@ const Comment = ({ comment }) => {
         `https://scicommons-backend.onrender.com/api/feedcomment/?limit=20&offset=${replyData.length}`,
         config
       );
+      console.log("swaroop");
       await loadData(res.data.success.results);
     } catch (err) {
       console.log(err);
@@ -223,11 +226,13 @@ const Comment = ({ comment }) => {
       >
         <div className="flex mb-2">
           <div className="flex flex-row items-center">
-            <img
-              src={comment.commentavatar}
-              alt={comment.username}
-              className="w-6 h-6 rounded-full mr-2"
-            />
+            {comment.commentavatar.includes("None") ?<SlUser className="w-6 h-6 mr-1"/>: 
+              <img
+                src={comment.commentavatar}
+                alt={comment.username}
+                className="w-6 h-6 rounded-full mr-2"
+              />
+            }
             <div className="flex flex-col">
               <p
                 className="font-medium text-sm text-green-600"
@@ -262,14 +267,14 @@ const Comment = ({ comment }) => {
           </span>
         </div>
         {showReply && (
-          <ReplyModal comment={comment} setShowReply={setShowReply} />
+          <ReplyModal comment={comment} setShowReply={setShowReply} handleReply={handleReply} />
         )}
         <div className="ml-10">
           {replyData.length > 0 &&
             replyData.map((reply) => <Comment comment={reply} />)}
         </div>
         {comment.replies > 0 && (
-          <button onClick={handleReply} className="ml-10 text-xs mt-2">
+          <button onClick={handleReply} className="ml-5 text-xs mt-4">
             {loading ? (
               <span className="text-green-600">Loading...</span>
             ) : (
@@ -519,14 +524,16 @@ const SinglePost = () => {
         <>
           <div
             key={postId}
-            className="border shadow-2xl p-4 mt-2 bg-white w-full md:w-1/2 mx-auto"
+            className="border shadow-2xl p-4 mt-2 bg-white w-full md:w-1/2 ml-2"
           >
             <div className="flex items-center">
-              <img
-                src={post.avatar}
-                alt={post.username}
-                className="w-10 h-10 rounded-full mr-4"
-              />
+              {post.avatar.includes("None")?<SlUser className="w-6 h-6 mr-1" />:
+                <img
+                  src={post.avatar}
+                  alt={post.username}
+                  className="w-10 h-10 rounded-full mr-4"
+                />
+              }
               <div className="flex flex-col">
                 <p className="font-bold" onClick={handleProfile}>
                   {post.username}
@@ -566,13 +573,15 @@ const SinglePost = () => {
               </div>
             </div>
           </div>
-          <div className="border p-4 shadow-2xl bg-white w-full md:w-1/2 mx-auto">
+          <div className="border p-4 shadow-2xl bg-white w-full md:w-1/2 ml-2">
             <div className="flex flex-row items-center justify-between mb-2">
-              <img
-                src={user.profile_pic_url}
-                alt={user.username}
-                className="w-10 h-10 rounded-full mr-4"
-              />
+              {user.profile_pic_url.includes("None")?<SlUser className="w-8 h-8 mr-2"/>:
+                <img
+                  src={user.profile_pic_url}
+                  alt={user.username}
+                  className="w-10 h-10 rounded-full mr-4"
+                />
+              }
               <input
                 type="text"
                 placeholder="Add a comment..."
@@ -591,9 +600,9 @@ const SinglePost = () => {
               </button>
             </div>
           </div>
-          <div className="border p-4 shadow-2xl bg-white ml-2 flex-grow">
+          <div className="border p-6 shadow-2xl bg-white ml-2">
             <div className="text-3xl font-semibold text-green-600">
-              Comments
+              Comments {(comments.length>0) && `(${comments.length})`}
             </div>
             {comments.length > 0 &&
               comments.map((comment) => <Comment comment={comment} />)}
