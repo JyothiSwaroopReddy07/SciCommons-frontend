@@ -88,7 +88,6 @@ const CommunityPage = () => {
                 },
             };
             if(subscribed === false){
-                console.log("subscribed")
                 const response = await axios.post(
                     `https://scicommons-backend.onrender.com/api/community/${community.Community_name}/subscribe/`,{
                         "user": User.id
@@ -100,7 +99,6 @@ const CommunityPage = () => {
                     
                 }
             } else {
-                console.log("unsubscribed")
                 const response = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community.Community_name}/unsubscribe/`,
                 {
                     "user": User.id

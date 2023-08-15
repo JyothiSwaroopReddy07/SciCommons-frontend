@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { IoHeartOutline, IoHeart, IoChatbubbleOutline, IoBookmarkOutline,IoBookmark, IoPaperPlaneOutline } from 'react-icons/io5';
 import NavBar from '../../Components/NavBar/NavBar';
 import { Link, useNavigate } from 'react-router-dom';
-import {AiOutlinePlus, AiOutlineMinus} from 'react-icons/ai';
-import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
 import axios from 'axios';
 import ToastMaker from 'toastmaker';
@@ -157,7 +155,7 @@ const Post = ({ post }) => {
         }
         <div className="flex flex-col">
             <p className="font-bold" onClick={handleProfile}>{post.username}</p>
-            <span className="text-sm">{findTime(post.created_at)}</span>
+            <span className="text-sm text-slate-400">{findTime(post.created_at)}</span>
         </div>
       </div>
     </Link>
@@ -228,7 +226,7 @@ const Timeline = () => {
     }
     try{
         const res = await axios.get("https://scicommons-backend.onrender.com/api/feed/timeline/", config)
-        console.log(res.data.success)
+
         if(res.data.success.length === 0){
             console.log("No posts")
             await loadData([])
@@ -253,7 +251,7 @@ const Timeline = () => {
     }
     try{
         const res = await axios.get(`https://scicommons-backend.onrender.com/api/feed/timeline/?limit=20&offset=${posts.length}`, config)
-        console.log(res.data.success)
+
         if(res.data.success.length === 0){
             setLoadingMore(false)
             ToastMaker("No more posts to load", 3500,{
@@ -285,27 +283,26 @@ const Timeline = () => {
 
   return (
     <>
-    <NavBar />
-    { !loading &&
-        <> 
-        <div className="container mx-auto px-4 w-full md:w-1/2 mt-2">
-            {posts.length > 0 && posts.map((post) => (
-                <Post key={post.id} post={post} />
-            ))}
-            {posts.length>0 && <div className="flex justify-center">
-              <button onClick={loadMore} className="bg-green-500 hover:bg-green-700 text-white h-8 px-2 rounded my-4">
-                  {loadingMore ? "Loading..." : "Load More"}
-              </button>
-            </div>}
-            {posts.length === 0 &&
-                <div className="flex flex-col justify-center items-center h-screen">
-                    <p className="text-2xl font-semibold">No posts to show</p>
-                    <p className="text-md ">Follow someone to view their posts here.</p>
-                </div>
-            }
-
-        </div>
-        </>
+      <NavBar />
+      { !loading &&
+          <> 
+            <div className="container mx-auto px-4 w-full md:w-1/2 mt-2">
+                {posts.length > 0 && posts.map((post) => (
+                    <Post key={post.id} post={post} />
+                ))}
+                {posts.length>0 && <div className="flex justify-center">
+                  <button onClick={loadMore} className="bg-green-500 hover:bg-green-700 text-white h-8 px-2 rounded my-4">
+                      {loadingMore ? "Loading..." : "Load More"}
+                  </button>
+                </div>}
+                {posts.length === 0 &&
+                    <div className="flex flex-col justify-center items-center h-screen">
+                        <p className="text-2xl font-semibold">No posts to show</p>
+                        <p className="text-md ">Follow someone to view their posts here.</p>
+                    </div>
+                }
+            </div>
+          </>
         }
         {loading && <Loader/>}
     </>

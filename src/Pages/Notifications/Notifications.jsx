@@ -43,7 +43,6 @@ const Notifications = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
         });
         const data = response.data.success;
-        console.log(data.results);
         setNotifications(data.results);
       };
       fetchNotifications();

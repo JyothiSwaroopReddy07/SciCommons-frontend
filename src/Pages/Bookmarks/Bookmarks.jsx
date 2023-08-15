@@ -143,7 +143,7 @@ const Post = ({ post, removePosts }) => {
               <p className="font-bold" onClick={handleProfile}>
                 {post.username}
               </p>
-              <span className="text-sm">{findTime(post.created_at)}</span>
+              <span className="text-sm text-slate-400">{findTime(post.created_at)}</span>
             </div>
           </div>
         </Link>
@@ -225,7 +225,6 @@ const BookMarks = () => {
         "https://scicommons-backend.onrender.com/api/feed/bookmarks/",
         config
       );
-      console.log(res.data.success);
       if (res.data.success.length === 0) {
         console.log("No posts");
         await loadData([]);
@@ -251,7 +250,6 @@ const BookMarks = () => {
         `https://scicommons-backend.onrender.com/api/feed/bookmarks/`,
         config
       );
-      console.log(res.data.success);
       if (res.data.success.length === 0) {
         setLoadingMore(false);
         ToastMaker("No more posts to load", 3500, {

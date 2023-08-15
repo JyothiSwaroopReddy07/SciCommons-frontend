@@ -52,7 +52,6 @@ const Register = () => {
               }
             );
 
-            console.log(response.data)
             // Perform any additional actions after successful register, e.g., navigate to the home page
             navigate('/registersuccessful');
           } catch (error) {

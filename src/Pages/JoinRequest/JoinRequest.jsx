@@ -26,7 +26,7 @@ const JoinRequest = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        console.log(response.data);
+
         if(response.data.success) {
           setLoading(false)
           ToastMaker("Submitted your request", 3500,{

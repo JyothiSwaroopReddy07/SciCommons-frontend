@@ -157,7 +157,7 @@ const Post = ({ post }) => {
         }
         <div className="flex flex-col">
             <p className="font-bold" onClick={handleProfile}>{post.username}</p>
-            <span className="text-sm">{findTime(post.created_at)}</span>
+            <span className="text-sm text-slate-400">{findTime(post.created_at)}</span>
         </div>
       </div>
     </Link>
@@ -251,7 +251,7 @@ const Feed = () => {
     }
     try{
         const res = await axios.get(`https://scicommons-backend.onrender.com/api/feed/?limit=20&offset=${posts.length}`, config)
-        console.log(res.data.success)
+
         if(res.data.success.results.length === 0){
             setLoadingMore(false)
             ToastMaker("No more posts to load", 3500,{

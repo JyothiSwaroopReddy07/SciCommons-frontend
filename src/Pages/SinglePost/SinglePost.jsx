@@ -1,9 +1,8 @@
-// src/SinglePost.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import NavBar from "../../Components/NavBar/NavBar";
 import { useNavigate } from "react-router-dom";
-import {SlUser} from 'react-icons/sl';
+import { SlUser } from "react-icons/sl";
 import {
   IoHeartOutline,
   IoHeart,
@@ -22,9 +21,10 @@ import Loader from "../../Components/Loader/Loader";
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 import { CSpinner } from "@coreui/react";
-import { BsSortNumericDown } from "react-icons/bs";
+import { BsReplyAll } from "react-icons/bs";
+import { AiOutlineEdit } from "react-icons/ai";
 
-const ReplyModal = ({ comment, setShowReply, handleReply }) => {
+const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [loading, setLoading] = useState(false);
   const { postId } = useParams();
@@ -33,7 +33,7 @@ const ReplyModal = ({ comment, setShowReply, handleReply }) => {
     e.preventDefault();
     setLoading(true);
     const body = document.getElementsByName("reply")[0].value;
-    console.log(body);
+
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +46,7 @@ const ReplyModal = ({ comment, setShowReply, handleReply }) => {
         { post: postId, comment: body, parent_comment: comment.id },
         config
       );
-      console.log(res.data.success);
+      addReply(res.data.comment);
       ToastMaker("Replied!!!", 3000, {
         valign: "top",
         styles: {
@@ -68,12 +68,16 @@ const ReplyModal = ({ comment, setShowReply, handleReply }) => {
 
   return (
     <>
-      <div className="flex flex-row items-center justify-between mb-2 mt-2">
-        <img
-          src={user.profile_pic_url}
-          alt={user.username}
-          className="w-8 h-8 rounded-full mr-4"
-        />
+      <div className="flex flex-row items-center justify-between mb-2 mt-2 max-w-[600px]">
+        {user.profile_pic_url.includes("None") ? (
+          <SlUser className="w-6 h-6 rounded-full mr-4" />
+        ) : (
+          <img
+            src={user.profile_pic_url}
+            alt={user.username}
+            className="w-8 h-8 rounded-full mr-4"
+          />
+        )}
         <input
           type="text"
           placeholder="Add a comment..."
@@ -98,14 +102,94 @@ const ReplyModal = ({ comment, setShowReply, handleReply }) => {
   );
 };
 
+const EditModal = ({ comment, setShowEdit, changeComment }) => {
+  const [editedComment, setEditedComment] = useState(comment.comment);
+  const [loading, setLoading] = useState(false);
+
+  const handleInputChange = (event) => {
+    setEditedComment(event.target.value);
+  };
+
+  const handleSave = (e) => {
+    handleEdit(e);
+  };
+
+  const handleEdit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const body = document.getElementsByName("edit")[0].value;
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+    try {
+      const res = await axios.put(
+        `https://scicommons-backend.onrender.com/api/feedcomment/${comment.id}/`,
+        { post: comment.post, comment: body },
+        config
+      );
+
+      ToastMaker("Edited!!!", 3000, {
+        valign: "top",
+        styles: {
+          backgroundColor: "green",
+          fontSize: "20px",
+        },
+      });
+      await changeComment(res.data.success.comment);
+      setShowEdit(false);
+    } catch (err) {
+      console.log(err);
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
+      <div className="bg-white w-80 rounded-lg shadow-lg p-6">
+        <h2 className="text-xl font-semibold mb-4">Edit Comment</h2>
+        <textarea
+          className="w-full h-24 border rounded-lg p-2 mb-4"
+          value={editedComment}
+          name="edit"
+          onChange={handleInputChange}
+        />
+        <div className="flex justify-end">
+          <button
+            className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded mr-2"
+            onClick={() => {
+              setShowEdit(false);
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded"
+            onClick={handleSave}
+          >
+            {loading ? "Saving..." : "Save"}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const Comment = ({ comment }) => {
   const navigate = useNavigate();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [value, setValue] = useState(comment.comment);
   const [liked, setLiked] = useState(comment.commentliked);
   const [likes, setLikes] = useState(comment.commentlikes);
   const [loading, setLoading] = useState(false);
   const [showReply, setShowReply] = useState(false);
-  const [replyData, setReplyData] = useState([]);
+  const [showEdit, setShowEdit] = useState(false);
+  const [replyData, setReplyData] = useState(null);
+  const [repliesData, setRepliesData] = useState([]);
+  const [editData, setEditData] = useState(null);
   const { postId } = useParams();
 
   const handleProfile = (e) => {
@@ -114,8 +198,8 @@ const Comment = ({ comment }) => {
   };
 
   const loadData = async (res) => {
-    const newReply = [...replyData, ...res];
-    setReplyData(newReply);
+    const newReply = [...repliesData, ...res];
+    setRepliesData(newReply);
   };
 
   const handleLike = async (e) => {
@@ -168,10 +252,9 @@ const Comment = ({ comment }) => {
     };
     try {
       const res = await axios.get(
-        `https://scicommons-backend.onrender.com/api/feedcomment/?limit=20&offset=${replyData.length}`,
+        `https://scicommons-backend.onrender.com/api/feedcomment/?limit=20&offset=${repliesData.length}`,
         config
       );
-      console.log("swaroop");
       await loadData(res.data.success.results);
     } catch (err) {
       console.log(err);
@@ -207,44 +290,57 @@ const Comment = ({ comment }) => {
   };
 
   const fillLoad = () => {
-    if(replyData.length===0){
-      return `Load replies`
+    if (repliesData.length === 0) {
+      return `Load replies`;
+    } else if (comment.replies > repliesData.length) {
+      return `Load ${comment.replies - repliesData.length} more replies`;
+    } else {
+      return "";
     }
-    else if(comment.replies>replyData.length){
-      return `Load ${comment.replies-replyData.length} more replies`
-    }
-    else{
-      return ""
-    }
-  }
+  };
+
+  const changeComment = async (body) => {
+    setValue(body);
+  };
+
+  const addReply = async (res) => {
+    res.commentavatar = user.profile_pic_url;
+    res.username = user.username;
+    const newReply = [...repliesData, res];
+    setRepliesData(newReply);
+  };
 
   return (
     <>
       <div
         key={comment.id}
-        className="rounded-lg pl-2 my-2 mt-2 bg-white border-l-2"
+        className="rounded-lg pl-2 my-2 mt-2 bg-white border-l-2 border-green-600"
       >
         <div className="flex mb-2">
           <div className="flex flex-row items-center">
-            {comment.commentavatar.includes("None") ?<SlUser className="w-6 h-6 mr-1"/>: 
+            {comment.commentavatar.includes("None") ? (
+              <SlUser className="w-6 h-6 mr-1" />
+            ) : (
               <img
                 src={comment.commentavatar}
                 alt={comment.username}
                 className="w-6 h-6 rounded-full mr-2"
               />
-            }
-            <div className="flex flex-col">
+            )}
+            <div className="flex flex-col ml-2">
               <p
                 className="font-medium text-sm text-green-600"
                 onClick={handleProfile}
               >
                 {comment.username}
               </p>
-              <span className="text-xs">{findTime(comment.created_at)}</span>
+              <span className="text-xs text-slate-400">
+                {findTime(comment.created_at)}
+              </span>
             </div>
           </div>
         </div>
-        <p className="w-full text-sm mb-2 pl-8 text-slate-600">{comment.comment}</p>
+        <p className="w-full text-sm my-2 pl-8 text-slate-600">{value}</p>
         <div className="w-full ml-10 flex flex-row items-center">
           <div className="flex flex-row items-center mr-3">
             <button onClick={handleLike} className="flex">
@@ -256,22 +352,45 @@ const Comment = ({ comment }) => {
             </button>
             <span className="text-sm">{likes}</span>
           </div>
+          {comment.username === user.username && (
+            <span
+              className="text-xs ml-4"
+              onClick={() => {
+                setShowEdit(true);
+                setEditData(comment);
+              }}
+            >
+              <AiOutlineEdit className="w-5 h-5 text-zinc-500" />
+            </span>
+          )}
           <span
-            className="text-xs underline"
+            className="text-xs ml-4"
             onClick={() => {
               setShowReply(true);
               setReplyData(comment);
             }}
           >
-            Reply
+            <BsReplyAll className="w-5 h-5 text-zinc-500" />
           </span>
         </div>
         {showReply && (
-          <ReplyModal comment={comment} setShowReply={setShowReply} handleReply={handleReply} />
+          <ReplyModal
+            comment={replyData}
+            setShowReply={setShowReply}
+            handleReply={handleReply}
+            addReply={addReply}
+          />
+        )}
+        {showEdit && (
+          <EditModal
+            comment={editData}
+            setShowEdit={setShowEdit}
+            changeComment={changeComment}
+          />
         )}
         <div className="ml-10">
-          {replyData.length > 0 &&
-            replyData.map((reply) => <Comment comment={reply} />)}
+          {repliesData.length > 0 &&
+            repliesData.map((reply) => <Comment key={reply.id} comment={reply} />)}
         </div>
         {comment.replies > 0 && (
           <button onClick={handleReply} className="ml-5 text-xs mt-4">
@@ -311,8 +430,9 @@ const SinglePost = () => {
   };
 
   const loadCommentsData = async (res) => {
+    console.log(res);
     setComments(res);
-  }
+  };
 
   const loadMore = async () => {
     setLoadComments(true);
@@ -330,7 +450,6 @@ const SinglePost = () => {
         `https://scicommons-backend.onrender.com/api/feedcomment/?limit=20&offset=${comments.length}`,
         config
       );
-      console.log(res.data.success);
       await loadCommentsData([...comments, ...res.data.success.results]);
     } catch (err) {
       console.log(err);
@@ -350,7 +469,6 @@ const SinglePost = () => {
         `https://scicommons-backend.onrender.com/api/feed/${postId}/`,
         config
       );
-      console.log(res.data.success);
       await loadData(res.data.success);
     } catch (err) {
       console.log(err);
@@ -414,8 +532,9 @@ const SinglePost = () => {
         { post: postId, comment: comment },
         config
       );
-      console.log(res.data.success);
-      await fetchPost();
+      res.data.comment.commentavatar = user.profile_pic_url;
+      res.data.comment.username = user.username;
+      await loadCommentsData([res.data.comment, ...comments]);
       document.getElementsByName("comment")[0].value = "";
       ToastMaker("Comment added successfully!!!!", 3000, {
         valign: "top",
@@ -505,115 +624,123 @@ const SinglePost = () => {
   };
 
   const fillLoad = () => {
-    if(comments.length===0){
-      return `Load comments`
+    if (comments.length === 0) {
+      return `Load comments`;
+    } else if (post.comments > comments.length) {
+      return `Load ${post.comments - comments.length} more comments`;
+    } else {
+      return "";
     }
-    else if(post.comments>comments.length){
-      return `Load ${post.comments-comments.length} more comments`
-    }
-    else{
-      return ""
-    }
-  }
+  };
 
   return (
-    <div className="min-w-[600px]">
+    <>
       <NavBar />
-      {loading && <Loader />}
-      {!loading && post !== null && (
-        <>
-          <div
-            key={postId}
-            className="border shadow-2xl p-4 mt-2 bg-white w-full md:w-1/2 ml-2"
-          >
-            <div className="flex items-center">
-              {post.avatar.includes("None")?<SlUser className="w-6 h-6 mr-1" />:
-                <img
-                  src={post.avatar}
-                  alt={post.username}
-                  className="w-10 h-10 rounded-full mr-4"
-                />
-              }
-              <div className="flex flex-col">
-                <p className="font-bold" onClick={handleProfile}>
-                  {post.username}
-                </p>
-                <span className="text-sm">{findTime(post.created_at)}</span>
-              </div>
-            </div>
-            <p className="w-full text-md md:text-xl my-4">{post.body}</p>
-            {!post.image_url.includes("None") && (
-              <img
-                src={post.image_url}
-                alt={post.caption}
-                className="w-full my-4"
-              />
-            )}
-            <div className="w-full">
-              <div className="flex flex-row justify-between">
-                <button onClick={handleLike} className="flex">
-                  {liked ? (
-                    <IoHeart className="text-xl text-red-500" />
-                  ) : (
-                    <IoHeartOutline className="text-xl" />
-                  )}
-                  <span className="text-sm md:ml-2">{likes}</span>
-                </button>
-                <button onClick={handleBookmark} className="flex">
-                  {bookmark ? (
-                    <IoBookmark className="text-xl text-gray-800" />
-                  ) : (
-                    <IoBookmarkOutline className="text-xl" />
-                  )}
-                  <span className="text-sm md:ml-2">{bookmarks}</span>
-                </button>
-                <button onClick={handleShare}>
-                  <IoPaperPlaneOutline className="text-xl" />
-                </button>
-              </div>
-            </div>
-          </div>
-          <div className="border p-4 shadow-2xl bg-white w-full md:w-1/2 ml-2">
-            <div className="flex flex-row items-center justify-between mb-2">
-              {user.profile_pic_url.includes("None")?<SlUser className="w-8 h-8 mr-2"/>:
-                <img
-                  src={user.profile_pic_url}
-                  alt={user.username}
-                  className="w-10 h-10 rounded-full mr-4"
-                />
-              }
-              <input
-                type="text"
-                placeholder="Add a comment..."
-                className="w-full border rounded-lg p-2 mr-2 rounded-xl"
-                name="comment"
-              />
-              <button
-                onClick={handleComment}
-                className="bg-green-400 rounded-lg p-2"
-              >
-                {loadSubmit ? (
-                  <CSpinner />
+      <div className="overflow-hidden">
+        {loading && <Loader />}
+        {!loading && post !== null && (
+          <>
+            <div
+              key={postId}
+              className="border shadow-2xl p-4 mt-2 bg-white w-full md:w-1/2 mx-auto"
+            >
+              <div className="flex items-center">
+                {post.avatar.includes("None") ? (
+                  <SlUser className="w-6 h-6 mr-1" />
                 ) : (
-                  <AiOutlineSend className="text-xl" />
+                  <img
+                    src={post.avatar}
+                    alt={post.username}
+                    className="w-10 h-10 rounded-full mr-4"
+                  />
                 )}
+                <div className="flex flex-col">
+                  <p className="font-bold" onClick={handleProfile}>
+                    {post.username}
+                  </p>
+                  <span className="text-sm text-slate-400">
+                    {findTime(post.created_at)}
+                  </span>
+                </div>
+              </div>
+              <p className="w-full text-md md:text-xl my-4">{post.body}</p>
+              {!post.image_url.includes("None") && (
+                <img
+                  src={post.image_url}
+                  alt={post.caption}
+                  className="w-full my-4"
+                />
+              )}
+              <div className="w-full">
+                <div className="flex flex-row justify-between">
+                  <button onClick={handleLike} className="flex">
+                    {liked ? (
+                      <IoHeart className="text-xl text-red-500" />
+                    ) : (
+                      <IoHeartOutline className="text-xl" />
+                    )}
+                    <span className="text-sm md:ml-2">{likes}</span>
+                  </button>
+                  <button onClick={handleBookmark} className="flex">
+                    {bookmark ? (
+                      <IoBookmark className="text-xl text-gray-800" />
+                    ) : (
+                      <IoBookmarkOutline className="text-xl" />
+                    )}
+                    <span className="text-sm md:ml-2">{bookmarks}</span>
+                  </button>
+                  <button onClick={handleShare}>
+                    <IoPaperPlaneOutline className="text-xl" />
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="border p-4 shadow-2xl bg-white w-full md:w-1/2 mx-auto">
+              <div className="flex flex-row items-center justify-between mb-2">
+                {user.profile_pic_url.includes("None") ? (
+                  <SlUser className="w-8 h-8 mr-2" />
+                ) : (
+                  <img
+                    src={user.profile_pic_url}
+                    alt={user.username}
+                    className="w-10 h-10 rounded-full mr-4"
+                  />
+                )}
+                <input
+                  type="text"
+                  placeholder="Add a comment..."
+                  className="w-full border rounded-lg p-2 mr-2 rounded-xl"
+                  name="comment"
+                />
+                <button
+                  onClick={handleComment}
+                  className="bg-green-400 rounded-lg p-2"
+                >
+                  {loadSubmit ? (
+                    <CSpinner />
+                  ) : (
+                    <AiOutlineSend className="text-xl" />
+                  )}
+                </button>
+              </div>
+            </div>
+            <div className="border p-6 bg-white">
+              <div className="text-3xl font-semibold text-green-600">
+                Comments {comments.length > 0 && `(${comments.length})`}
+              </div>
+              {comments.length > 0 &&
+                comments.map((comment) => <Comment key={comment.id} comment={comment} />)}
+              <button
+                onClick={loadMore}
+                className="p-2 text-green-500 text-center font-bold mt-2"
+              >
+                {loadComments ? "Loading..." : fillLoad()}
               </button>
             </div>
-          </div>
-          <div className="border p-6 shadow-2xl bg-white ml-2">
-            <div className="text-3xl font-semibold text-green-600">
-              Comments {(comments.length>0) && `(${comments.length})`}
-            </div>
-            {comments.length > 0 &&
-              comments.map((comment) => <Comment comment={comment} />)}
-              <button onClick={loadMore} className="p-2 text-green-500 text-center font-bold mt-2">
-                {loadComments ? 
-                  "Loading...": fillLoad()}
-              </button>
-          </div>
-        </>
-      )}
-    </div>
+          </>
+        )}
+      </div>
+    </>
   );
 };
 
