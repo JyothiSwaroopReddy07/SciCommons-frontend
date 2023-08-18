@@ -49,6 +49,23 @@ const Post = ({ post }) => {
     
   };
 
+  const addAnchorTags = (text) => {
+    const words = text.split(' ');
+  
+    const processedWords = words.map((word, index) => {
+      if (word.includes('https://')) {
+        return (
+          <span key={index}>
+            <a href={`${word}`} className="text-blue-500 underline">{word}</a>
+          </span>
+        );
+      }
+      return <span key={index}>{word} </span>;
+    });
+  
+    return processedWords;
+  }
+
   const handleComment = (e) => {
     e.preventDefault()
     navigate(`/post/${post.id}`)
@@ -160,7 +177,7 @@ const Post = ({ post }) => {
       </div>
     </Link>
       {/* Conditionally render image section */}
-      <p className="w-full text-sm md:text-xl my-4">{post.body}</p>
+      <p className="w-full text-sm md:text-xl my-4">{addAnchorTags(post.body)}</p>
       {!post.image_url.includes("None") && <img src={post.image_url} alt={post.caption} className="w-full my-4" />}
       {/* Display text content */}
       <Link to={`/post/${post.id}`}>

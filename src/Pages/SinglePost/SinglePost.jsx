@@ -23,6 +23,10 @@ import "toastmaker/dist/toastmaker.css";
 import { CSpinner } from "@coreui/react";
 import { BsReplyAll } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
+import {BiDotsHorizontal} from "react-icons/bi";
+import Popper from "popper.js";
+
+
 
 const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -237,6 +241,23 @@ const Comment = ({ comment }) => {
     }
   };
 
+  const addAnchorTags = (text) => {
+    const words = text.split(' ');
+  
+    const processedWords = words.map((word, index) => {
+      if (word.includes('https://')) {
+        return (
+          <span key={index}>
+            <a href={`${word}`} className="text-blue-500 underline">{word}</a>
+          </span>
+        );
+      }
+      return <span key={index}>{word} </span>;
+    });
+  
+    return processedWords;
+  }
+
   const handleReply = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -340,7 +361,7 @@ const Comment = ({ comment }) => {
             </div>
           </div>
         </div>
-        <p className="w-full text-sm my-2 pl-8 text-slate-600">{value}</p>
+        <p className="w-full text-sm my-2 pl-8 text-slate-600">{addAnchorTags(value)}</p>
         <div className="w-full ml-10 flex flex-row items-center">
           <div className="flex flex-row items-center mr-3">
             <button onClick={handleLike} className="flex">
@@ -623,9 +644,26 @@ const SinglePost = () => {
     }
   };
 
+  const addAnchorTags = (text) => {
+    const words = text.split(' ');
+  
+    const processedWords = words.map((word, index) => {
+      if (word.includes('https://')) {
+        return (
+          <span key={index}>
+            <a href={`${word}`} className="text-blue-500 underline">{word}</a>
+          </span>
+        );
+      }
+      return <span key={index}>{word} </span>;
+    });
+  
+    return processedWords;
+  }
+
   const fillLoad = () => {
     if (comments.length === 0) {
-      return `Load comments`;
+      return `No comments to Load`;
     } else if (post.comments > comments.length) {
       return `Load ${post.comments - comments.length} more comments`;
     } else {
@@ -644,26 +682,31 @@ const SinglePost = () => {
               key={postId}
               className="border shadow-2xl p-4 mt-2 bg-white w-full md:w-1/2 mx-auto"
             >
-              <div className="flex items-center">
-                {post.avatar.includes("None") ? (
-                  <SlUser className="w-6 h-6 mr-1" />
-                ) : (
-                  <img
-                    src={post.avatar}
-                    alt={post.username}
-                    className="w-10 h-10 rounded-full mr-4"
-                  />
-                )}
-                <div className="flex flex-col">
-                  <p className="font-bold" onClick={handleProfile}>
-                    {post.username}
-                  </p>
-                  <span className="text-sm text-slate-400">
-                    {findTime(post.created_at)}
-                  </span>
+              <div className="flex justify-between">
+                <div className="flex items-center">
+                  {post.avatar.includes("None") ? (
+                    <SlUser className="w-6 h-6 mr-1" />
+                  ) : (
+                    <img
+                      src={post.avatar}
+                      alt={post.username}
+                      className="w-10 h-10 rounded-full mr-4"
+                    />
+                  )}
+                  <div className="flex flex-col">
+                    <p className="font-bold" onClick={handleProfile}>
+                      {post.username}
+                    </p>
+                    <span className="text-sm text-slate-400">
+                      {findTime(post.created_at)}
+                    </span>
+                  </div>
                 </div>
+                {post.username===user.username && <div>
+                  <Dropdown post={post}/>
+                </div>}
               </div>
-              <p className="w-full text-md md:text-xl my-4">{post.body}</p>
+              <p className="w-full text-md md:text-xl my-4">{addAnchorTags(post.body)}</p>
               {!post.image_url.includes("None") && (
                 <img
                   src={post.image_url}
@@ -743,5 +786,96 @@ const SinglePost = () => {
     </>
   );
 };
+
+
+const Dropdown = ({post}) => {
+  
+
+  const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
+  const btnDropdownRef = React.createRef();
+  const popoverDropdownRef = React.createRef();
+  const openDropdownPopover = () => {
+    new Popper(btnDropdownRef.current, popoverDropdownRef.current, {
+      placement: "bottom-start"
+    });
+    setDropdownPopoverShow(true);
+  };
+  const closeDropdownPopover = () => {
+    setDropdownPopoverShow(false);
+  };
+
+  const EditPost = async() => {
+
+
+    try{
+      const res = await axios.put(`https://scicommons-backend.onrender.com/api/feed/${post.id}/`);
+    } catch(err) {
+      console.log(err);
+    }
+
+  }
+
+  const DeletePost = async() => {
+      
+      try{
+        const res = await axios.delete(`https://scicommons-backend.onrender.com/api/feed/${post.id}/`);
+      } catch(err) {
+        console.log(err);
+      }
+  }
+  
+
+  return (
+    <>
+      <div className="flex flex-wrap">
+        <div className="w-full sm:w-6/12 md:w-4/12 px-4">
+          <div className="relative inline-flex align-middle w-full">
+            <button
+              className={
+                "uppercase text-sm px-6 rounded outline-none focus:outline-none"
+              }
+              style={{ transition: "all .15s ease" }}
+              type="button"
+              ref={btnDropdownRef}
+              onClick={() => {
+                dropdownPopoverShow
+                  ? closeDropdownPopover()
+                  : openDropdownPopover();
+              }}
+            >
+              <BiDotsHorizontal className="w-6 h-6 text-black-800" />
+            </button>
+            <div
+              ref={popoverDropdownRef}
+              className={
+                (dropdownPopoverShow ? "block " : "hidden ") +
+                "text-base z-50 float-left py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
+              }
+              style={{ minWidth: "8rem" }}
+            >
+              <div
+                onClick={EditPost}
+                className={
+                  "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-white text-gray-800 hover:bg-gray-200"
+                }
+              >
+                Edit Post
+              </div>
+              <div
+                onClick={DeletePost}
+                className={
+                  "text-sm py-2 px-4 font-normal text-red-400 block w-full whitespace-no-wrap bg-white text-gray-800 hover:bg-gray-200"
+                }
+              >
+                Delete Post
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
 
 export default SinglePost;
