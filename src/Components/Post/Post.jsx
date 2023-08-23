@@ -393,7 +393,6 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
                   fontSize: '20px',
               }
           })
-          console.log(res.data.success.image_url);
           await onClose();
           window.location.reload();
           e.target.reset();

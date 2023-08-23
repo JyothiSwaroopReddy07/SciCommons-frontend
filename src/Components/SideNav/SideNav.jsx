@@ -41,13 +41,13 @@ const SideNav = ({onMenuChange}) => {
             <Sidebar.Item href="/mycommunity" icon={HiUserGroup}>
               <p className="font-semibold">My Community</p>
             </Sidebar.Item>
-            <Sidebar.Item href="/mycommunity" icon={GrArticle}>
+            <Sidebar.Item href="/myarticles" icon={GrArticle}>
               <p className="font-semibold">My Articles</p>
             </Sidebar.Item>
-            <Sidebar.Item href="/mycommunity" icon={AiOutlineHeart}>
+            <Sidebar.Item href="/favourites" icon={AiOutlineHeart}>
               <p className="font-semibold">Favourites</p>
             </Sidebar.Item>
-            <Sidebar.Item href="/mycommunity" icon={MdPostAdd}>
+            <Sidebar.Item href="/myposts" icon={MdPostAdd}>
               <p className="font-semibold">My Posts</p>
             </Sidebar.Item>
             <Sidebar.Item href="/bookmarks" icon={BsBookmarkCheck}>

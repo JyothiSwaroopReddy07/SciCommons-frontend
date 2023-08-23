@@ -115,7 +115,6 @@ const SubmitArticle = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
     } catch (error) {
       console.log(error.response.data)
       ToastMaker(error.response.data.error, 3500,{

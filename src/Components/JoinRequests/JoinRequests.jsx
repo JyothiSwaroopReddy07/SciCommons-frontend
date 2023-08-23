@@ -211,7 +211,7 @@ const AcceptModal = ({setShow, request, community,index, onDelete, loading, setL
                 }
             }
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community}/approve_request/`, {user: request.user_id, status: "approved"}, config)
-            console.log(res)
+
             await onDelete(index)
             setLoading(false)
         } catch (error) {
@@ -252,7 +252,7 @@ const RejectModal = ({setReject, request, community,index, onDelete, loading, se
                 }
             }
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community}/approve_request/`, {user: request.user_id, status: "rejected"}, config)
-            console.log(res)
+
             await onDelete(index)
             setLoading(false)
         } catch (error) {

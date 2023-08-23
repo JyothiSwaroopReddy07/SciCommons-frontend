@@ -31,7 +31,6 @@ const CreateCommunity = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(response.data);
       if(response.data.success){
         setLoading(false)
         navigate('/communitysuccessfulcreated');

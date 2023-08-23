@@ -41,7 +41,6 @@ const  ArticlePage = () => {
         };
         try{
             const res = await axios.put(`https://scicommons-backend.onrender.com/api/article/${articleId}/updateviews/`,config);
-            console.log(res.data.success);
         }   catch(err){
             console.log(err);
         }
@@ -59,7 +58,6 @@ const  ArticlePage = () => {
             };
             try {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
-                console.log(res.data.success);
                 await loadArticleData(res.data.success);
                 await updateViews();
             } catch(err){
@@ -78,7 +76,6 @@ const  ArticlePage = () => {
             try {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`,{article: articleId}, config);
                 await loadCommentData(res.data.success);
-                console.log(res.data.success);
             } catch(err){
                 console.log(err);
             }

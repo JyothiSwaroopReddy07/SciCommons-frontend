@@ -57,7 +57,7 @@ const SinglePost = () => {
   };
 
   const loadCommentsData = async (res) => {
-    console.log(res);
+
     setComments(res);
   };
 

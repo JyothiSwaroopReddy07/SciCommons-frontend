@@ -15,7 +15,7 @@ const ArticleCard = ({articles}) => {
     return (
         <ul className="mt-12 space-y-6 w-full md:w-4/5">
         {
-            articles.length !== 0 ? (
+            articles.length > 0 ? (
             articles.map((item) => (
             <li key={item.id} className="p-5 bg-white rounded-md shadow-sm">
             <a href={"/article/" + `${item.id}`}>
