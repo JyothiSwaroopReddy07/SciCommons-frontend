@@ -88,7 +88,7 @@ const Login = () => {
       {!loading && (
             <main className="w-full h-screen flex flex-col items-center bg-green-50 justify-center px-4">
                 <div className="max-w-sm w-full text-gray-600">
-                    <div className="text-center" onClick={(e)=>{e.preventDefault();navigate("/")}}>
+                    <div className="text-center" style={{cursor:"pointer"}} onClick={(e)=>{e.preventDefault();navigate("/")}}>
                         <img src={process.env.PUBLIC_URL + '/logo.png'} width={150} className="mx-auto" alt="logo" />
                     </div>
                     <br/>
@@ -117,7 +117,7 @@ const Login = () => {
                                 </label>
                                 <div className="relative max-w-screen mt-2">
                                     <button className="text-gray-700 absolute right-3 inset-y-0 my-auto active:text-gray-600"
-                                        onClick={(e) => {e.preventDefault(); setPasswordHidden(!isPasswordHidden);}}
+                                       style={{cursor:"pointer"}}   onClick={(e) => {e.preventDefault(); setPasswordHidden(!isPasswordHidden);}}
                                     >
                                         {
                                             isPasswordHidden ? (
@@ -148,6 +148,7 @@ const Login = () => {
                             
                             <button
                                 className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"
+                                style={{cursor:"pointer"}}
                                 onClick={handleSubmit}
                             >
                                 Sign in

@@ -151,7 +151,7 @@ const CommunityEditPage = () => {
                             </div>
                     </div>
                     <div className="flex flex-row justify-center">
-                        <button className="bg-green-600 text-white text-sm md:text-lg font-semibold py-2 px-2 rounded-xl" style={{width:'auto'}} onClick={() => setShowModal(true)}>Edit Details</button>
+                        <button className="bg-green-600 text-white text-sm md:text-lg font-semibold py-2 px-2 rounded-xl" style={{width:'auto',cursor:"pointer"}} onClick={() => setShowModal(true)}>Edit Details</button>
                     </div>
                 </div>
 
@@ -162,6 +162,7 @@ const CommunityEditPage = () => {
                             <h1 className="text-md md:text-2xl font-semibold text-green-700 text-center">Edit Community Details</h1>
                             <button
                                 className="bg-transparent border-0 text-red-600 float-right"
+                                style={{cursor:"pointer"}}
                                 onClick={() => setShowModal(false)}
                             >
                                 <span className="text-red-600 opacity-7 h-6 w-6 text-sm py-0 font-bold rounded-full">

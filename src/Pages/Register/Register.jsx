@@ -92,7 +92,7 @@ const Register = () => {
             {!loading && (
                 <main className="w-full h-screen flex flex-col items-center justify-center bg-green-50 sm:px-4">
                     <div className="w-full space-y-6 text-gray-600 sm:max-w-md">
-                        <div className="text-center" onClick={(e)=>{e.preventDefault();navigate("/")}}>
+                        <div className="text-center" style={{cursor:"pointer"}} onClick={(e)=>{e.preventDefault();navigate("/")}}>
                             <img src={process.env.PUBLIC_URL + "./logo.png"} width={150} className="mx-auto" alt="logo" />
                         </div>
                         <div className="bg-white shadow p-4 py-6 sm:p-6 sm:rounded-lg">
@@ -131,6 +131,7 @@ const Register = () => {
                                     />
                                     <div className="relative max-w-screen mt-2">
                                         <button className="text-gray-400 absolute right-3 inset-y-0 my-auto active:text-gray-600"
+                                        style={{cursor:"pointer"}}
                                             onClick={(e) => {e.preventDefault();setPasswordHidden(!isPasswordHidden)}}
                                         >
                                             {
@@ -157,6 +158,7 @@ const Register = () => {
                                     </div>
                                     <div className="relative max-w-screen mt-2">
                                         <button className="text-gray-400 absolute right-3 inset-y-0 my-auto active:text-gray-600"
+                                            style={{cursor:"pointer"}}
                                             onClick={(e) =>{ e.preventDefault();setPasswordHidden2(!isPasswordHidden2)}}
                                         >
                                             {

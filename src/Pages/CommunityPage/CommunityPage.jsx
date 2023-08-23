@@ -236,13 +236,14 @@ const CommunityPage = () => {
                             </div>
                         </div>
                         <div className="mt-8 flex flex-row justify-end">
-                                <button className="bg-teal-500 text-white md:px-4 md:py-2 rounded-xl mr-3 p-1" onClick={()=> navigate(`/join-community/${community.Community_name}`)}>Join Community</button>
+                                <button className="bg-teal-500 text-white md:px-4 md:py-2 rounded-xl mr-3 p-1" style={{cursor:"pointer"}} onClick={()=> navigate(`/join-community/${community.Community_name}`)}>Join Community</button>
                                     <button
                                         className={`${
                                             subscribed
                                             ? 'bg-gray-400 text-gray-700 cursor-default'
                                             : 'bg-red-500 hover:bg-red-600 text-white'
                                         } rounded-xl p-1 md:py-2 md:px-4`}
+                                        style={{cursor:"pointer"}}
                                         onClick={handleSubscribe}
                                         >
                                         {getButtonLabel()}
@@ -276,10 +277,10 @@ const CommunityPage = () => {
                         </div>
                     </form>
                     <div className="flex flex-row justify-end mb-5 w-full md:w-2/3">
-                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" onClick={sortRated}>Most Rated</button>
-                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" onClick={sortFavourite}>Most Favourite</button>
-                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" onClick={sortViews}>Most Views</button>
-                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" onClick={sortDate}>Most Recent</button>
+                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortRated}>Most Rated</button>
+                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortFavourite}>Most Favourite</button>
+                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortViews}>Most Views</button>
+                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortDate}>Most Recent</button>
                     </div>
                 </div>
 

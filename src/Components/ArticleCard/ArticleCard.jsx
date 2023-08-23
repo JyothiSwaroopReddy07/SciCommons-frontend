@@ -18,7 +18,7 @@ const ArticleCard = ({articles}) => {
             articles.length !== 0 ? (
             articles.map((item) => (
             <li key={item.id} className="p-5 bg-white rounded-md shadow-sm">
-            <a href="/article/${item.id}">
+            <a href={"/article/" + `${item.id}`}>
                 <div>
                 <div className="justify-between sm:flex">
                     <div className="flex-1">

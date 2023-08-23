@@ -92,40 +92,6 @@ const SubmitArticle = () => {
         }
       }
     }
-    for(let i=0; i<communities.length; i++){
-      if(communities[i].name === ""){
-        return;
-      }
-      else{
-        try{
-          const response = await axios.get(`https://scicommons-backend.onrender.com/api/community/`, {
-            params: {
-              search: communities[i].name,
-            },
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          })
-          if(response.data.success.results.length === 0 || (response.data.success.results[0].Community_name !== communities[i].name)){
-            return;
-          }
-          else {
-            communityIds.push(response.data.success.results[0].id);
-          }
-        } catch(error){
-          console.log(error)
-          ToastMaker("Please enter the correct community names!!!", 3500,{
-            valign: 'top',
-              styles : {
-                  backgroundColor: 'red',
-                  fontSize: '20px',
-              }
-          })
-          return;
-        }
-      }
-    }
 
 
     form_data.delete('authors');
@@ -140,10 +106,6 @@ const SubmitArticle = () => {
 
 
     form_data.append('communities[0]', JSON.stringify(0));
-
-    for(let i=0;i<communityIds.length;i++){
-      form_data.append(`communities[${i+1}]`, JSON.stringify(communityIds[i]));
-    }
 
     setLoading(true);
     try {
@@ -186,32 +148,12 @@ const SubmitArticle = () => {
     setAuthors([...newAuthors]);
    };
 
-   const addCommunity = () => {
-    setCommunities([
-      ...communities,
-      {
-        name: "",
-      },
-    ]);
-  };
-
-  const removeCommunity = (index) => {
-    const newCommunities = [...communities];
-    newCommunities.splice(index, 1);
-    setCommunities([...newCommunities]);
-  };
-
   const changeAuthor = (e, index) => {
     const newAuthors = [...authors];
     newAuthors[index].username = e.target.value;
     setAuthors([...newAuthors]);
   };
 
-  const changeCommunity = (e, index) => {
-    const newCommunities = [...communities];
-    newCommunities[index].name = e.target.value;
-    setCommunities([...newCommunities]);
-  };
 
   return (
     <>
@@ -253,6 +195,7 @@ const SubmitArticle = () => {
               Author(s) (Add other authors except yourself)
               <MdAddBox
                 className="h-7 w-7 mx-2 shadow-md fill-green-500 active:shadow-none"
+                style={{cursor:"pointer"}}
                 onClick={addAuthor}
               />
             </label>
@@ -269,6 +212,7 @@ const SubmitArticle = () => {
                       </label>
                       <MdRemoveCircle
                         className="h-5 w-5 mx-2 shadow-md fill-red-500 active:shadow-none"
+                        style={{cursor:"pointer"}}
                         onClick={() => removeAuthor(index)}
                       />
                     </div>
@@ -277,45 +221,6 @@ const SubmitArticle = () => {
                       id="username"
                       name="username"
                       onChange={(e)=>changeAuthor(e, index)}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
-                    />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-          <div>
-            <label
-              htmlFor="id"
-              className=" text-base mb-2 font-medium text-gray-900 dark:text-white flex flex-row"
-            >
-              Communities
-              <MdAddBox
-                className="h-7 w-7 mx-2 shadow-md fill-green-500 active:shadow-none"
-                onClick={addCommunity}
-              />
-            </label>
-            {communities.map((community, index) => {
-              return (
-                <div className="grid gap-2 md:grid-cols-1" key={index}>
-                  <div>
-                    <div className="flex flex-row justify-between">
-                      <label
-                        htmlFor="Community_name"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Community Name
-                      </label>
-                      <MdRemoveCircle
-                          className="h-5 w-5 mx-2 shadow-md fill-red-500 active:shadow-none"
-                          onClick={() => removeCommunity(index)}
-                        />
-                    </div>
-                    <input
-                      type="text"
-                      id="Community_name"
-                      name="Community_name"
-                      onChange={(e)=>changeCommunity(e, index)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
                     />
                   </div>
@@ -390,14 +295,14 @@ const SubmitArticle = () => {
         </div>
         <div className="mb-6">
           <label
-            htmlFor="abstract"
+            htmlFor="Abstract"
             className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
           >
             Abstract
           </label>
           <textarea
-            id="abstract"
-            name="abstract"
+            id="Abstract"
+            name="Abstract"
             rows={4}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
             placeholder=""

@@ -101,8 +101,8 @@ const JoinRequests = ({community}) => {
                                 <input type="text" onChange={handleChange} className="w-1/2 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Search members"/>
                                 <div className="flex flex-row items-center">
                                     <span className="text-gray-600 text-sm font-semibold mr-2">Sort By :</span>
-                                    <button className="px-4 py-2 mr-3 bg-green-200 rounded-xl" onClick={()=>{handleRank()}}>Reputation</button>
-                                    <button className="px-4 py-2 bg-green-200 rounded-xl" onClick={()=>{handleDate()}}>Date</button>
+                                    <button className="px-4 py-2 mr-3 bg-green-200 rounded-xl" style={{cursor:"pointer"}} onClick={()=>{handleRank()}}>Reputation</button>
+                                    <button className="px-4 py-2 bg-green-200 rounded-xl" style={{cursor:"pointer"}} onClick={()=>{handleDate()}}>Date</button>
                                 </div>
                             </div>
 
@@ -116,6 +116,7 @@ const JoinRequests = ({community}) => {
                                             `text-primary [box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:!text-primary-400 dark:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]`
                                         } group relative flex w-full items-center rounded-t-[15px] border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white`}
                                         type="button"
+                                        style={{cursor:"pointer"}}
                                         onClick={() => handleClick("element1")}
                                         aria-expanded="true"
                                         aria-controls="collapseOne"
@@ -173,8 +174,8 @@ const JoinRequests = ({community}) => {
                                             </div>
                                         </div>
                                         <div className="flex justify-center bg-green-50 p-2">
-                                            <button className="px-4 py-2 mr-3 bg-green-600 rounded-xl text-white" onClick={()=>{setShow(true); setAddModalData({request : request,community:community, index:index})}}>Accept</button>
-                                            <button className="px-4 py-2 bg-red-600 rounded-xl text-white" onClick={()=>{setReject(true); setRejectModalData({request:request, community:community, index:index})}}>Reject</button>
+                                            <button className="px-4 py-2 mr-3 bg-green-600 rounded-xl text-white" style={{cursor:"pointer"}} onClick={()=>{setShow(true); setAddModalData({request : request,community:community, index:index})}}>Accept</button>
+                                            <button className="px-4 py-2 bg-red-600 rounded-xl text-white" style={{cursor:"pointer"}} onClick={()=>{setReject(true); setRejectModalData({request:request, community:community, index:index})}}>Reject</button>
                                         </div>
                                     </TECollapse>
                                     </div>
@@ -227,8 +228,8 @@ const AcceptModal = ({setShow, request, community,index, onDelete, loading, setL
                     <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
                         <h1 className="text-2xl font-bold text-gray-600 mb-4">Are you sure you want to add this member to the community?</h1>
                         <div className="w-full flex flex-row items-center justify-center">
-                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" onClick={handleAccept}>Yes</button>
-                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" onClick={() => {setShow(false)}}>No</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" style={{cursor:"pointer"}} onClick={handleAccept}>Yes</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" style={{cursor:"pointer"}} onClick={() => {setShow(false)}}>No</button>
                         </div>
                     </div>
                 </div>
@@ -268,8 +269,8 @@ const RejectModal = ({setReject, request, community,index, onDelete, loading, se
                     <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
                         <h1 className="text-2xl font-bold text-gray-600 mb-4">Are you sure you want to reject this member's request?</h1>
                         <div className="w-full flex flex-row items-center justify-center">
-                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" onClick={handleReject}>Yes</button>
-                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" onClick={() => {setReject(false)}}>No</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" style={{cursor:"pointer"}} onClick={handleReject}>Yes</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" style={{cursor:"pointer"}} onClick={() => {setReject(false)}}>No</button>
                         </div>
                     </div>
                 </div>

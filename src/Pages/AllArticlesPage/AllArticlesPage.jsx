@@ -111,10 +111,10 @@ const AllArticlesPage = () => {
                     </div>
                 </form>
                 <div className="flex flex-row justify-end mb-5 w-full md:w-2/3">
-                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" onClick={sortRated}>Most Rated</button>
-                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" onClick={sortFavourite}>Most Favourite</button>
-                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" onClick={sortViews}>Most Views</button>
-                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" onClick={sortDate}>Most Recent</button>
+                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortRated}>Most Rated</button>
+                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortFavourite}>Most Favourite</button>
+                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortViews}>Most Views</button>
+                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortDate}>Most Recent</button>
                 </div>
             </div>
 

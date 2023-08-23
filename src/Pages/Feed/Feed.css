@@ -42,4 +42,12 @@
   .react-accessible-accordion__panel button:hover {
     background-color: #1669d1;
   }
+
+  .ql-editor {
+    border: none !important;
+  }
+
+  .ql-container {
+    border: none !important;
+  }
   

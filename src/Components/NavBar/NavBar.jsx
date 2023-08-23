@@ -55,7 +55,7 @@ const NavBar = () => {
 
                 <div className="flex items-center justify-between py-5 md:block">
                   <div className="flex flex-row items-center  justify-between">
-                    <button onClick={handleChange}>
+                    <button style={{cursor:"pointer"}} onClick={handleChange}>
                       <CiMenuFries id="menu" className="h-5 w-5 mx-2 active:shadow-none"/>
                     </button>
                     <a href="/">
@@ -69,7 +69,7 @@ const NavBar = () => {
                     </div>
                     <div className="md:hidden">
                         <button className="menu-btn text-gray-500 hover:text-gray-800"
-                            onClick={() => setState(!state)}
+                          style={{cursor:"pointer"}}  onClick={() => setState(!state)}
                         >
                             {
                                 state ? (
@@ -159,7 +159,7 @@ const Dropdown = ({ color, onLogout,User}) => {
                 className={
                   "text-white font-bold uppercase text-sm px-6 rounded outline-none focus:outline-none bg-green-50"
                 }
-                style={{ transition: "all .15s ease" }}
+                style={{ transition: "all .15s ease", cursor:"pointer" }}
                 type="button"
                 ref={btnDropdownRef}
                 onClick={() => {
@@ -212,6 +212,7 @@ const Dropdown = ({ color, onLogout,User}) => {
                   className={
                     "text-sm py-2 px-4 w-full font-normal flex bg-white text-gray-800 hover:bg-gray-200"
                   }
+                  style={{cursor:"pointer"}}
                   onClick={(e)=>{onLogout(e)}}
                 >
                  <FiLogOut className="w-4 h-4 mr-1"/>Log Out

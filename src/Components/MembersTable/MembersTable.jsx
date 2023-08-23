@@ -127,7 +127,7 @@ const MembersTable = ({community}) => {
         <div className="w-full">
             <div className="w-full flex flex-row items-center justify-between mb-3">
                 <h1 className=" text-lg md:text-2xl font-bold text-green-700">{community} Members</h1>
-                <button className="text-sm font-semibold text-white p-2 rounded-lg bg-green-600 flex" onClick={() => {
+                <button className="text-sm font-semibold text-white p-2 rounded-lg bg-green-600 flex" style={{cursor:"pointer"}} onClick={() => {
                     setShowAddModal(true)
                     setAddModalData({
                         community: community
@@ -162,14 +162,14 @@ const MembersTable = ({community}) => {
                                     <td className="p-1 text-sm md:text-md px-1 md:p-3 md:px-5">{member.email}</td>
                                     <td className="p-1 text-sm md:text-md px-1 md:p-3 md:px-5">{handleRole(member)}</td>
                                     <td className="p-1 text-sm md:text-md px-1 md:p-3 md:px-5 flex justify-end">
-                                        <button type="button" onClick={()=> {
+                                        <button type="button" style={{cursor:"pointer"}} onClick={()=> {
                                             setShowEditModal(true)
                                             setEditModalData({
                                                 member: member,
                                                 index: index,
                                             })
                                         }} className="mr-0 md:mr-3 text-smtext-white py-1 px-1 md:px-2  rounded focus:outline-none focus:shadow-outline"><AiOutlineEdit className="w-6 h-6"/></button>
-                                        <button type="button" onClick={()=> {setShowDeleteModal(true); setDeleteModalData({
+                                        <button type="button" style={{cursor:"pointer"}} onClick={()=> {setShowDeleteModal(true); setDeleteModalData({
                                                 username: member.username,
                                                 userId: member.user_id,
                                                 index: index,
@@ -242,8 +242,8 @@ const DeleteModal = ({username,community, onDelete, userId,index, setShowDeleteM
                     <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
                         <h1 className="text-2xl font-bold text-gray-600 mb-4">Are you sure you want to delete this member?</h1>
                         <div className="w-full flex flex-row items-center justify-center">
-                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" onClick={handleDelete}>Yes</button>
-                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" onClick={() => {setShowDeleteModal(false)}}>No</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" style={{cursor:"pointer"}} onClick={handleDelete}>Yes</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" style={{cursor:"pointer"}} onClick={() => {setShowDeleteModal(false)}}>No</button>
                         </div>
                     </div>
                 </div>
@@ -330,8 +330,8 @@ const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRo
                             </div>
                         </div>
                         <div className="w-full flex flex-row items-center justify-center mt-4">
-                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" onClick={handleEdit}>Make Changes</button>
-                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" onClick={() => {setShowEditModal(false)}}>Close</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" style={{cursor:"pointer"}} onClick={handleEdit}>Make Changes</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" style={{cursor:"pointer"}} onClick={() => {setShowEditModal(false)}}>Close</button>
                         </div>
                     </div>
                 </div>
@@ -399,8 +399,8 @@ const AddModal = ({community, setShowAddModal, loading, setLoading}) => {
                             </div>
                         </div>
                         <div className="w-full flex flex-row items-center justify-center mt-4">
-                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" onClick={handleAdd}>Add Member</button>
-                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" onClick={() => {setShowAddModal(false)}}>Close</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" style={{cursor:"pointer"}} onClick={handleAdd}>Add Member</button>
+                            <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" style={{cursor:"pointer"}} onClick={() => {setShowAddModal(false)}}>Close</button>
                         </div>
                     </div>
                 </div>

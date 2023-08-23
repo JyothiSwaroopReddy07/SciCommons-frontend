@@ -19,6 +19,10 @@ import CommunityAdminPage from './Pages/CommunityAdminPage/CommunityAdminPage';
 import Profile from './Pages/Profile/Profile';
 import Timeline from './Pages/Timeline/Timeline';
 import BookMarks from './Pages/Bookmarks/Bookmarks';
+import ArticlePage from './Pages/ArticlePage/ArticlePage';
+import FavouritePage from './Pages/FavouritePage/FavouritePage';
+import MyPostsPage from './Pages/MyPostsPage/MyPostsPage';
+import MyArticlesPage from './Pages/MyArticlesPage/MyArticlesPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -44,6 +48,10 @@ function App() {
         <Route path="/mycommunity" element={<CommunityAdminPage/>}/>
         <Route path="/post/:postId" element={<SinglePost/>}/>
         <Route path="/profile/:username" element={<Profile/>}/>
+        <Route path="/article/:articleId" element={<ArticlePage/>}/>
+        <Route path="/favourites" element={<FavouritePage/>} />
+        <Route path="/myposts" element={<MyPostsPage/>}/>
+        <Route path="/myarticles" element={<MyArticlesPage/>}/>
         <Route path = "*" element={<ErrorPage/>} />
       </Routes>
     </Router>

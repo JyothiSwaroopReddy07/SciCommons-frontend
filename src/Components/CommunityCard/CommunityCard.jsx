@@ -10,7 +10,7 @@ const CommunityCard = ({index, community}) => {
 
     return (
     <>
-                <div key={community.id} className="p-4 bg-white shadow-md rounded-lg hover:shadow-xl" onClick={()=> {navigate(`/community/${community.Community_name}`)}}>
+                <div key={community.id} className="p-4 bg-white shadow-md rounded-lg hover:shadow-xl" style={{cursor:"pointer"}} onClick={()=> {navigate(`/community/${community.Community_name}`)}}>
                     <div className="flex items-center justify-between mb-6">
                         <div>
                             <h2 className="text-xl text-green-600 font-bold mb-4">{community.Community_name.replace(/_/g, " ")}</h2>
