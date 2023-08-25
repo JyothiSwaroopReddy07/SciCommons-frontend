@@ -39,7 +39,7 @@ const MyPostsPage = () => {
             }
         };
         try{
-            const res = await axios.get(`http://127.0.0.1:8000/api/user/${user.username}/posts/`, config);
+            const res = await axios.get(`https://scicommons-backend.onrender.com/api/user/${user.username}/posts/`, config);
             await loadData(res.data.success);
         } catch(err) {
             console.log(err);
