@@ -4,6 +4,7 @@ import Loader from "../Loader/Loader"
 import {AiOutlineEdit,AiOutlineDelete,AiOutlineUserAdd} from 'react-icons/ai'
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
+import {SlUser} from 'react-icons/sl';
 
 
 const MembersTable = ({community}) => {
@@ -158,7 +159,7 @@ const MembersTable = ({community}) => {
                                 </tr>
                         {sortedMembers.length!==0 ?(sortedMembers.map((member, index) => (
                                 <tr key={index} className="border-b hover:bg-green-100 bg-gray-100">
-                                    <td className="p-1 px-1 md:p-3 px-0 md:px-5 flex"><img src={member.profile_pic_url} className="w-6 h-6 rounded-lg mr-3 hover:text-green-600"/><a href={`/profile/${member.username}`}>{member.username}</a></td>
+                                    <td className="p-1 px-1 md:p-3 px-0 md:px-5 flex">{member.profile_pic_url.includes("None")?<SlUser className="w-6 h-6 mr-3"/>:(<img src={member.profile_pic_url} className="w-6 h-6 rounded-lg mr-3 hover:text-green-600"/>)}<a href={`/profile/${member.username}`}>{member.username}</a></td>
                                     <td className="p-1 text-sm md:text-md px-1 md:p-3 md:px-5">{member.email}</td>
                                     <td className="p-1 text-sm md:text-md px-1 md:p-3 md:px-5">{handleRole(member)}</td>
                                     <td className="p-1 text-sm md:text-md px-1 md:p-3 md:px-5 flex justify-end">
