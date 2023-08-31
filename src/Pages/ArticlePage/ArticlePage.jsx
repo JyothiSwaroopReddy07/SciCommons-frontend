@@ -12,6 +12,387 @@ import Loader from '../../Components/Loader/Loader'
 import Comments from '../../Components/Comments/Comments'
 import {AiFillHeart, AiTwotoneStar, AiOutlineHeart} from 'react-icons/ai'
 import {MdOutlineViewSidebar} from 'react-icons/md'
+import './ArticlePage.css'
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import ToastMaker from "toastmaker";
+import "toastmaker/dist/toastmaker.css";
+
+
+const ArticleCommentModal = ({setShowCommentModal, article }) => {
+
+    const [title, setTitle] = useState("");
+    const [comment, setComment] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    const handleCommentChange = (event) => {
+        setComment(event);
+    }
+
+
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        setLoading(true);
+        const config={
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }
+        };
+        const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
+        try {
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
+            {Title: title,Comment: comment, article: article.id, Type: 'comment', comment_Type:comment_Type, tag: "public", parent_comment:null}, 
+            config);
+            setLoading(false);
+            setTitle("");
+            setComment("");
+            setShowCommentModal(false);
+            ToastMaker("Comment Posted Successfully!!!", 3000, {
+                valign: "top",
+                styles: {
+                  backgroundColor: "green",
+                  fontSize: "20px",
+                },
+              });
+        } catch(err){
+            setLoading(false);
+            if(err.response.data.error){
+                ToastMaker(err.response.data.error, 3000, {
+                    valign: "top",
+                    styles: {
+                      backgroundColor: "red",
+                      fontSize: "20px",
+                    },
+                });
+            }
+            console.log(err);
+        }
+    }
+
+
+    return (
+        <>
+            <div className="fixed inset-0 flex items-center justify-center w-full z-50 bg-gray-800 bg-opacity-50">
+                <div className="flex items-center justify-center w-5/6 my-2 p-4">
+                    <div className="bg-slate-200 p-6 rounded-lg max-h-5/6 overflow-hidden w-full">
+                    <h2 className="text-xl font-semibold mb-4">Post a Comment</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-4">
+                            <label htmlFor="title" className="block font-medium mb-1">
+                                Title
+                            </label>
+                            <input
+                                type="text"
+                                id="Title"
+                                value={title}
+                                name="Title"
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full border border-gray-300 rounded p-2"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="comment" className="block font-medium mb-1">
+                                Comment
+                            </label>
+                            <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[40vh] overflow-y-auto" value={comment} onChange={handleCommentChange}/>
+                        </div>
+                        <button
+                        type="submit"
+                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-white rounded mr-2 font-semibold"
+                        >
+                            {
+                                loading ? "Posting..." : "Post Comment"
+                            }
+                        </button>
+                        <button
+                            className="px-4 py-2 bg-red-500 text-white rounded font-semibold"
+                            onClick={()=>{setShowCommentModal(false)}}
+                        >
+                            Close
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </>
+    );
+};
+
+const ArticleReviewModal = ({setShowReviewModal, article}) => {
+
+    const [title, setTitle] = useState("");
+    const [comment, setComment] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [rating, setRating] = useState(0);
+    const [confidence, setConfidence] = useState(0);
+
+    const handleBodyChange = (event) => {
+        setComment(event);
+    }
+    const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        setLoading(true);
+        const config={
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }
+        };
+        try {
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
+            {Title: title,Comment: comment, article: article.id, rating: rating, confidence: confidence, Type: 'review',comment_Type: comment_Type, tag:"public", parent_comment:null}, 
+            config);
+            console.log(res);
+            setLoading(false);
+            setTitle("");
+            setComment("");
+            setRating(0);
+            setShowReviewModal(false);
+            ToastMaker("Review Posted Successfully!!!", 3000, {
+                valign: "top",
+                styles: {
+                  backgroundColor: "green",
+                  fontSize: "20px",
+                },
+            });
+        } catch(err){
+            setLoading(false);
+            if(err.response.data.error){
+                ToastMaker(err.response.data.error, 3000, {
+                    valign: "top",
+                    styles: {
+                      backgroundColor: "red",
+                      fontSize: "20px",
+                    },
+                });
+            }
+            console.log(err);
+        }
+    }
+
+    const handleSliderChange = (event) => {
+        setRating(event.target.value);
+    };
+
+    const handleSelectChange = (event) => {
+        setConfidence(event.target.value);
+    };
+
+
+    return (
+        <>
+            <div className="fixed inset-0 flex items-center justify-center w-full z-50 bg-gray-800 bg-opacity-50">
+                <div className="flex items-center justify-center w-5/6 my-2 p-4">
+                    <div className="bg-slate-200 p-6 rounded-lg max-h-5/6 overflow-hidden w-full">
+                    <h2 className="text-xl font-semibold mb-4">Post a Review</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-4">
+                            <label htmlFor="title" className="block font-medium mb-1">
+                                Title
+                            </label>
+                            <input
+                                type="text"
+                                id="Title"
+                                value={title}
+                                name="Title"
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full border border-gray-300 rounded p-2"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="comment" className="block font-medium mb-1">
+                                Comment
+                            </label>
+                            <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[40vh] overflow-y-auto" value={comment} onChange={handleBodyChange}/>
+                        </div>
+                        <div className="mb-1">
+                            <label htmlFor="rating" className="block font-medium mb-1">
+                                Rating
+                            </label>
+                            <div className="w-64  my-1">
+                                <input
+                                    type="range"
+                                    min="0"
+                                    max="5"
+                                    step="1"
+                                    value={rating}
+                                    onChange={handleSliderChange}
+                                    className="slider-thumb w-full appearance-none h-2 bg-gray-300 focus:outline-none"
+                                />
+                                <div className="flex justify-between mt-2">
+                                    <span className="text-sm">0</span>
+                                    <span className="text-sm">{rating}</span>
+                                    <span className="text-sm">5</span>
+                                </div>
+                                </div>
+                        </div>
+                        <div className="w-64 my-2">
+                            <label htmlFor="select" className="block text-sm font-medium text-gray-700">
+                                Confidence
+                            </label>
+                            <select
+                                id="select"
+                                value={confidence}
+                                onChange={handleSelectChange}
+                                className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none"
+                            >
+                                <option value="">Select...</option>
+                                <option value="5">I am absolutely certain that evaluation is correct and familiar with relevant literature</option>
+                                <option value="4">I am confident but not absolutely certain that my evaluation is correct</option>
+                                <option value="3">I am fairly confident that review is correct</option>
+                                <option value="2">I am willing to defend my evaluation but Its likely that I didnt understand central parts of paper</option>
+                                <option value="1">My review is educated guess</option>
+                            </select>
+                        </div>
+                        <button
+                        type="submit"
+                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-white rounded mr-2 font-semibold"
+                        >
+                            {
+                                loading ? "Posting..." : "Post Review"
+                            }
+                        </button>
+                        <button
+                            className="px-4 py-2 bg-red-500 text-white rounded font-semibold"
+                            onClick={()=>{setShowReviewModal(false)}}
+                        >
+                            Close
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </>
+    );
+};
+
+const ArticleDecisionModal = ({setShowDecisionModal, article}) => {
+
+    const [title, setTitle] = useState("");
+    const [comment, setComment] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [decision, setDecision] = useState("");
+
+    const handleBodyChange = (event) => {
+        setComment(event);
+    }
+
+
+    const handleSubmit = async(e) => {
+        e.preventDefault();
+        setLoading(true);
+        const config={
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }
+        };
+
+        const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
+        try {
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
+            {Title: title,Comment: comment, article: article.id,decision: decision, Type: 'decision',comment_Type: comment_Type, tag:"public",parent_comment:null}, 
+            config);
+            setLoading(false);
+            setTitle("");
+            setComment("");
+            setDecision("");
+            setShowDecisionModal(false);
+            ToastMaker("Decision Posted Successfully!!!", 3000, {
+                valign: "top",
+                styles: {
+                  backgroundColor: "green",
+                  fontSize: "20px",
+                },
+            });
+        } catch(err){
+            setLoading(false);
+            if(err.response.data.error){
+                ToastMaker(err.response.data.error, 3000, {
+                    valign: "top",
+                    styles: {
+                      backgroundColor: "red",
+                      fontSize: "20px",
+                    },
+                });
+            }
+            console.log(err);
+        }
+    }
+
+    const handleSelectChange = (event) => {
+        setDecision(event.target.value);
+    };
+
+    return (
+        <>
+            <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
+                <div className="flex items-center justify-center w-5/6 p-4">
+                    <div className="bg-gray-200 p-6 rounded-lg w-full max-h-5/6 overflow-y-auto">
+                    <h2 className="text-xl font-semibold mb-4">Post a Decision</h2>
+                    <form onSubmit={handleSubmit}>
+                        <div className="mb-4">
+                            <label htmlFor="title" className="block font-medium mb-1">
+                                Title
+                            </label>
+                            <input
+                                type="text"
+                                id="Title"
+                                value={title}
+                                name="Title"
+                                onChange={(e) => setTitle(e.target.value)}
+                                className="w-full border border-gray-300 rounded p-2"
+                                required
+                            />
+                        </div>
+                        <div className="mb-4">
+                            <label htmlFor="comment" className="block font-medium mb-1">
+                                Comment
+                            </label>
+                            <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[50vh] overflow-y-auto" value={comment} onChange={handleBodyChange}/>
+                        </div>
+                        <div className="w-64 my-2">
+                            <label htmlFor="select" className="block text-sm font-medium text-gray-700">
+                                Decision
+                            </label>
+                            <select
+                                id="select"
+                                value={decision}
+                                onChange={handleSelectChange}
+                                className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none"
+                            >
+                                <option value="">Select...</option>
+                                <option value="reject">Accept</option>
+                                <option value="accept">Reject</option>
+                            </select>
+                        </div>
+                        <button
+                        type="submit"
+                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2 font-semibold"
+                        >
+                            {
+                                loading ? "Posting..." : "Post Decision"
+                            }
+                        </button>
+                        <button
+                            className="px-4 py-2 bg-red-500 text-white rounded font-semibold"
+                            onClick={()=>{setShowDecisionModal(false)}}
+                        >
+                            Close
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        </>
+    );
+};
 
 
 const  ArticlePage = () => {
@@ -23,9 +404,14 @@ const  ArticlePage = () => {
     const [article, setArticle] = useState(null);
     const [loading, setLoading] = useState(true);
     const [comments, setComments] = useState([]);
+    const [showCommentModal, setShowCommentModal] = useState(false);
+    const [showDecisionModal, setShowDecisionModal] = useState(false);
+    const [showReviewModal, setShowReviewModal] = useState(false);
+    const [loadComments, setLoadComments] = useState(false);
 
     const loadArticleData = async (res) => {
         setArticle(res);
+        await updateViews();
     }
     
     const loadCommentData = async (res) => {
@@ -59,23 +445,28 @@ const  ArticlePage = () => {
             try {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
                 await loadArticleData(res.data.success);
-                await updateViews();
+                console.log(res.data.success);
             } catch(err){
                 console.log(err);
             }
             setLoading(false);
         }
+
         const getComments = async () => {
             setLoading(true);
             const config={
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                    params:{
+                        article: articleId
                     }
             };
             try {
-                const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`,{article: articleId}, config);
-                await loadCommentData(res.data.success);
+                const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`, config);
+                console.log(res);
+                await loadCommentData(res.data.success.results);
             } catch(err){
                 console.log(err);
             }
@@ -122,7 +513,6 @@ const  ArticlePage = () => {
       };
 
     const handleFavourites = async () => {
-        console.log("jyothi swaroop");
         const config={
             headers: {
                 "Content-Type": "application/json",
@@ -151,6 +541,48 @@ const  ArticlePage = () => {
     const onclickFuntion = (indext)=>{
         setcurrentState(indext);
     };
+
+    const handleShow = () => {
+        if(currentState===1){
+            if(article.isArticleModerator){
+                setShowDecisionModal(true);
+            } else {
+                setShowReviewModal(true);
+            }
+        } else {
+            setShowCommentModal(true);
+        }
+    }
+
+    const fillLoad = () => {
+        if (comments.length === 0) {
+          return `No comments to Load`;
+        } else if (article.commentcount > comments.length) {
+          return `Load ${article.commentcount - comments.length} more comments`;
+        } else {
+          return "";
+        }
+      };
+
+    const loadMore = async () => {
+        setLoadComments(true);
+        const config = {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          params: {
+            article:articleId,
+          },
+        };
+        try {
+          const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/?limit=20&offset=${comments.length}`, config);
+          await loadCommentData([...comments, ...res.data.success.results]);
+        } catch (err) {
+          console.log(err);
+        }
+        setLoadComments(false);
+      };
 
     return (
         <>
@@ -264,20 +696,18 @@ const  ArticlePage = () => {
                                 <span className='text-[0.75rem] text-gray-600'>
                                     Add:
                                 </span>
-                                <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded">
-                                    <a href='' className='text-[0.75rem]'>
-                                        public comment
-                                    </a>
+                                <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={handleShow}>
+                                    {article.isArticleModerator && currentState === 1 && "add decision"}
+                                    {article.isArticleModerator === false && currentState === 1 && "add review"}
+                                    {currentState!==1 && "add comment"}
                                 </span>
                             </div>
-
-
                         </div>
                     </div>
                 </div>
             </div>
-                 <div className="flex w-full md:w-5/6 bg-[#fffdfa] mt-[1rem] mx-auto p-2 overflow-hidden">
-                    <div>
+                 <div className="flex flex-col w-full md:w-5/6 bg-[#fffdfa] mt-[1rem] mx-auto p-2 overflow-hidden">
+                    <div className="w-full">
                         <div className='w-full flex mx-auto mt-4'>
                             <button className={currentState === 1 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
                             style={{cursor:"pointer"}} onClick={()=> onclickFuntion(1)}>
@@ -285,7 +715,7 @@ const  ArticlePage = () => {
                             </button>
                             <button className={currentState === 2 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200  py-2'} 
                             style={{cursor:"pointer"}} onClick={()=> onclickFuntion(2)}>
-                                    Blogs
+                                Blogs
                             </button>
                             <button className={currentState === 3 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2  border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
                             style={{cursor:"pointer"}} onClick={()=> onclickFuntion(3)}>
@@ -297,25 +727,28 @@ const  ArticlePage = () => {
                             </button>
 
                         </div>
-                        <div>
-                            <div className='p-3 w-full md:w-4/5 mx-auto'>
-                                {  comments.length>0 && comments.map((comment) => (
-                                        <Comments comment={comment}/>
-                                    ))  
-                                }
-                                {
-                                    comments.length==0 && (
-                                        <div className="flex justify-center">
-                                            <div className="text-[1.25rem] text-green-600">
-                                                No Comments
-                                            </div>
-                                        </div> 
-                                    )          
-                                }
+                    </div>
+                    <div className="w-full">
+                        <div className='p-3'>
+                            {  comments.length>0 && comments.map((comment) => (
+                                        <Comments comment={comment} article={article}/>
+                                ))  
+                            }
+                            <div className="w-full flex flex-row justify-center items-center">
+                                <button
+                                    style={{cursor:"pointer"}}
+                                        onClick={loadMore}
+                                        className="p-2 text-green-500 text-2xl text-center font-bold mt-2"
+                                    >
+                                        {loadComments ? "Loading..." : fillLoad()}
+                                </button>
                             </div>
                         </div>
                     </div>
                  </div>
+                 {showCommentModal && (<ArticleCommentModal setShowCommentModal={setShowCommentModal} article={article}/>)}
+                 {showReviewModal && (<ArticleReviewModal setShowReviewModal={setShowReviewModal} article={article}/>)}
+                 {showDecisionModal && article.isArticleModerator && (<ArticleDecisionModal setShowDecisionModal={setShowDecisionModal} article={article}/>)}
             </>
         )}
         </>

@@ -108,6 +108,9 @@ const BookMarks = () => {
       <NavBar />
       {!loading && (
         <>
+          <div className="flex flex-row justify-center items-center mx-auto px-4 w-full md:w-1/2 mt-2">
+            <h1 className="text-3xl text-gray-600 font-semibold">My Bookmarks</h1>
+          </div>
           <div className="container mx-auto px-4 w-full md:w-1/2 mt-2">
             {posts.length > 0 &&
               posts.map((post) => <Post key={post.id} post={post} removePosts={removePosts}/>)}

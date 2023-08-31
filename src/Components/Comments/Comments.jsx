@@ -1,107 +1,164 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import pencil from "./pencil.png";
-import { Collapse, Ripple, initTE } from "tw-elements";
+import "./Comments.css";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import ToastMaker from "toastmaker";
+import "toastmaker/dist/toastmaker.css";
 
-initTE({ Collapse, Ripple });
 
-const Comments = ({ comment }) => {
+const Comments = ({ comment, article }) => {
 
-  const [show, setShow] = useState(true);
-  const [innerCmt, setInnerCmt] = useState(false);
+  console.log(comment);
+
   const [loading, setLoading] = useState(false);
   const [repliesData, setRepliesData] = useState([]);
+  const [show, setShow] = useState(false);
 
+  const findTime = (date) => {
+    const time = new Date(date);
+    const now = new Date();
+    const diff = now - time;
+    const seconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = Math.floor(days / 30);
+    const years = Math.floor(months / 12);
+    if (years > 0) {
+      return `${years} years ago`;
+    } else if (months > 0) {
+      return `${months} months ago`;
+    } else if (days > 0) {
+      return `${days} days ago`;
+    } else if (hours > 0) {
+      return `${hours} hours ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minutes ago`;
+    } else if (seconds > 0) {
+      return `${seconds} seconds ago`;
+    } else {
+      return `Just now`;
+    }
+  };
 
+  const styleLinksWithColor = (htmlContent) => {
+    const coloredLinks = htmlContent.replace(/<a /g, '<a style="color: blue;" ');
+    return coloredLinks;
+  };
+
+  const fillUserType = () => {
+    if(article.isArticleModerator){
+      return (<span class="inline-flex items-center gap-1.5 py-1.5 ml-3 px-3 rounded-full text-xs font-medium bg-purple-500 text-white">Moderator</span>)
+    }
+    else if(article.isArticleReviewer){
+      return (<span class="inline-flex items-center gap-1.5 py-1.5 ml-3 px-3 rounded-full text-xs font-medium bg-purple-500 text-white">Reviewer</span>)
+    }
+    else if(article.isAuthor) {
+      return (<span class="inline-flex items-center gap-1.5 py-1.5 ml-3 px-3 rounded-full text-xs font-medium bg-purple-500 text-white">Author</span>)
+    }
+  }
 
   return (
     <>
-      <div key={comment.id}>
-        <div className="box-content bg-[#efece3]  border-[#3f6978] border-solid  p-4 mt-4 mb-4 ">
-          <div
-            className="flex flex-col"
-            style={{
-              flexDirection: "column",
-              position: "absolute",
-              left: "138px",
-            }}
-          >
-            <button
-              className=" "
-              style={{
-                minWidth: "auto",
-                borderWidth: "1px",
-                padding: "0 2px",
-                fontWeight: "400",
-                lineHeight: "13px",
-                fontSize: "12px",
-                borderTopRightRadius: "2px",
-                borderTopLeftRadius: "2px",
-                width: "100%",
-                display: "block",
-                color: "#4d8093",
-                backgroundColor: "#fffdfa",
-                border: "2px solid #3f6978",
-                cursor:"pointer",
-              }}
-              onClick={() => setShow(false)}
-            >
-              −
-            </button>
-            <button style={{cursor:"pointer"}} onClick={() => setShow(true)}>
-              ＝
-            </button>
-            <button style={{cursor:"pointer"}} onClick={() => setInnerCmt(true)}>
-              ≡
-            </button>
-          </div>
-          <div className="flex ">
-            <div className="comments w-full md:w-auto ">
-              <div className="flex">
-                <span
-                  className="md:font-bold  relative  text-[#2c3a4a]  leading-[1.25rem]"
-                  style={{ top: "8px" }}
-                >
-                  {comment.main_heading}
+      <div key={comment.id} className="mb-2 w-full bg-slate-200 shadow-xl rounded p-2">
+          <div className="flex flex-row items-center" style={{cursor:"pointer"}} onClick={()=>{setShow(!show)}}>
+              <div className="flex flex-row items-center">
+                <span className='font-bold  relative  text-[#2c3a4a]  leading-[1.25rem]'>
+                  {comment.Title}
                 </span>
                 <span className=" text-[#777] font-[400] text-[0.55 rem] ml-2  p-2">
-                  • by {comment.meain_heading_by}
+                    • by {comment.user}
+                </span>
+                <span className="text-xs text-slate-400">
+                  • {findTime(comment.Comment_date)} •
                 </span>
               </div>
+              <div className="flex ml-2">
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className={`h-5 w-5 ${
+                            (comment.rating == null ? 0 : comment.rating) >= 1
+                            ? "text-yellow-500"
+                            : "text-gray-400"
+                        }`}
+                        >
+                        <path d="M12 1l2.753 8.472h8.938l-7.251 5.269 2.753 8.472L12 18.208l-7.193 5.005 2.753-8.472L.309 9.472h8.938z" />
+                        </svg>
 
-              {show && (
-                <>
-                  <div className="cmtdata">
-                        <div className="py-1 px-0" key={comment.id}>
-                          <span className="font-[700] text-[#8c1b13] text-[0.75rem] block">
-                            {comment.title}
-                          </span>
-                          <span className="cmt-text leading-[1.125rem] mb-1">
-                            <p className="text-[0.75rem] break-words ">
-                              {comment.text}
-                            </p>
-                          </span>
-                        </div>
-                  </div>
-                    <div className="float-right">
-                      <span className="text-[0.75rem] text-gray-600">Add:</span>
-                      <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded">
-                        <a href="" className="text-[0.75rem]">
-                          public comment
-                        </a>
-                      </span>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className={`h-5 w-5 ${
+                            (comment.rating == null ? 0 : comment.rating) >= 2
+                            ? "text-yellow-500"
+                            : "text-gray-400"
+                        }`}
+                        >
+                        <path d="M12 1l2.753 8.472h8.938l-7.251 5.269 2.753 8.472L12 18.208l-7.193 5.005 2.753-8.472L.309 9.472h8.938z" />
+                        </svg>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className={`h-5 w-5 ${
+                            (comment.rating == null ? 0 : comment.rating) >= 3
+                            ? "text-yellow-500"
+                            : "text-gray-400"
+                        }`}
+                        >
+                        <path d="M12 1l2.753 8.472h8.938l-7.251 5.269 2.753 8.472L12 18.208l-7.193 5.005 2.753-8.472L.309 9.472h8.938z" />
+                        </svg>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className={`h-5 w-5 ${
+                            (comment.rating == null ? 0 : comment.rating) >= 4
+                            ? "text-yellow-500"
+                            : "text-gray-400"
+                        }`}
+                        >
+                        <path d="M12 1l2.753 8.472h8.938l-7.251 5.269 2.753 8.472L12 18.208l-7.193 5.005 2.753-8.472L.309 9.472h8.938z" />
+                        </svg>
+                        <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="currentColor"
+                        className={`h-5 w-5 ${
+                            (comment.rating == null ? 0 : comment.rating) >= 5
+                            ? "text-yellow-500"
+                            : "text-gray-400"
+                        }`}
+                        >
+                        <path d="M12 1l2.753 8.472h8.938l-7.251 5.269 2.753 8.472L12 18.208l-7.193 5.005 2.753-8.472L.309 9.472h8.938z" />
+                        </svg>
                     </div>
-                </>
-              )}
-            </div>
-          </div>
-
-          <div className="subCom">
-            {repliesData.map((comment, j) => {
-                <Comments comment={comment}/>
-              })
-            }
-          </div>
         </div>
+          {show && (
+          <>
+            <div className="w-full">
+              <span class="inline-flex items-center gap-1.5 py-1.5 px-3 rounded-full text-xs font-medium bg-red-500 text-white">{comment.Type}</span>
+              <span class="inline-flex items-center gap-1.5 py-1.5 ml-3 px-3 rounded-full text-xs font-medium bg-cyan-500 text-white">{comment.tag}</span>
+              <span class="inline-flex items-center gap-1.5 py-1.5 ml-3 px-3 rounded-full text-xs font-medium bg-orange-500 text-white">{comment.comment_type}</span>
+              {fillUserType()}
+            </div>
+            <div className="container w-full mt-2">
+              <div className="text-xl">
+                Comment:
+              </div>
+              <ReactQuill
+                value={styleLinksWithColor(comment.Comment)}
+                readOnly={true}
+                modules={{toolbar: false}}
+                className="bg-white"
+              />
+            </div>
+          </>)
+          }
       </div>
     </>
   );
