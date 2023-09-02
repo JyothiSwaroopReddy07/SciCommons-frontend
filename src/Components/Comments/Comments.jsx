@@ -275,7 +275,7 @@ const Comments = ({ comment, article, colour }) => {
 
   return (
     <>
-      <div className={`mb-2 w-full ${colorClasses[colour]} shadow-lg rounded px-4 py-2 overflow-x-auto`} data-commentid={comment.id}>
+      <div className={`mb-2 w-full ${colorClasses[colour]} shadow-lg min-w-[200px] rounded px-4 py-2 overflow-x-auto`} data-commentid={comment.id}>
           <div className="flex flex-row items-center" style={{cursor:"pointer"}} onClick={()=>{setShow(!show)}}>
               <div className="flex flex-row items-center">
                 <span className='font-bold  relative text-xl text-gray-600 leading-[1.25rem]'>
@@ -378,9 +378,10 @@ const Comments = ({ comment, article, colour }) => {
               <div className="flex flex-row justify-between items-center">
                   <div className="mb-1 flex flex-row items-center">
                     <div className="text-sm mr-2 font-semibold text-green-600">
-                      Rate the Comment:
+                      Rating of Comment:
                     </div>
-                    <div className="w-32 my-1 mr-2 relative">
+                    {comment.personal === false &&
+                    <div className="w-16 my-1 mr-2 relative">
                       <input
                         type="range"
                         min="0"
@@ -395,9 +396,9 @@ const Comments = ({ comment, article, colour }) => {
                         }}
                       />
                       <div className="flex justify-between mt-2">
-                        <span className="text-xs text-gray-500">Bad</span>
-                        <span className="text-xs text-gray-500">{rating}</span>
-                        <span className="text-xs text-gray-500">Excellent</span>
+                        <span className="text-[8px] text-gray-500">Bad</span>
+                        <span className="text-[10px] text-gray-500">{rating}</span>
+                        <span className="text-[8px] text-gray-500">Excellent</span>
                       </div>
                       <div
                         className="bg-green-600 rounded-full"
@@ -407,6 +408,7 @@ const Comments = ({ comment, article, colour }) => {
                         }}
                       ></div>
                     </div>
+                    }
                     <div className="text-xl font-semibold ml-3">
                       {overallrating}
                     </div>
