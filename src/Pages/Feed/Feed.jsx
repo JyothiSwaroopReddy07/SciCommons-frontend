@@ -144,7 +144,6 @@ const Feed = () => {
     const updatedPosts = [...posts];
     const index = updatedPosts.findIndex(post => post.id === postId);
     updatedPosts[index].body = body;
-    console.log(updatedPosts[index]);
     updatedPosts[index].image_url = image_url;
     await loadData(updatedPosts);
   }

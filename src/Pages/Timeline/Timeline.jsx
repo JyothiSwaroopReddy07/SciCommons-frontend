@@ -39,7 +39,6 @@ const Timeline = () => {
         const res = await axios.get("https://scicommons-backend.onrender.com/api/feed/timeline/", config)
 
         if(res.data.success.length === 0){
-            console.log("No posts")
             await loadData([])
         } else{
             await loadData(res.data.success.results)

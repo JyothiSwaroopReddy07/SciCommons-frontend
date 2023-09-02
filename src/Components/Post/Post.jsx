@@ -61,7 +61,6 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
     const handleBookmark = async(e) => {
       // Implement bookmark logic here
       e.preventDefault()
-      console.log(post.username, user.username);
       const config = {
           headers: {
               "Content-Type": "application/json",

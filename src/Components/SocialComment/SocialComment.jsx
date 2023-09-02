@@ -225,22 +225,6 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
       }
     };
   
-    const addAnchorTags = (text) => {
-      const words = text.split(' ');
-    
-      const processedWords = words.map((word, index) => {
-        if (word.includes('https://')) {
-          return (
-            <span key={index}>
-              <a href={`${word}`} className="text-blue-500 underline">{word}</a>
-            </span>
-          );
-        }
-        return <span key={index}>{word} </span>;
-      });
-    
-      return processedWords;
-    }
   
     const handleReply = async (e) => {
       e.preventDefault();

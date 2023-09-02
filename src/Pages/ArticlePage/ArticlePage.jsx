@@ -19,7 +19,7 @@ import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 
 
-const ArticleCommentModal = ({setShowCommentModal, article }) => {
+const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => {
 
     const [title, setTitle] = useState("");
     const [comment, setComment] = useState("");
@@ -48,6 +48,7 @@ const ArticleCommentModal = ({setShowCommentModal, article }) => {
             setLoading(false);
             setTitle("");
             setComment("");
+            await handleComment(res.data.comment);
             setShowCommentModal(false);
             ToastMaker("Comment Posted Successfully!!!", 3000, {
                 valign: "top",
@@ -121,7 +122,7 @@ const ArticleCommentModal = ({setShowCommentModal, article }) => {
     );
 };
 
-const ArticleReviewModal = ({setShowReviewModal, article}) => {
+const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
 
     const [title, setTitle] = useState("");
     const [comment, setComment] = useState("");
@@ -152,6 +153,7 @@ const ArticleReviewModal = ({setShowReviewModal, article}) => {
             setTitle("");
             setComment("");
             setRating(0);
+            await handleComment(res.data.comment);
             setShowReviewModal(false);
             ToastMaker("Review Posted Successfully!!!", 3000, {
                 valign: "top",
@@ -272,7 +274,7 @@ const ArticleReviewModal = ({setShowReviewModal, article}) => {
     );
 };
 
-const ArticleDecisionModal = ({setShowDecisionModal, article}) => {
+const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) => {
 
     const [title, setTitle] = useState("");
     const [comment, setComment] = useState("");
@@ -303,6 +305,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article}) => {
             setTitle("");
             setComment("");
             setDecision("");
+            await handleComment(res.data.comment);
             setShowDecisionModal(false);
             ToastMaker("Decision Posted Successfully!!!", 3000, {
                 valign: "top",
@@ -445,7 +448,6 @@ const  ArticlePage = () => {
             try {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
                 await loadArticleData(res.data.success);
-                console.log(res.data.success);
             } catch(err){
                 console.log(err);
             }
@@ -481,7 +483,6 @@ const  ArticlePage = () => {
     }
 
     const handleFile = () => {
-        console.log(article.article_file_url);
         window.open(article.article_file_url);
     }
 
@@ -582,21 +583,26 @@ const  ArticlePage = () => {
           console.log(err);
         }
         setLoadComments(false);
-      };
+    };
+
+    const handleComment = async(res) => {
+        const newReply = [res,...comments];
+        setComments(newReply);
+    }
 
     return (
-        <>
+        <div className="bg-amber-50 min-h-screen">
         <Navbar/>
         {loading && <Loader/>}
         {!loading && article && (
-            <>
-            <div className="flex justify-center  w-full md:w-5/6 bg-[#fffdfa] mt-[1rem] mx-auto p-2 overflow-hidden">
+            < div className="bg-amber-50">
+            <div className="flex justify-center bg-amber-50 w-full md:w-5/6 mt-[1rem] mx-auto p-2 overflow-hidden">
 
-                <div className=' mt-1 w-full  justify-self-center bg-[#fffdfa]'>
+                <div className=' mt-1 w-full  justify-self-center bg-amber-50'>
                     <div className="py-5 ">
-                        <div className="flex bg-[#fffdfa] flex-row justify-between">
+                        <div className="flex bg-amber-50 flex-row justify-between">
 
-                            <div className='text-lg md:text-3xl font-[700] text-gray-600 bg-[#fffdfa]'>
+                            <div className='text-lg md:text-3xl font-[700] text-gray-600 bg-amber-50'>
                                 {article.article_name.replace(/_/g, " ")}
                             </div>
                             <div className="flex flex-row">
@@ -610,7 +616,7 @@ const  ArticlePage = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="py-1 bg-[#fffdfa]">
+                        <div className="py-1 bg-amber-50">
 
                             <span className="italic font-sans text-md md:text-lg leading-[1.5rem] ">
 
@@ -627,7 +633,7 @@ const  ArticlePage = () => {
                                 .
                             </span>
                         </div>
-                        <div className="bg-[#fffdfa]">
+                        <div className="bg-amber-50">
                             <span className="text-[.75rem] p-0">
                                 <img className='w-[.875rem] inline mb-1' src={cal} ></img>
                                 <span className="pl-1">
@@ -653,7 +659,7 @@ const  ArticlePage = () => {
                         </div>
 
                     </div>
-                    <div className="text-[.75rem] leading-[1.125rem] mt-[-0.875rem] bg-[#fffdfa]">
+                    <div className="text-[.75rem] leading-[1.125rem] mt-[-0.875rem] bg-amber-50">
                         <span className="block">
                             <strong className='text-green-700'> Abstract : </strong>
                               <span>{article.Abstract}</span>
@@ -691,7 +697,7 @@ const  ArticlePage = () => {
                     </div>
 
                     <div className="ab m-0">
-                        <div className='bg-[#fffdfa] border-[#3f6978] border-solid'>
+                        <div className='bg-amber-50 border-[#3f6978] border-solid'>
                             <div className="float-right">
                                 <span className='text-[0.75rem] text-gray-600'>
                                     Add:
@@ -706,7 +712,7 @@ const  ArticlePage = () => {
                     </div>
                 </div>
             </div>
-                 <div className="flex flex-col w-full md:w-5/6 bg-[#fffdfa] mt-[1rem] mx-auto p-2 overflow-hidden">
+                 <div className="flex flex-col w-full md:w-5/6 bg-amber-50 mt-[1rem] mx-auto p-2 overflow-hidden">
                     <div className="w-full">
                         <div className='w-full flex mx-auto mt-4'>
                             <button className={currentState === 1 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
@@ -731,7 +737,7 @@ const  ArticlePage = () => {
                     <div className="w-full">
                         <div className='p-3'>
                             {  comments.length>0 && comments.map((comment) => (
-                                        <Comments comment={comment} article={article}/>
+                                        <Comments key={comment.id} comment={comment} article={article} colour={1}/>
                                 ))  
                             }
                             <div className="w-full flex flex-row justify-center items-center">
@@ -746,12 +752,12 @@ const  ArticlePage = () => {
                         </div>
                     </div>
                  </div>
-                 {showCommentModal && (<ArticleCommentModal setShowCommentModal={setShowCommentModal} article={article}/>)}
-                 {showReviewModal && (<ArticleReviewModal setShowReviewModal={setShowReviewModal} article={article}/>)}
-                 {showDecisionModal && article.isArticleModerator && (<ArticleDecisionModal setShowDecisionModal={setShowDecisionModal} article={article}/>)}
-            </>
+                 {showCommentModal && (<ArticleCommentModal setShowCommentModal={setShowCommentModal} article={article} handleComment={handleComment}/>)}
+                 {showReviewModal && (<ArticleReviewModal setShowReviewModal={setShowReviewModal} article={article} handleComment={handleComment}/>)}
+                 {showDecisionModal && article.isArticleModerator && (<ArticleDecisionModal setShowDecisionModal={setShowDecisionModal} article={article} handleComment={handleComment}/>)}
+            </div>
         )}
-        </>
+        </div>
     )
 }
 

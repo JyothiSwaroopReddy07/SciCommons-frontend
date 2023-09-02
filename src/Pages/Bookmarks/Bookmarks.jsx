@@ -54,7 +54,6 @@ const BookMarks = () => {
         config
       );
       if (res.data.success.length === 0) {
-        console.log("No posts");
         await loadData([]);
       } else {
         await loadData(res.data.success);
