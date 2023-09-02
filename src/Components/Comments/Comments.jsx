@@ -275,7 +275,7 @@ const Comments = ({ comment, article, colour }) => {
 
   return (
     <>
-      <div className={`mb-2 w-full ${colorClasses[colour]} shadow-lg rounded px-4 py-2`} data-commentid={comment.id}>
+      <div className={`mb-2 w-full ${colorClasses[colour]} shadow-lg rounded px-4 py-2 overflow-x-auto`} data-commentid={comment.id}>
           <div className="flex flex-row items-center" style={{cursor:"pointer"}} onClick={()=>{setShow(!show)}}>
               <div className="flex flex-row items-center">
                 <span className='font-bold  relative text-xl text-gray-600 leading-[1.25rem]'>
@@ -412,8 +412,8 @@ const Comments = ({ comment, article, colour }) => {
                     </div>
                   </div>
                 <div className="flex flex-row">
-                  <span className='text-[0.75rem] text-gray-600'>
-                    Add:
+                <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 mr-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>{setShowCommentModal(true);}}>
+                    edit comment
                   </span>
                   <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>{setShowCommentModal(true);}}>
                     reply

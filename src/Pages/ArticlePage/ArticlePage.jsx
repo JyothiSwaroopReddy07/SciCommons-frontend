@@ -591,7 +591,7 @@ const  ArticlePage = () => {
     }
 
     return (
-        <div className="bg-amber-50 min-h-screen">
+        <div className="bg-amber-50 min-h-screen min-w-[800px]">
         <Navbar/>
         {loading && <Loader/>}
         {!loading && article && (
