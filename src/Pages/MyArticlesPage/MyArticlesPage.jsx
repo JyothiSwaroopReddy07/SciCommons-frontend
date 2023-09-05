@@ -22,31 +22,28 @@ const MyArticlesPage = () => {
         setSortedArticles(res);
     }
 
-    useEffect(() => {
-        const fetchArticles = async () => {
-            setLoading(true)
-            const token = localStorage.getItem('token'); // Retrieve the token from local storage
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-                },
-            };
-            try {
-                const response = await axios.get(
-                    `https://scicommons-backend.onrender.com/api/user/articles/`,
-                    config
-                );
-                const res = []
-                response.data.success.forEach((article) => {
-                    res.push(article.article);
-                })
-                await loadData(res);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false)
-            }   
+    const fetchArticles = async () => {
+        setLoading(true)
+        const token = localStorage.getItem('token');
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
         };
+        try {
+            const response = await axios.get(
+                `https://scicommons-backend.onrender.com/api/user/articles/`,
+                config
+            );
+            await loadData(response.data.success);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false)
+        }   
+    };
+
+    useEffect(() => {
         fetchArticles();
     }, []);
 

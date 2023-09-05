@@ -4,6 +4,8 @@ import axios from "axios";
 import ArticleCard from "../../Components/ArticleCard/ArticleCard";
 import Loader from "../../Components/Loader/Loader";
 import Footer from "../../Components/Footer/Footer";
+import ToastMaker from "toastmaker";
+import "toastmaker/dist/toastmaker.css";
 
 
 const AllArticlesPage = () => {
@@ -11,115 +13,187 @@ const AllArticlesPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [sortedArticles, setSortedArticles] = useState([]);
+    const [selectedOption, setSelectedOption] = useState('All');
+    const [orderOption,setOrderOption] = useState("default");
+    const [loadingmore, setLoadingMore] = useState(false);
+
+    const handleOptionChange = (e) => {
+        setSelectedOption(e.target.value);
+    };
+
+    const handleOrderChange = (e) => {
+        setOrderOption(e.target.value);
+    };
+
+    const loadData = async (res) => {
+        setArticles(res);
+    }
+
+    const loadMoreData = async (res) => {
+        const newArticles = [...articles, ...res]
+        setArticles(newArticles);
+    }
+
+    const fetchArticles = async () => {
+        setLoading(true)
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`,
+            },
+        };
+        try {
+            const response = await axios.get(
+                `http://127.0.0.1:8000/api/article/`,
+                config
+            );
+            console.log(response.data.success.results);
+            await loadData(response.data.success.results);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false)
+        }   
+    };
+
+    const fillFilter = () => {
+        if(selectedOption==='Rating'){
+            return 'rated'
+        } else if(selectedOption==='Favourites') {
+            return "favourite"
+        }else if (selectedOption==="Views"){
+            return "viewed"
+        } else if(selectedOption==='Date') {
+            return "recent"
+        }
+        return "";
+    }
 
     useEffect(() => {
-        const fetchArticles = async () => {
-            setLoading(true)
-            const token = localStorage.getItem('token'); // Retrieve the token from local storage
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-                },
-            };
-            try {
-                const response = await axios.get(
-                    `https://scicommons-backend.onrender.com/api/article?search=${searchTerm}`,
-                    config
-                );
-                setArticles(response.data.success.results);
-                setSortedArticles(response.data.success.results);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false)
-            }   
-        };
         fetchArticles();
-        const intervalId = setInterval(fetchArticles, 60000);
-        return () => {
-            clearInterval(intervalId);
+    }, []);
+
+    const handleSearch = async(e) => {
+        e.preventDefault();
+        setLoading(true);
+        let filter = fillFilter()
+        const config = {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('token')}`, 
+            },
         };
-    }, [searchTerm]);
+        if(orderOption==="Ascending") {
+            filter = "least_"+filter;
+        }
+        try{
+            const response = await axios.get(`http://127.0.0.1:8000/api/article/?search=${searchTerm}`,{
+                params:{
+                    filter: filter,
+                },
+            },config);
+            await loadData(response.data.success.results);
+        } catch(err){
+            console.log(err);
+        }
+        setLoading(false);
+    }
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-    }
-    
-    const sortRated = (e) => {
-        e.preventDefault();
-        setLoading(true)
-        const sortedByRating = [...articles].sort((a, b) => b.rating - a.rating);
-        setSortedArticles(sortedByRating);
-        setLoading(false)
-    }
-    const sortFavourite = (e) => {
-        e.preventDefault();
-        setLoading(true)
-        const sortedByFavourite = [...articles].sort((a, b) => b.favourites - a.favourites);
-        setSortedArticles(sortedByFavourite);
-
-        setLoading(false)
-    }
-    const sortViews = (e) => {
-        e.preventDefault();
-        setLoading(true)
-        const sortedByViews = [...articles].sort((a, b) => b.views - a.views);
-        setSortedArticles(sortedByViews);
-
-        setLoading(false)
-    }
-    const sortDate = (e) => {
-        e.preventDefault();
-        setLoading(true)
-        const sortedByDate = [...articles].sort((a, b) => {
-            const dateA = new Date(a.Public_date);
-            const dateB = new Date(b.Public_date);
-            return dateB - dateA;
-        });
-        setSortedArticles(sortedByDate);
-        setLoading(false)
-    }        
+    const handleLoadMore = async() => {
+        setLoadingMore(true);
+        try{
+        let filter = fillFilter()
+        if(orderOption) {
+            filter = "least_"+filter;
+        }
+          const response = await axios.get(`http://127.0.0.1:8000/api/article/?search=${searchTerm}&limit=20&offset=${articles.length}`, {
+              headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, },
+              params: {filter: filter},
+          });
+          const data = response.data.success.results;
+          if(response.data.success.count === articles.length) {
+            ToastMaker("No more articles to load", 3000, {
+              valign: "top",
+              styles: {
+                backgroundColor: "red",
+                fontSize: "20px",
+              },
+            });
+          }
+          await loadMoreData(data);
+        } catch(err) {
+          console.log(err);
+        }
+        setLoadingMore(false);
+      }
 
     return (
         <>
             <NavBar />
             <div className="flex flex-col items-center justify-center w-full bg-gray-50">
-                <form className="w-5/6 px-4 mt-20 md:w-2/3" onSubmit={handleSearch}>
+                <h1 className="text-3xl font-bold text-gray-700 mt-10">Articles</h1>
+                <form className="w-5/6 px-4 mt-3 md:w-2/3" onSubmit={handleSearch}>
                     <div className="relative">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        <div>
+                            <input
+                                type="text"
+                                placeholder="Search using keywords, authors, articles"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-full py-2 pr-4 text-green-600 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-green-600"
                             />
-                        </svg>
-                        <input
-                            type="text"
-                            placeholder="Search using keywords, authors, articles"
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                            className="w-full py-3 pl-12 pr-4 text-green-600 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-green-600"
-                        />
+                        </div>
+                        <button
+                            type="submit"
+                            onClick={handleSearch}
+                            className="absolute top-0 bottom-0 right-0 px-4 py-2 text-sm font-semibold text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:bg-gray-700"
+                        >
+                            Search
+                        </button>
                     </div>
                 </form>
-                <div className="flex flex-row justify-end mb-5 w-full md:w-2/3">
-                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortRated}>Most Rated</button>
-                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortFavourite}>Most Favourite</button>
-                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortViews}>Most Views</button>
-                    <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortDate}>Most Recent</button>
+                <div className="flex flex-row flex-wrap justify-center items-center mb-5 w-full md:w-2/3">
+                    <div className="flex flex-row items-center mt-3">
+                        <div className="text-sm md:text-xl font-semibold mr-2">
+                            Apply Filters: 
+                        </div>
+                        <div className="relative inline-flex mr-2">
+                            <select
+                                className="bg-white text-gray-800 text-sm md:text-lg border rounded-lg px-4 py-1 transition duration-150 ease-in-out"
+                                value={selectedOption}
+                                onChange={handleOptionChange}
+                            >
+                                <option value="All">All</option>
+                                <option value="Rating">Rating</option>
+                                <option value="Favourites">Favourites</option>
+                                <option value="Views">Views</option>
+                                <option value="Date">Date</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="flex flex-row items-center mt-3">
+                        <div className="text-sm md:text-xl font-semibold mr-2">
+                            Order: 
+                        </div>
+                        <div className="relative inline-flex mr-2">
+                            <select
+                                className="bg-white text-gray-800 text-sm md:text-lg border rounded-lg px-4 py-1 transition duration-150 ease-in-out"
+                                value={orderOption}
+                                onChange={handleOrderChange}
+                            >
+                                <option value="Ascending">Ascending</option>
+                                <option value="Descending">Descending</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
-                { loading ? <Loader /> :  <ArticleCard articles={sortedArticles} /> }
+                { loading ? <Loader /> :  <ArticleCard articles={articles} /> }
+                <div className="flex flex-row justify-center">
+                  <button className="bg-green-500 text-white px-2 py-1 mt-4 rounded-lg" onClick={handleLoadMore}>
+                    {loadingmore?"loading...": "load More Articles"}
+                  </button>
+                </div>
             </div>
             <Footer />
         </>
