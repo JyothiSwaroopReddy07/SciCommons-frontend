@@ -195,8 +195,8 @@ const CommunityPage = () => {
     return (
         <>
         <NavBar />
-        { loading && (<Loader/>)}
-        { !loading &&    (
+        { loading && community===null && (<Loader/>)}
+        { !loading && community!==null &&    (
             <>
                 <div className="w-4/5 md:w-2/3 flex flex-col justify-center mx-auto rounded-2xl shadow-2xl bg-green-100 mt-4 p-3 mb-8 md:p-6">
                     <div className="m-4 flex flex-col justify-center">

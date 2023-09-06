@@ -195,7 +195,7 @@ const MembersTable = ({community}) => {
   )
 }
 
-export default MembersTable
+export default MembersTable;
 
 const DeleteModal = ({username,community, onDelete, userId,index, setShowDeleteModal,loading, setLoading}) => {
 

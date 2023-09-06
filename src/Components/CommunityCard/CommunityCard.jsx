@@ -3,6 +3,7 @@ import './CommunityCard.css'
 import { FaBook, FaPencilAlt, FaUsers } from 'react-icons/fa';
 import { useNavigate } from "react-router-dom";
 import { MdSubscriptions } from 'react-icons/md';
+import Loader from '../Loader/Loader';
 
 const CommunityCard = ({index, community}) => {
 
@@ -10,7 +11,9 @@ const CommunityCard = ({index, community}) => {
 
     return (
     <>
-                <div key={community.id} className="p-4 bg-white shadow-md rounded-lg hover:shadow-xl" style={{cursor:"pointer"}} onClick={()=> {navigate(`/community/${community.Community_name}`)}}>
+            {community===null && (<Loader/>)}
+            {community!==null &&
+             <div key={community.id} className="p-4 bg-white shadow-md rounded-lg hover:shadow-xl" style={{cursor:"pointer"}} onClick={()=> {navigate(`/community/${community.Community_name}`)}}>
                     <div className="flex items-center justify-between mb-6">
                         <div>
                             <h2 className="text-xl text-green-600 font-bold mb-4">{community.Community_name.replace(/_/g, " ")}</h2>
@@ -36,6 +39,7 @@ const CommunityCard = ({index, community}) => {
                         </div>
                     </div>
                 </div>
+            }
     </>
     )
 }

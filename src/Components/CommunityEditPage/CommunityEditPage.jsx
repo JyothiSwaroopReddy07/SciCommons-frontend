@@ -123,8 +123,8 @@ const CommunityEditPage = () => {
 
   return (
     <div className='w-full'>
-    {loading && <div className="w-full"><Loader/></div> }
-    {!loading &&
+    {(loading || community===null) && <div className="w-full"><Loader/></div> }
+    {!loading && community!==null &&
         <div className="w-full">
                 <div className="w-full bg-green-100 p-3 md:p-6 rounded-xl shadow-2xl">
                     <div className="w-4/5 md:w-2/3 flex flex-col justify-center mx-auto mb-10">

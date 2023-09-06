@@ -43,7 +43,7 @@ const AllArticlesPage = () => {
         };
         try {
             const response = await axios.get(
-                `http://127.0.0.1:8000/api/article/`,
+                `https://scicommons-backend.onrender.com/api/article/`,
                 config
             );
             console.log(response.data.success.results);
@@ -85,7 +85,7 @@ const AllArticlesPage = () => {
             filter = "least_"+filter;
         }
         try{
-            const response = await axios.get(`http://127.0.0.1:8000/api/article/?search=${searchTerm}`,{
+            const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}`,{
                 params:{
                     filter: filter,
                 },
@@ -104,7 +104,7 @@ const AllArticlesPage = () => {
         if(orderOption) {
             filter = "least_"+filter;
         }
-          const response = await axios.get(`http://127.0.0.1:8000/api/article/?search=${searchTerm}&limit=20&offset=${articles.length}`, {
+          const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}&limit=20&offset=${articles.length}`, {
               headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, },
               params: {filter: filter},
           });

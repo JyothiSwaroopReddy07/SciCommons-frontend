@@ -6,6 +6,7 @@ import JoinRequests from '../../Components/JoinRequests/JoinRequests'
 import axios from "axios"
 import Loader from '../../Components/Loader/Loader';
 import MembersTable from '../../Components/MembersTable/MembersTable';
+import AdminArticlePage from '../AdminArticlePage/AdminArticlePage';
 
 
 const  CommunityAdminPage =()=>{
@@ -74,7 +75,7 @@ const onclickFuntion = (indext)=>{
                     <CommunityEditPage/>
                 </div>
                 <div className={ currentState === 2? ' p-3 w-full md:w-4/5 mx-auto' : ' p-3 hidden'}>
-                    
+                    <AdminArticlePage community={community.Community_name}/>
                 </div>
                 <div className={ currentState === 3? ' p-3 w-full md:w-4/5 mx-auto' : ' p-3 hidden'}>
                     <MembersTable community={community?.Community_name}/>
