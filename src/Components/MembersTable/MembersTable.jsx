@@ -42,13 +42,12 @@ const MembersTable = ({community}) => {
         setLoading(false)
     }
 
-    useEffect(()=> {
+    const onAdd = async() => {
+        await getCommunity();
+    }
 
+    useEffect(()=> {
         getCommunity()
-        const interval = setInterval(() => {
-          getCommunity();
-        }, 60000);
-        return () => clearInterval(interval);
 
     },[])
 
@@ -184,7 +183,7 @@ const MembersTable = ({community}) => {
                             </tr>)}
                         {showDeleteModal && (<DeleteModal community={community} username={deleteModalData.username} userId={deleteModalData.userId} index={deleteModalData.index} setShowDeleteModal={setShowDeleteModal} onDelete={onDelete} loading={loading} setLoading={setLoading}/>)}
                         {showEditModal && (<EditModal community={community} setShowEditModal={setShowEditModal} member={editModalData.member} index={editModalData.index} onEdit={onEdit} handleRole={handleRole} loading={loading} setLoading={setLoading}/>)}
-                        {showAddModal && (<AddModal community={community} setShowAddModal={setShowAddModal} loading={loading} setLoading={setLoading}/>)}
+                        {showAddModal && (<AddModal community={community} setShowAddModal={setShowAddModal} loading={loading} setLoading={setLoading} onAdd={onAdd}/>)}
                     </tbody>
                 </table>
             </div>
@@ -342,7 +341,7 @@ const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRo
     )
 }
 
-const AddModal = ({community, setShowAddModal, loading, setLoading}) => {
+const AddModal = ({community, setShowAddModal, loading, setLoading, onAdd}) => {
 
 
     const username = useRef(null)
@@ -360,6 +359,7 @@ const AddModal = ({community, setShowAddModal, loading, setLoading}) => {
                 username: username.current,
                 role: "member",
             }, config);
+            console.log(res);
             if(res.status === 200){
                 ToastMaker(res.data.success, 3500,{
                     valign: 'top',
@@ -369,6 +369,7 @@ const AddModal = ({community, setShowAddModal, loading, setLoading}) => {
                       }
                   })
             }
+            await onAdd();
         } catch (error) {
             console.log(error)
             ToastMaker(error.response.data.error, 3500,{

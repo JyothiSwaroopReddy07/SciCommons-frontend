@@ -14,9 +14,11 @@ const  CommunityAdminPage =()=>{
 const [currentState, setcurrentState] = useState(1);
 const [community,setCommunity] = useState(null);
 const [loading, setLoading] = useState(false);
+
 const loadData = async (res) => {
     setCommunity(res);
 }
+
 useEffect(() => {
     setLoading(true)
     const getCommunity = async () => {

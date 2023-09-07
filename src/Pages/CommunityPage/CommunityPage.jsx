@@ -10,25 +10,184 @@ import {BiLogoGmail} from 'react-icons/bi';
 import {CgWebsite} from 'react-icons/cg';
 import {FaUsers, FaBook, FaPencilAlt} from 'react-icons/fa';
 
+const AdminArticlePage = ({community}) => {
+
+    const [searchTerm, setSearchTerm] = useState('');
+    const [articles, setArticles] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [sortedArticles, setSortedArticles] = useState([]);
+    const [selectedOption, setSelectedOption] = useState('All');
+
+    const navigate = useNavigate();
+
+    const loadData = async (res) => {
+        setArticles(res);
+        setSortedArticles(res);
+    }
+
+    const handleOptionChange = async(e) => {
+        setSelectedOption(e.target.value);
+        if(e.target.value!=="All")
+        {
+            const newArticles = articles.filter((item)=>{
+                return item.status===e.target.value
+            })
+            await loadSortedArticles(newArticles);
+        } else{
+            await loadSortedArticles([...articles]);
+        }
+    };
+
+    const loadSortedArticles = async (res) => {
+        setSortedArticles(res);
+    }
+
+    const fetchArticles = async () => {
+        setLoading(true)
+        const token = localStorage.getItem('token');
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        try {
+            const response = await axios.get(
+                `https://scicommons-backend.onrender.com/api/community/${community}/articles/`,
+                config
+            );
+            await loadData(response.data.success);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false)
+        }   
+    };
+
+    useEffect(() => {
+        fetchArticles();
+    }, []);
+
+    const handleSearch = async(e) => {
+        e.preventDefault();
+        setLoading(true);
+        const newArticles = [...articles].filter((article) => {
+            return article.article.article_name.toLowerCase().includes(searchTerm.toLowerCase()) || article.article.authors.join(" ").toLowerCase().includes(searchTerm.toLowerCase()) || article.article.keywords.toLowerCase().includes(searchTerm.toLowerCase());
+        });
+        await loadSortedArticles(newArticles);
+        setLoading(false);
+    }
+
+    const handleDate = (dateString) => {
+        const date = new Date(dateString);
+
+        const formatter = new Intl.DateTimeFormat("en-US");
+        const formattedDate2 = formatter.format(date);
+        return formattedDate2.toString();
+    }
+
+    const handleNavigate = (index) => {
+        console.log(index);
+        navigate(`/article/${index}`)
+    } 
+
+    return (
+        <>
+            <div className="flex flex-col items-center justify-center w-full bg-white">
+                <form className="w-5/6 px-4 mt-1 md:w-2/3" onSubmit={handleSearch}>
+                    <div className="relative">
+                        <div>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                                />
+                            </svg>
+                            <input
+                                type="text"
+                                placeholder="Search using keywords, authors, articles"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="w-full py-3 pl-12 pr-4 text-green-600 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-green-600"
+                            />
+                        </div>
+                        <button
+                            type="submit"
+                            onClick={handleSearch}
+                            className="absolute top-0 bottom-0 right-0 px-4 py-3 text-sm font-semibold text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:bg-gray-700"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </form>
+                <div className="flex flex-row flex-wrap justify-center items-center mb-5 w-full md:w-2/3">
+                    <div className="flex flex-row items-center mt-3">
+                        <div className="text-sm md:text-xl font-semibold mr-2">
+                            Apply Filters: 
+                        </div>
+                        <div className="relative inline-flex mr-2">
+                            <select
+                                className="bg-white text-gray-800 text-sm md:text-lg border rounded-lg px-4 py-1 transition duration-150 ease-in-out"
+                                value={selectedOption}
+                                onChange={handleOptionChange}
+                            >
+                                <option value="All">All</option>
+                                <option value="submitted">Submitted</option>
+                                <option value="rejected">Rejected</option>
+                                <option value="in review">In Review</option>
+                                <option value="accepted">Accepted</option>
+                                <option value="published">Published</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div className="flex flex-row w-full bg-white justify-center min-h-screen mb-5">
+                { loading ? <Loader /> :  (
+                <ul className="mt-2 flex flex-col w-full md:w-3/4">
+                    {
+                        sortedArticles.length > 0 ? (
+                        sortedArticles.map((item) => (
+                        <li key={item.article.id} className="p-2 bg-slate-100 m-1 rounded-md shadow-md w-full">
+                                    <div className="flex flex-row justify-between items-center w-full" onClick={()=>{handleNavigate(item.article.id)}} style={{cursor:"pointer"}}>
+                                        <h3 className="text-xl font-medium text-green-600">
+                                            {item.article.article_name.replace(/_/g, " ")}
+                                        </h3>
+                                        <p className="text-gray-500 mt-2 pr-2">
+                                            <span className="text-green-700">Status : </span>
+                                            <span className="inline-flex items-center gap-1.5 py-1 px-1 rounded text-sm font-medium text-red-500">{item.status}</span>
+                                        </p>
+                                    </div>
+                        </li>
+                        ))):(<h1 className="text-2xl font-bold text-gray-500">No Articles Found</h1>)
+                    }
+                </ul>) }
+            </div>
+        </>
+    )
+}
+
 const CommunityPage = () => {
 
     const {communityName} = useParams()
     const navigate = useNavigate()
     const [community, setCommunity] = useState(null)
-    const [articles, setArticles] = useState([])
     const [loading, setLoading] = useState(false)
-    const [searchTerm, setSearchTerm] = useState('')
-    const [sortedArticles, setSortedArticles] = useState([]);
     const [subscribed, setSubscribed] = useState(null);
     const [User, setUser] = useState(localStorage.getItem('user'));
 
     const loadCommunity = async (res) => {
             setCommunity(res)
     }
-    const loadArticles = async(res) => {
-        setArticles(res)
-        setSortedArticles(res)
-    }
+
     const loadData = async (res) => {
         setSubscribed(res)
         const data = community
@@ -53,23 +212,9 @@ const CommunityPage = () => {
                 console.log(error)
             }
         }
-        const getArticles = async () => {
-            try {
-                const token = localStorage.getItem('token');
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${token}`
-                    }
-                }
-                const res = await axios.get(`https://scicommons-backend.onrender.com/api/community/${communityName}/articles/`, config)
-                await loadArticles(res.data.success)
-            } catch (error) {
-                console.log(error)
-            }
-        }
+
         const fetchData = async () => {
             await getCommunity()
-            await getArticles()
         }
         fetchData()
         setLoading(false)
@@ -79,8 +224,8 @@ const CommunityPage = () => {
         e.preventDefault()
         setLoading(true)
         try {
-            const updatedStatus = !subscribed; // Toggle the subscription status
-            const token = localStorage.getItem('token'); // Retrieve the token from local storage
+            const updatedStatus = !subscribed;
+            const token = localStorage.getItem('token');
 
             const config = {
                 headers: {
@@ -137,60 +282,7 @@ const CommunityPage = () => {
               {subscribed === true ? 'Unsubscribe' : 'Subscribe'}
             </>
           );
-    };
-
-    useEffect(() => {
-        const fetchArticles = async () => {
-            const newArticles= [...articles]
-            const filteredArticles = newArticles.filter((article) => {
-                let str = article.authors.map((author) => author.username).join(" ");
-                return (article.article_name.toLowerCase().includes(searchTerm.toLowerCase())
-                || article.keywords.toLowerCase().includes(searchTerm.toLowerCase())|| str.toLowerCase().includes(searchTerm.toLowerCase()))
-            });
-            setSortedArticles(filteredArticles);
-        };
-            
-        fetchArticles();
-    }, [searchTerm]);
-
-    const handleSearch = (e) => {
-        e.preventDefault();
-    }
-    
-    const sortRated = (e) => {
-        e.preventDefault();
-        setLoading(true)
-        const sortedByRating = [...articles].sort((a, b) => b.rating - a.rating);
-        setSortedArticles(sortedByRating);
-        setLoading(false)
-    }
-    const sortFavourite = (e) => {
-        e.preventDefault();
-        setLoading(true)
-        const sortedByFavourite = [...articles].sort((a, b) => b.favourites - a.favourites);
-        setSortedArticles(sortedByFavourite);
-
-        setLoading(false)
-    }
-    const sortViews = (e) => {
-        e.preventDefault();
-        setLoading(true)
-        const sortedByViews = [...articles].sort((a, b) => b.views - a.views);
-        setSortedArticles(sortedByViews);
-
-        setLoading(false)
-    }
-    const sortDate = (e) => {
-        e.preventDefault();
-        setLoading(true)
-        const sortedByDate = [...articles].sort((a, b) => {
-            const dateA = new Date(a.Public_date);
-            const dateB = new Date(b.Public_date);
-            return dateB - dateA;
-        });
-        setSortedArticles(sortedByDate);
-        setLoading(false)
-    }        
+    };        
 
     return (
         <>
@@ -250,42 +342,8 @@ const CommunityPage = () => {
                                     </button>
                         </div>
                 </div>
-                <div className="flex flex-col items-center justify-center w-full bg-gray-50">
-                    <form className="w-5/6 px-4 mt-20 md:w-2/3" onSubmit={handleSearch}>
-                        <div className="relative">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                                />
-                            </svg>
-                            <input
-                                type="text"
-                                placeholder="Search using keywords, authors, articles"
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full py-3 pl-12 pr-4 text-green-600 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-green-600"
-                            />
-                        </div>
-                    </form>
-                    <div className="flex flex-row justify-end mb-5 w-full md:w-2/3">
-                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortRated}>Most Rated</button>
-                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortFavourite}>Most Favourite</button>
-                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortViews}>Most Views</button>
-                        <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortDate}>Most Recent</button>
-                    </div>
-                </div>
-
                 <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
-                    { loading ? <Loader /> :  <ArticleCard articles={sortedArticles} /> }
+                    <AdminArticlePage community={communityName}/>
                 </div>
             </>)
         }

@@ -51,11 +51,6 @@ const JoinRequests = ({community}) => {
     useEffect(() => {
         getJoinRequests(); 
 
-        const interval = setInterval(() => {
-          getJoinRequests();
-        }, 60000);
-        return () => clearInterval(interval);
-
       }, []);
 
     const handleChange = (e) => {
