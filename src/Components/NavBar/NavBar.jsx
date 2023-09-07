@@ -102,8 +102,13 @@ const NavBar = () => {
                     <div className="profile flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         {isAuth && (
                             <>
-                                <a href="/notifications" className="block text-base font-semibold hover:text-green-700">
+                                <a href="/notifications" className="block relative text-base font-semibold hover:text-green-700">
                                   <RiNotification3Line className="text-gray-700 w-6 h-6" />
+                                  {User.notifications > 0 && (
+                                    <span className="absolute top-[-5px] right-[-5px] bg-red-500 text-white rounded-full w-4 h-4 text-xs flex items-center justify-center">
+                                      {User.notifications}
+                                    </span>
+                                  )}
                                 </a>
                                <Dropdown color="orange" onLogout={handleLogout} User={ User.profile_pic_url.includes("None") ? null: User.profile_pic_url} />
 

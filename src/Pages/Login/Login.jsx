@@ -15,6 +15,11 @@ const Login = () => {
     const password = useRef(null)
     const [loading, setLoading] = useState(false)
     const {User} = useGlobalContext();
+
+    const isValidEmail = (email) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+    }
     const getCurrentUser = async () => {
         try {
             const token = localStorage.getItem('token'); 
@@ -35,14 +40,25 @@ const Login = () => {
     const handleSubmit = async(e) => {
         e.preventDefault()
         setLoading(true); // Show the loader while the login request is in
-        const data = {
-            username: username.current.value,
-            password: password.current.value,
-        };
+        let data;
+        if(isValidEmail(username.current.value)) {
+            data = {
+                email: username.current.value,
+                username:null,
+                password: password.current.value,
+            };
+        }
+        else {
+            data = {
+                username: username.current.value,
+                password: password.current.value,
+            };
+        }
+        
 
         try {
             const response = await axios.post(
-              'https://scicommons-backend.onrender.com/api/user/login/',
+              'http://127.0.0.1:8000/api/user/login/',
               data,
               {
                 headers: {
@@ -55,31 +71,18 @@ const Login = () => {
 
             localStorage.setItem('token', response.data.success.access);
             await getCurrentUser();
-            
-            // Perform any additional actions after successful login, e.g., navigate to the home page
             navigate('/');
           } catch (error) {
-            // Handle login error
             console.error(error);
-            try{
-                ToastMaker(error.response.data.non_field_errors[0], 3500,{
+                ToastMaker(error.response.data.error[0], 3500,{
                     valign: 'top',
                       styles : {
                           backgroundColor: 'red',
                           fontSize: '20px',
                       }
                   })
-            } catch (error) {
-                ToastMaker("Something went wrong. Please try again later!!!", 3500,{
-                    valign: 'top',
-                      styles : {
-                          backgroundColor: 'red',
-                          fontSize: '20px',
-                      }
-                  })
-            }
           } finally {
-            setLoading(false); // Hide the loader after the login request completes, whether it succeeded or failed
+            setLoading(false);
         }
     }
   return (
@@ -95,8 +98,8 @@ const Login = () => {
                     <div className="bg-white shadow p-4 py-6 sm:p-6 sm:rounded-lg">
                         <form>
                             <div className="max-w-md mx-auto">
-                                <label htmlFor="username" className="block py-2 text-gray-500">
-                                    Username
+                                <label htmlFor="username" className="block py-2 font-bold text-gray-800">
+                                    Username or Email
                                 </label>
                                 <div className="flex items-center text-gray-700 border rounded-md">
                                     <div className="px-3 py-2.5 rounded-l-md bg-gray-50 border-r">
@@ -104,7 +107,7 @@ const Login = () => {
                                     </div>
                                     <input 
                                         type="text"
-                                        placeholder="Suresh Krishna"
+                                        placeholder="Enter the details"
                                         id="username"
                                         ref={username}
                                         className="w-full bg-transparent outline-none"
@@ -112,7 +115,7 @@ const Login = () => {
                                 </div>
                             </div>
                             <div>
-                                <label className="text-gray-600">
+                                <label className="font-bold text-gray-800">
                                     Password
                                 </label>
                                 <div className="relative max-w-screen mt-2">
@@ -136,6 +139,7 @@ const Login = () => {
                                     <input
                                         type={!isPasswordHidden ? "password" : "text"}
                                         id="password"
+                                        placeholder="enter the password"
                                         ref={password}
                                         className="w-full pr-12 pl-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />

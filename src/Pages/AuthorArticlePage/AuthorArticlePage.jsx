@@ -107,7 +107,7 @@ const DisplayCommunity = ({article}) => {
                             </svg>
                             <input
                                 type="text"
-                                placeholder="Search using keywords, authors, articles"
+                                placeholder="Search using community names"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
                                 className="w-full py-3 pl-12 pr-4 text-green-600 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-green-600"
