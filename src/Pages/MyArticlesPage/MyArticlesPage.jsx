@@ -139,7 +139,7 @@ const ArticleCard = ({articles}) => {
                 </div>
             </a>
             </li>
-            ))):(<h1 className="text-2xl font-bold text-gray-500">No Articles Found</h1>)
+            ))):(<h1 className="text-2xl font-bold text-gray-500 min-h-screen">No Articles Found</h1>)
         }
         </ul>
   );

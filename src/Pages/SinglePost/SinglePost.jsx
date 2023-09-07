@@ -99,6 +99,16 @@ const SinglePost = () => {
       await loadData(res.data.success);
     } catch (err) {
       console.log(err);
+      if(err.response.data.detail==="Not found.") {
+        ToastMaker("Post doesn't exists!!!", 3000, {
+          valign: "top",
+          styles: {
+            backgroundColor: "red",
+            fontSize: "20px",
+          },
+        });
+        navigate('/explore')
+      }
     }
   };
 

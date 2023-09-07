@@ -8,8 +8,8 @@ import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 
 
-const NotificationCard = ({ notification, handleMarked }) => {
-  console.log(notification);
+const ActivityCard = ({ item, handleMarked }) => {
+
     const {  link,is_read } = notification;
     const formattedDate = dayjs(notification.date).format('MMMM D, YYYY HH:mm A');
     const [isread, setIsRead] = useState(is_read);
@@ -42,7 +42,7 @@ const NotificationCard = ({ notification, handleMarked }) => {
     return (
       <>
       <div 
-        className={`${isread?"bg-white":"bg-gray-200"} flex items-center justify-between p-4 shadow-md rounded-lg `}
+        className={`${is_read?"bg-white":"bg-gray-200"} flex items-center justify-between p-4 shadow-md rounded-lg `}
       >
         <div className="flex items-center space-x-4">
           <div>
@@ -155,8 +155,8 @@ const Notifications = () => {
             { !loading && notifications.length > 0 &&
               <>
                 {
-                  notifications.map((notification) => (
-                      <NotificationCard key={notification.id} notification={notification} handleMarked={handleMarked} />
+                  useractivity.map((item) => (
+                      <ActivityCard key={item.id} notification={item} handleMarked={handleMarked} />
                   ))
                 }
                 <div className="flex flex-row justify-center">

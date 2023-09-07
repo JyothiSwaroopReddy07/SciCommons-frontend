@@ -180,6 +180,13 @@ const AdminArticlePage = ({community}) => {
 
     useEffect(() => {
         fetchArticles();
+        const intervalId = setInterval(() => {
+            fetchArticles();
+        }, 60000);
+        
+        return () => {
+          clearInterval(intervalId);
+        };
     }, []);
 
     const handleSearch = async(e) => {

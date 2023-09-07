@@ -46,10 +46,15 @@ const MembersTable = ({community}) => {
         await getCommunity();
     }
 
-    useEffect(()=> {
-        getCommunity()
-
-    },[])
+    useEffect(() => {
+        getCommunity();
+        const intervalId = setInterval(() => {
+          getCommunity();
+        }, 60000);
+        return () => {
+          clearInterval(intervalId);
+        };
+      }, []);
 
     const handleRole = (member) => {
         if(member.is_admin===true){

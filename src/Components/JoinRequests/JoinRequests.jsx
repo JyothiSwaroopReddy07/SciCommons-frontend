@@ -49,7 +49,13 @@ const JoinRequests = ({community}) => {
     }
 
     useEffect(() => {
-        getJoinRequests(); 
+        getJoinRequests();
+        const intervalId = setInterval(() => {
+            getJoinRequests();
+        }, 60000);
+        return () => {
+          clearInterval(intervalId);
+        };
 
       }, []);
 

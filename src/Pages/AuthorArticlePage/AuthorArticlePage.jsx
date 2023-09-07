@@ -329,10 +329,13 @@ const AuthorArticlePage = () => {
       };
       try {
         const res = await axios.get(
-          `https://scicommons-backend.onrender.com/api/article/${articleId}`,
+          `https://scicommons-backend.onrender.com/api/user/articles/${articleId}/`,
           config
         );
-        await loadArticleData(res.data.success);
+        if(res.data.success.length===0){
+            navigate('/');
+        }
+        await loadArticleData(res.data.success[0]);
       } catch (err) {
         console.log(err);
       }
