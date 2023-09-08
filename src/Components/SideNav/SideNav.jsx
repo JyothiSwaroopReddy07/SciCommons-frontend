@@ -26,7 +26,7 @@ const SideNav = ({onMenuChange}) => {
                 <p className="text-3xl font-bold text-green-600">Scicommons</p>
                 </Sidebar.Item>
                 <button style={{cursor:"pointer"}} onClick={onMenuChange}>
-                    <RxCross2 className="h-5 w-5 mt-2 active:shadow-none text-gray-500"/>
+                    <RxCross2 className="h-5 w-5 mt-2 mr-3 active:shadow-none text-gray-500"/>
                 </button>
             </div>
             <Sidebar.Item href="/mytimeline" icon={CgFeed} className="mt-5">

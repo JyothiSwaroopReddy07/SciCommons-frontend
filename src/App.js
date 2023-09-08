@@ -23,7 +23,8 @@ import ArticlePage from './Pages/ArticlePage/ArticlePage';
 import FavouritePage from './Pages/FavouritePage/FavouritePage';
 import MyPostsPage from './Pages/MyPostsPage/MyPostsPage';
 import MyArticlesPage from './Pages/MyArticlesPage/MyArticlesPage';
-import AuthorArticlePage from './Pages/AuthorArticlePage/AuthorArticlePage'
+import AuthorArticlePage from './Pages/AuthorArticlePage/AuthorArticlePage';
+import UserActivity from './Pages/UserActivity/UserActivity';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
         <Route path="/myposts" element={<MyPostsPage/>}/>
         <Route path="/myarticles" element={<MyArticlesPage/>}/>
         <Route path="/myarticles/:articleId" element={<AuthorArticlePage/>}/>
+        <Route path="/myactivity" element={<UserActivity/>}/>
         <Route path = "*" element={<ErrorPage/>} />
       </Routes>
     </Router>

@@ -1,54 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
 import NavBar from '../../Components/NavBar/NavBar';
-import './Notifications.css';
+import './UserActivity.css';
 import axios from 'axios';
 import Loader from "../../Components/Loader/Loader";
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 
-
-const ActivityCard = ({ item }) => {
-
-    const {  link,is_read } = notification;
-    const formattedDate = dayjs(notification.date).format('MMMM D, YYYY HH:mm A');
-
-    return (
-      <>
-      <div 
-        className="bg-gray-200 flex items-center justify-between p-4 shadow-md rounded-lg"
-      >
-        <div className="flex items-center space-x-4">
-          <div>
-            <h3 className="font-medium text-sm md:text-lg">{notification.message}</h3>
-            <p className="text-gray-500 text-sm md:text-md">{formattedDate}</p>
-          </div>
-        </div>
-        <a
-          href={link}
-          className="text-blue-500 hover:text-blue-700 transition-colors text-xs duration-300 mr-3"
-        >
-          View
-        </a>
-      </div>
-    </>
-  );
-};
-
-
-
 const UserActivity = () => {
-    const [notifications, setNotifications] = useState([]);
+    const [activity, setActivity] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [loadingmore, setLoadingMore] = useState(false);
 
-    const fetchNotifications = async () => {
+    const fetchActivity = async () => {
       setLoading(true);
-      const response = await axios.get('https://scicommons-backend.onrender.com/api/notification/', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      const data = response.data.success;
-      setNotifications(data.results);
+      try {
+            const response = await axios.get('https://scicommons-backend.onrender.com/api/user/myactivity/', {
+                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            });
+            const data = response.data.success;
+            await loadData(data);
+        } catch(err){
+            console.log(err);
+        }
       setLoading(false);
     };
 
@@ -56,45 +29,15 @@ const UserActivity = () => {
       if (!localStorage.getItem('token')) {
         window.location.href = '/login';
       }
-      fetchNotifications();
+      fetchActivity();
     }, []);
     
-    const loadMore = async(res) => {
-      const newNotifications = [...notifications,...res]
-      setNotifications(newNotifications);
+    const loadData = async(res) => {
+        res.reverse();
+        setActivity(res);
     }
 
-    const handleLoadMore = async() => {
-      setLoadingMore(true);
-      try{
-        const response = await axios.get(`https://scicommons-backend.onrender.com/api/notification/?limit=20&offset=${notifications.length}`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-        });
-        const data = response.data.success.results;
-        if(response.data.success.count === notifications.length) {
-          ToastMaker("No more notifications to load", 3000, {
-            valign: "top",
-            styles: {
-              backgroundColor: "red",
-              fontSize: "20px",
-            },
-          });
-        }
-        await loadMore(data);
-      } catch(err) {
-        console.log(err);
-      }
-      setLoadingMore(false);
-    }
 
-    const handleMarked = async (index) => {
-      const newNotifications = [...notifications];
-      const notificationIndex = newNotifications.findIndex(notification => notification.id === index);
-      if (notificationIndex !== -1) {
-        newNotifications[notificationIndex].marked = true;
-        setNotifications(newNotifications);
-      }
-    };
 
 
   return (
@@ -102,19 +45,19 @@ const UserActivity = () => {
         <NavBar />
         <div className="flex flex-col items-center justify-center">
             <h1 className="text-4xl font-bold mt-4 text-center text-green-500">
-                Notifications
+                Your Activity
             </h1>
         </div>
-        <div className="container mx-auto mt-2 w-full md:w-3/4">
+        <div className="container mx-auto mt-4 w-full md:w-3/4">
           {
             loading && (<Loader/>)
           }
             {
-               !loading && notifications.length === 0 && (
+               !loading && activity.length === 0 && (
                 <>
                     <div className="flex items-center justify-center">
                         <div className="w-1/3 h-1/3 block">
-                            <img src={process.env.PUBLIC_URL + '/nonotifications.jpg'} alt="No notifications" />
+                            <img src={process.env.PUBLIC_URL + '/nonotifications.jpg'} alt="No activity" />
                         </div>
                     </div>
                     <h1 className="text-2xl font-bold mb-4 mt-4 text-center text-green-500">
@@ -123,19 +66,16 @@ const UserActivity = () => {
                 </>
                 )
             }
-            { !loading && notifications.length > 0 &&
-              <>
-                {
-                  useractivity.map((item) => (
-                      <ActivityCard key={item.id} notification={item} handleMarked={handleMarked} />
-                  ))
-                }
-                <div className="flex flex-row justify-center">
-                  <button className="bg-green-500 text-white px-2 py-1 mt-4 rounded-lg" onClick={handleLoadMore}>
-                    {loadingmore?"loading...": "load More Notifications"}
-                  </button>
-                </div>
-              </>
+            { !loading && activity.length > 0 &&
+              <div className="flex flex-row justify-center mt-3">
+                <ol className="relative border-l border-gray-600 dark:border-gray-700">                  
+                    {activity.map((action,index) => (
+                    <li key={index} className="mb-10 ml-4">
+                        <div className="absolute w-3 h-3 bg-gray-600 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
+                        <p className="text-base font-normal text-sm text-gray-800 ml-3 dark:text-gray-400">{action.action}</p>
+                    </li>))}
+                </ol>
+              </div>
             }
             
         </div>

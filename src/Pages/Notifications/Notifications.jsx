@@ -41,7 +41,7 @@ const NotificationCard = ({ notification, handleMarked }) => {
     return (
       <>
       <div 
-        className={`${isread?"bg-white":"bg-gray-200"} flex items-center justify-between p-4 shadow-xl rounded-lg hover:bg-green-50`}
+        className={`${isread?"bg-white":"bg-gray-200"} flex flex-row items-center justify-between p-4 shadow-xl rounded-lg hover:bg-green-50`}
       >
         <div className="flex items-center space-x-4">
           <div>
@@ -72,11 +72,15 @@ const Notifications = () => {
 
     const fetchNotifications = async () => {
       setLoading(true);
-      const response = await axios.get('https://scicommons-backend.onrender.com/api/notification/', {
-        headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
-      });
-      const data = response.data.success;
-      setNotifications(data.results);
+      try {
+        const response = await axios.get('https://scicommons-backend.onrender.com/api/notification/', {
+          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+        });
+        const data = response.data.success;
+        setNotifications(data.results);
+      } catch(err) {
+        console.log(err)
+      }
       setLoading(false);
     };
 
