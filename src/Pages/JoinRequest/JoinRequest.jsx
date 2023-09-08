@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {useParams, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import NavBar from '../../Components/NavBar/NavBar'
@@ -9,10 +9,48 @@ import "toastmaker/dist/toastmaker.css";
 const JoinRequest = () => {
 
     const {communityName} = useParams() 
-
     const navigate = useNavigate();
-  
     const [loading, setLoading] = useState(false);
+    const [community, setCommunity] = useState(null);
+
+
+    const loadCommunity = async (res) => {
+        setCommunity(res)
+    }
+
+    useEffect(() => {
+        setLoading(true)
+        const getCommunity = async () => {
+            try {
+                const token = localStorage.getItem('token')
+                const config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+                const res = await axios.get(`https://scicommons-backend.onrender.com/api/community/${communityName}/`, config )
+                await loadCommunity(res.data.success)
+            } catch (error) {
+                console.log(error)
+                if(error.response.data.detail==="Not found."){
+                    ToastMaker("Community doesn't exists!!!", 3000, {
+                        valign: "top",
+                        styles: {
+                          backgroundColor: "red",
+                          fontSize: "20px",
+                        },
+                      });
+                    navigate('/communities');
+                }
+            }
+        }
+
+        const fetchData = async () => {
+            await getCommunity()
+        }
+        fetchData()
+        setLoading(false)
+    }, [communityName])
   
     const submitForm = async(e) => {
       e.preventDefault();

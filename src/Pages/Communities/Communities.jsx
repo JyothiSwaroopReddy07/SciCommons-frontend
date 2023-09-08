@@ -79,8 +79,8 @@ const Communities = () => {
                 {
                     communities.length !== 0 ? (
                     communities.map((item, index) => (
-                        <li>
-                            <CommunityCard index={index} community={item} />
+                        <li key={item.id}>
+                            <CommunityCard key={item.id} index={index} community={item} />
                         </li>
                     ))):(<h1 className="text-2xl font-bold text-gray-500">No Communities Found</h1>)
                 }

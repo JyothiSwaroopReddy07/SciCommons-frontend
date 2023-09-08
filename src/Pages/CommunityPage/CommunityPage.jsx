@@ -9,6 +9,8 @@ import {BsGithub} from 'react-icons/bs';
 import {BiLogoGmail} from 'react-icons/bi';
 import {CgWebsite} from 'react-icons/cg';
 import {FaUsers, FaBook, FaPencilAlt} from 'react-icons/fa';
+import ToastMaker from "toastmaker";
+import "toastmaker/dist/toastmaker.css";
 
 const AdminArticlePage = ({community}) => {
 
@@ -202,6 +204,16 @@ const CommunityPage = () => {
                 setSubscribed(res.data.success.isSubscribed)
             } catch (error) {
                 console.log(error)
+                if(error.response.data.detail==="Not found."){
+                    ToastMaker("Community doesn't exists!!!", 3000, {
+                        valign: "top",
+                        styles: {
+                          backgroundColor: "red",
+                          fontSize: "20px",
+                        },
+                      });
+                    navigate('/communities');
+                }
             }
         }
 
