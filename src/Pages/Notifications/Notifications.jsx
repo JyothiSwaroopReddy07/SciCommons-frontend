@@ -9,7 +9,6 @@ import "toastmaker/dist/toastmaker.css";
 
 
 const NotificationCard = ({ notification, handleMarked }) => {
-  console.log(notification);
     const {  link,is_read } = notification;
     const formattedDate = dayjs(notification.date).format('MMMM D, YYYY HH:mm A');
     const [isread, setIsRead] = useState(is_read);
@@ -42,11 +41,11 @@ const NotificationCard = ({ notification, handleMarked }) => {
     return (
       <>
       <div 
-        className={`${isread?"bg-white":"bg-gray-200"} flex items-center justify-between p-4 shadow-md rounded-lg `}
+        className={`${isread?"bg-white":"bg-gray-200"} flex items-center justify-between p-4 shadow-xl rounded-lg hover:bg-green-50`}
       >
         <div className="flex items-center space-x-4">
           <div>
-            <h3 className="font-medium text-sm md:text-lg">{notification.message}</h3>
+            <h3 className="font-medium text-sm md:text-md">{notification.message}</h3>
             <p className="text-gray-500 text-sm md:text-md">{formattedDate}</p>
           </div>
         </div>
@@ -56,7 +55,7 @@ const NotificationCard = ({ notification, handleMarked }) => {
         >
           View
         </a>
-        <button onClick={handleSeen} className={`${isread?'text-gray-400':'text-blue-400'} text-xs`}>
+        <button onClick={handleSeen} className={`${isread?'text-gray-800':'text-blue-800'} text-xs`}>
           {loading?"marking...":fillMark()}
         </button>
       </div>
@@ -134,7 +133,7 @@ const Notifications = () => {
                 Notifications
             </h1>
         </div>
-        <div className="container mx-auto mt-2 w-full md:w-3/4">
+        <div className="container mx-auto mt-2 w-full md:w-1/2">
           {
             loading && (<Loader/>)
           }

@@ -77,14 +77,6 @@ const AdminArticlePage = ({community}) => {
         setLoading(false);
     }
 
-    const handleDate = (dateString) => {
-        const date = new Date(dateString);
-
-        const formatter = new Intl.DateTimeFormat("en-US");
-        const formattedDate2 = formatter.format(date);
-        return formattedDate2.toString();
-    }
-
     const handleNavigate = (index) => {
         console.log(index);
         navigate(`/article/${index}`)

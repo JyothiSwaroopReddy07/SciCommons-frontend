@@ -8,41 +8,15 @@ import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 
 
-const ActivityCard = ({ item, handleMarked }) => {
+const ActivityCard = ({ item }) => {
 
     const {  link,is_read } = notification;
     const formattedDate = dayjs(notification.date).format('MMMM D, YYYY HH:mm A');
-    const [isread, setIsRead] = useState(is_read);
-    const [loading, setLoading] = useState(false);
-  
-    const handleSeen = async() => {
-      setLoading(true);
-      const config = {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
-        },
-      }
-      try{
-        const response = axios.put(`https://scicommons-backend.onrender.com/api/notification/${notification.id}/`,{is_read:true},config);
-        setIsRead(true);
-        await handleMarked(notification.id);
-      } catch(err) {
-        console.log(err);
-      }
-      setLoading(false);
-    }
-
-    const fillMark = () => {
-      if(isread===true){
-        return "done";
-      }
-      return "Mark as read";
-    }
 
     return (
       <>
       <div 
-        className={`${is_read?"bg-white":"bg-gray-200"} flex items-center justify-between p-4 shadow-md rounded-lg `}
+        className="bg-gray-200 flex items-center justify-between p-4 shadow-md rounded-lg"
       >
         <div className="flex items-center space-x-4">
           <div>
@@ -56,9 +30,6 @@ const ActivityCard = ({ item, handleMarked }) => {
         >
           View
         </a>
-        <button onClick={handleSeen} className={`${isread?'text-gray-400':'text-blue-400'} text-xs`}>
-          {loading?"marking...":fillMark()}
-        </button>
       </div>
     </>
   );
@@ -66,7 +37,7 @@ const ActivityCard = ({ item, handleMarked }) => {
 
 
 
-const Notifications = () => {
+const UserActivity = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingmore, setLoadingMore] = useState(false);
@@ -172,4 +143,4 @@ const Notifications = () => {
   );
 };
 
-export default Notifications;
+export default UserActivity;

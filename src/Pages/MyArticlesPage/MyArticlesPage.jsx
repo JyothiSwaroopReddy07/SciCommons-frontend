@@ -4,16 +4,10 @@ import axios from "axios";
 import Loader from "../../Components/Loader/Loader";
 import Footer from "../../Components/Footer/Footer";
 import {AiFillEye} from "react-icons/ai";
+import dayjs from 'dayjs';
 
 const ArticleCard = ({articles}) => {
 
-    const handleDate = (dateString) => {
-        const date = new Date(dateString);
-
-        const formatter = new Intl.DateTimeFormat("en-US");
-        const formattedDate2 = formatter.format(date);
-        return formattedDate2.toString();
-    }
 
     return (
         <ul className="mt-12 space-y-6 w-full md:w-4/5">
@@ -38,7 +32,7 @@ const ArticleCard = ({articles}) => {
                     </p>
                     <p className="text-gray-500 mt-2 pr-2">
                         <span className="text-green-700">Added On : </span>
-                        {handleDate(item.Public_date)}
+                        { dayjs(item.Public_date).format('MMMM D, YYYY HH:mm A')}
                     </p>
                     </div>
                     <div className="mt-5 space-y-4 text-sm sm:mt-0 sm:space-y-2">
