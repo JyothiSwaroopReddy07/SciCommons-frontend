@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import {useNavigate} from 'react-router-dom';
 import Loader from "../../Components/Loader/Loader";
-import {AiFillEye} from "react-icons/ai";
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 
@@ -180,13 +179,6 @@ const AdminArticlePage = ({community}) => {
 
     useEffect(() => {
         fetchArticles();
-        const intervalId = setInterval(() => {
-            fetchArticles();
-        }, 60000);
-        
-        return () => {
-          clearInterval(intervalId);
-        };
     }, []);
 
     const handleSearch = async(e) => {

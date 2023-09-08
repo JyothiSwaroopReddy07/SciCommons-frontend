@@ -50,13 +50,6 @@ const JoinRequests = ({community}) => {
 
     useEffect(() => {
         getJoinRequests();
-        const intervalId = setInterval(() => {
-            getJoinRequests();
-        }, 60000);
-        return () => {
-          clearInterval(intervalId);
-        };
-
       }, []);
 
     const handleChange = (e) => {

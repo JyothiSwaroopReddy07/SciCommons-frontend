@@ -95,11 +95,6 @@ const BookMarks = () => {
   };
   useEffect(() => {
     getPosts();
-    const interval = setInterval(() => {
-      getPosts();
-    }, 600000);
-
-    return () => clearInterval(interval);
   }, []);
 
   return (

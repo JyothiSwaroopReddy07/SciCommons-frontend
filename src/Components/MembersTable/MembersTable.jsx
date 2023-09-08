@@ -48,12 +48,6 @@ const MembersTable = ({community}) => {
 
     useEffect(() => {
         getCommunity();
-        const intervalId = setInterval(() => {
-          getCommunity();
-        }, 60000);
-        return () => {
-          clearInterval(intervalId);
-        };
       }, []);
 
     const handleRole = (member) => {

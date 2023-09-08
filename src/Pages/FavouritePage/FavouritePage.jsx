@@ -21,29 +21,29 @@ const FavouritePage = () => {
     const loadSortedArticles = async (res) => {
         setSortedArticles(res);
     }
+    const fetchArticles = async () => {
+        setLoading(true)
+        const token = localStorage.getItem('token'); // Retrieve the token from local storage
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            },
+        };
+        try {
+            const response = await axios.get(
+                `https://scicommons-backend.onrender.com/api/article/favourites/`,
+                config
+            );
+            await loadData(response.data.success);
+
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false)
+        }   
+    };
 
     useEffect(() => {
-        const fetchArticles = async () => {
-            setLoading(true)
-            const token = localStorage.getItem('token'); // Retrieve the token from local storage
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-                },
-            };
-            try {
-                const response = await axios.get(
-                    `https://scicommons-backend.onrender.com/api/article/favourites/`,
-                    config
-                );
-                await loadData(response.data.success);
-
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false)
-            }   
-        };
         fetchArticles();
     }, []);
 
