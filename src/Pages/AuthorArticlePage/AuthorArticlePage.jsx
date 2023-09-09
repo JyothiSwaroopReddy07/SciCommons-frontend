@@ -82,7 +82,7 @@ const DisplayCommunity = ({article}) => {
     }
 
     const handleNavigate = (index) => {
-        navigate(`/community/${index}`)
+        navigate(`/community/${index}/${article}`)
     } 
 
     return (

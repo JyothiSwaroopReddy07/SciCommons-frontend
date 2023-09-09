@@ -54,7 +54,7 @@ const AdminArticlePage = ({community}) => {
         };
         try {
             const response = await axios.get(
-                `https://scicommons-backend.onrender.com/api/community/${community}/articles/`,
+                `https://scicommons-backend.onrender.com/api/community/${community.Community_name}/articles/`,
                 config
             );
             await loadData(response.data.success);
@@ -66,7 +66,10 @@ const AdminArticlePage = ({community}) => {
     };
 
     useEffect(() => {
-        fetchArticles();
+        const fetchData = async () => {
+            await fetchArticles();
+        }
+        fetchData();
     }, []);
 
     const handleSearch = async(e) => {
@@ -80,8 +83,11 @@ const AdminArticlePage = ({community}) => {
     }
 
     const handleNavigate = (index) => {
-        console.log(index);
-        navigate(`/article/${index}`)
+        if(community.isMember){
+            navigate(`/community/${community.Community_name}/${index}`);
+        } else{
+            navigate(`/article/${index}`)
+        }
     } 
 
     return (
@@ -347,7 +353,7 @@ const CommunityPage = () => {
                         </div>
                 </div>
                 <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
-                    <AdminArticlePage community={communityName}/>
+                    <AdminArticlePage community={community}/>
                 </div>
             </>)
         }

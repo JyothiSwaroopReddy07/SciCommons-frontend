@@ -12,7 +12,7 @@ import Loader from '../../Components/Loader/Loader'
 import Comments from '../../Components/Comments/Comments'
 import {AiFillHeart, AiTwotoneStar, AiOutlineHeart} from 'react-icons/ai'
 import {MdOutlineViewSidebar} from 'react-icons/md'
-import './ArticlePage.css'
+import './CommunityArticlePage.css'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ToastMaker from "toastmaker";
@@ -398,10 +398,11 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
 };
 
 
-const  ArticlePage = () => {
+const  CommunityArticlePage = () => {
 
 
-    const {articleId} = useParams();
+    const {communityName, articleId} = useParams();
+    const [community, setCommunity] = useState(null)
     const [currentState, setcurrentState] = useState(1);
     const navigate = useNavigate();
     const [article, setArticle] = useState(null);
@@ -435,57 +436,98 @@ const  ArticlePage = () => {
         }
     }
 
-    useEffect (() => {
+    const loadCommunity = async (res) => {
+        setCommunity(res)
+    }
 
-        const getArticle = async () => {
-            setLoading(true)
-            const config={
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                }
-            };
-            try {
-                const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
-                await loadArticleData(res.data.success);
-            } catch(err){
-                console.log(err);
-                if(err.response.data.detail==="Not found."){
-                    ToastMaker("Article doesn't exists!!!", 3000, {
-                        valign: "top",
-                        styles: {
-                          backgroundColor: "red",
-                          fontSize: "20px",
-                        },
-                      });
-                    navigate('/articles');
+    const getCommunity = async () => {
+        try {
+            const token = localStorage.getItem('token')
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
                 }
             }
-            setLoading(false);
-        }
-
-        const getComments = async () => {
-            setLoading(true);
-            const config={
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
+            const res = await axios.get(`https://scicommons-backend.onrender.com/api/community/${communityName}/`, config )
+            await loadCommunity(res.data.success);
+            if(!res.data.success.isMember) {
+                ToastMaker(`You are not member of ${res.data.success.Community_name}`, 3000, {
+                    valign: "top",
+                    styles: {
+                      backgroundColor: "red",
+                      fontSize: "20px",
                     },
-                    params:{
-                        article: articleId
-                    }
-            };
-            try {
-                const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`, config);
-                console.log(res);
-                await loadCommentData(res.data.success.results);
-            } catch(err){
-                console.log(err);
+                  });
+                navigate('/communities');
             }
-            setLoading(false);
+        } catch (error) {
+            console.log(error)
+            if(error.response.data.detail==="Not found."){
+                ToastMaker("Community doesn't exists!!!", 3000, {
+                    valign: "top",
+                    styles: {
+                      backgroundColor: "red",
+                      fontSize: "20px",
+                    },
+                  });
+                navigate('/communities');
+            }
         }
-        getArticle();
-        getComments();
+    }
+
+    const getArticle = async () => {
+        const config={
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+            }
+        };
+        try {
+            const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
+            await loadArticleData(res.data.success);
+        } catch(err){
+            console.log(err);
+            if(err.response.data.detail==="Not found."){
+                ToastMaker("Article doesn't exists!!!", 3000, {
+                    valign: "top",
+                    styles: {
+                      backgroundColor: "red",
+                      fontSize: "20px",
+                    },
+                  });
+                navigate('/articles');
+            }
+        }
+    }
+
+    const getComments = async () => {
+        const config={
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+                params:{
+                    article: articleId
+                }
+        };
+        try {
+            const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`, config);
+            console.log(res);
+            await loadCommentData(res.data.success.results);
+        } catch(err){
+            console.log(err);
+        }
+    }
+
+    useEffect (() => {
+        setLoading(true);
+        const fetchData = async() => {
+            await getCommunity();
+            await getArticle();
+            await getComments();
+        }
+        fetchData();
+        setLoading(false);
     },[]);
 
     const handleProfile = (data) => {
@@ -603,7 +645,7 @@ const  ArticlePage = () => {
     return (
         <div className="bg-amber-50 min-h-screen min-w-[800px]">
         <Navbar/>
-        {(loading || article===null || comments===null) && <Loader/>}
+        {(loading || article===null || comments ===null ) && <Loader/>}
         {!loading && article && comments && (
             < div className="bg-amber-50">
             <div className="flex justify-center bg-amber-50 w-full md:w-5/6 mt-[1rem] mx-auto p-2 overflow-hidden">
@@ -771,4 +813,4 @@ const  ArticlePage = () => {
     )
 }
 
-export default ArticlePage;
+export default CommunityArticlePage;

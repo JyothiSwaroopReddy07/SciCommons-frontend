@@ -48,7 +48,7 @@ const onclickFuntion = (indext)=>{
   return(
     <div className="w-full">
         <NavBar/>
-        {loading && <Loader/>}
+        {(loading|| community===null) && <Loader/>}
 
         {!loading && 
         community!==null && (

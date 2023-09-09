@@ -5,43 +5,72 @@ import CommunityCard from '../../Components/CommunityCard/CommunityCard';
 import Loader from '../../Components/Loader/Loader';
 import './Communities.css';
 import Footer from '../../Components/Footer/Footer';
+import ToastMaker from "toastmaker";
+import "toastmaker/dist/toastmaker.css";
 
 const Communities = () => {
 
     const [searchTerm, setSearchTerm] = useState('');
     const [communities, setCommunities] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [loadingmore, setLoadingMore] = useState(false);
+
+    const loadMoreData = async (res) => {
+        const newCommunities = [...communities, ...res]
+        setCommunities(newCommunities);
+    }
+
+    const fetchCommunities = async () => {
+        setLoading(true)
+        const token = localStorage.getItem('token'); // Retrieve the token from local storage
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+            },
+        };
+        try {
+            const response = await axios.get(
+                `https://scicommons-backend.onrender.com/api/community?search=${searchTerm}`,
+                config
+            );
+            setCommunities(response.data.success.results);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setLoading(false)
+        }   
+    };
 
     useEffect(() => {
-        const fetchCommunities = async () => {
-            setLoading(true)
-            const token = localStorage.getItem('token'); // Retrieve the token from local storage
-            const config = {
-                headers: {
-                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-                },
-            };
-            try {
-                const response = await axios.get(
-                    `https://scicommons-backend.onrender.com/api/community?search=${searchTerm}`,
-                    config
-                );
-                setCommunities(response.data.success.results);
-            } catch (error) {
-                console.error(error);
-            } finally {
-                setLoading(false)
-            }   
-        };
         fetchCommunities();
-        const intervalId = setInterval(fetchCommunities, 300000);
-        return () => {
-            clearInterval(intervalId);
-        };
-    }, [searchTerm]);
+    }, []);
 
-    const handleSearch = (e) => {
+    const handleSearch = async(e) => {
         e.preventDefault();
+        await fetchCommunities();
+    }
+
+    const handleLoadMore = async() => {
+        setLoadingMore(true);
+        try{
+          const response = await axios.get(`https://scicommons-backend.onrender.com/api/community/?search=${searchTerm}&limit=20&offset=${communities.length}`, {
+              headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, },
+          });
+          const data = response.data.success.results;
+          if(response.data.success.count === communities.length) {
+            ToastMaker("No more communities to load", 3000, {
+              valign: "top",
+              styles: {
+                backgroundColor: "red",
+                fontSize: "20px",
+              },
+            });
+          }
+          await loadMoreData(data);
+        } catch(err) {
+          console.log(err);
+        }
+        setLoadingMore(false);
     }
 
   return (
@@ -75,7 +104,7 @@ const Communities = () => {
             </form>
             <div className="flex flex-col items-center justify-center w-full bg-gray-50 p-5">
             { loading ? (<Loader />): 
-                (<ul className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-12 w-full md:w-4/5">
+                (<><ul className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-12 min-h-screen w-full md:w-4/5">
                 {
                     communities.length !== 0 ? (
                     communities.map((item, index) => (
@@ -84,7 +113,13 @@ const Communities = () => {
                         </li>
                     ))):(<h1 className="text-2xl font-bold text-gray-500">No Communities Found</h1>)
                 }
-                </ul>)
+                </ul>
+                <div className="flex flex-row justify-center">
+                    <button className="bg-green-500 text-white px-2 py-1 mt-4 rounded-lg" onClick={handleLoadMore}>
+                    {loadingmore?"loading...": "load More Communities"}
+                    </button>
+                </div></>
+                )
             }
             </div>
         </div>
