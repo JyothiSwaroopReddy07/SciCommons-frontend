@@ -91,21 +91,14 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
       
     };
   
-    const addAnchorTags = (text) => {
-      const words = text.split(' ');
-    
-      const processedWords = words.map((word, index) => {
-        if (word.includes('https://')) {
-          return (
-            <span key={index}>
-              <a href={`${word}`} className="text-blue-500 underline">{word}</a>
-            </span>
-          );
-        }
-        return <span key={index}>{word} </span>;
-      });
-    
-      return processedWords;
+    const formatCount = (count) => {
+      if (count < 1000) {
+          return count.toString();
+      } else if (count < 1000000) {
+          return (count / 1000).toFixed(1) + 'K';
+      } else {
+          return (count / 1000000).toFixed(1) + 'M';
+      }
     }
   
     const handleProfile = (e) => {
@@ -210,12 +203,12 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
               ) : (
                 <IoHeartOutline className="text-xl" />
               )}
-              <span className="text-sm md:ml-2">{likes}</span>
+              <span className="text-sm md:ml-2">{formatCount(likes)}</span>
             </button>
             {/* Comment Button */}
             <button style={{cursor:"pointer"}} onClick={handleComment} className="flex">
               <IoChatbubbleOutline className="text-xl" />
-              <span className="text-sm md:ml-2">{post.comments_count}</span>
+              <span className="text-sm md:ml-2">{formatCount(post.comments_count)}</span>
               
             </button>
             {/* Bookmark Button */}
@@ -227,7 +220,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
                       <IoBookmarkOutline className="text-xl" />
                   )
               }
-              <span className="text-sm md:ml-2">{bookmarks}</span>
+              <span className="text-sm md:ml-2">{formatCount(bookmarks)}</span>
             </button>
             {/* Share Button */}
             <button style={{cursor:"pointer"}} onClick={handleShare}>

@@ -600,6 +600,16 @@ const  ArticlePage = () => {
         setComments(newReply);
     }
 
+    const formatCount = (count)=>{
+        if (count < 1000) {
+            return count.toString();
+        } else if (count < 1000000) {
+            return (count / 1000).toFixed(1) + 'K';
+        } else {
+            return (count / 1000000).toFixed(1) + 'M';
+        }
+    }
+
     return (
         <div className="bg-amber-50 min-h-screen min-w-[800px]">
         <Navbar/>
@@ -660,9 +670,9 @@ const  ArticlePage = () => {
 
                                 Versions
                                 <AiFillHeart className='w-[.875rem] inline mb-1 mr-1 ml-4' />
-                                {article.favourites}
+                                {formatCount(article.favourites)}
                                 <MdOutlineViewSidebar className="w-[.875rem] inline mb-1 mr-1 ml-4" />
-                                {article.views}
+                                {formatCount(article.views)}
                                 <AiTwotoneStar className="w-[.875rem] inline mb-1 mr-1 ml-4" />
                                 {article.rating===null? "0": article.rating}
                             </span>

@@ -224,6 +224,16 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
         }
       }
     };
+
+    const formatCount = (count)=>{
+      if (count < 1000) {
+          return count.toString();
+      } else if (count < 1000000) {
+          return (count / 1000).toFixed(1) + 'K';
+      } else {
+          return (count / 1000000).toFixed(1) + 'M';
+      }
+    }
   
   
     const handleReply = async (e) => {
@@ -351,7 +361,7 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
                   <AiOutlineLike className="text-md" />
                 )}
               </button>
-              <span className="text-sm">{likes}</span>
+              <span className="text-sm">{formatCount(likes)}</span>
             </div>
             {comment.username === user.username && (
               <span

@@ -112,6 +112,16 @@ const SinglePost = () => {
     }
   };
 
+  const formatCount = (count)=>{
+    if (count < 1000) {
+        return count.toString();
+    } else if (count < 1000000) {
+        return (count / 1000).toFixed(1) + 'K';
+    } else {
+        return (count / 1000000).toFixed(1) + 'M';
+    }
+  }
+
   useEffect(() => {
     setLoading(true);
     fetchPost();
@@ -205,7 +215,7 @@ const SinglePost = () => {
             </div>
             <div className="border p-6 bg-white">
               <div className="text-3xl font-semibold text-green-600">
-                Comments {comments.length > 0 && `(${comments.length})`}
+                Comments {comments.length > 0 && `(${formatCount(comments.length)})`}
               </div>
               {comments.length > 0 &&
                 comments.map((comment) => <SocialComment key={comment.id} comment={comment} />)}
