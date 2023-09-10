@@ -526,21 +526,14 @@ const AuthorArticlePage = () => {
                     {article.license === null ? "None" : article.license}
                   </span>
                 </div>
-                <div className="bock">
-                  <strong className="text-green-700 font-[700]">
-                    {" "}
-                    Submission Length :{" "}
-                  </strong>
-                  <span>{article.sub_len}</span>
-                </div>
-                <div className="bock">
+                <div className="block">
                   <strong className="text-green-700 font-[700]">Code : </strong>
                   <a href={article.Code} className="text-[#337ab7]">
                     {" "}
                     {article.Code}
                   </a>
                 </div>
-                <div className="bock">
+                <div className="block">
                   <strong className="text-green-700 font-[700]">
                     {" "}
                     Video Link:{" "}
@@ -551,7 +544,7 @@ const AuthorArticlePage = () => {
                   </a>
                 </div>
                 {article.link && (
-                  <div className="bock">
+                  <div className="block">
                     <strong className="text-green-700 font-[700]">
                       {" "}
                       Video Link:{" "}
@@ -562,7 +555,7 @@ const AuthorArticlePage = () => {
                     </a>
                   </div>
                 )}
-                <div className="bock">
+                <div className="block">
                   <strong className="text-green-700 font-[700]">
                     {" "}
                     Submission Date :{" "}
@@ -570,14 +563,14 @@ const AuthorArticlePage = () => {
                   <span> {findTime(article.Public_date)} </span>
                 </div>
               </div>
-                <div className="m-0">
+                <div className="mt-2">
                     <div className='bg-amber-50 border-[#3f6978] border-solid'>
-                        <div className="float-right">
-                            <span className='text-[0.75rem] text-gray-600'>
-                                Add:
+                        <div className=" flex flex-row float-right">
+                            <span className="block box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={handleShow}>
+                              Edit Article
                             </span>
-                            <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={handleShow}>
-                                Community
+                            <span className="block box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={handleShow}>
+                              Add Community
                             </span>
                         </div>
                     </div>

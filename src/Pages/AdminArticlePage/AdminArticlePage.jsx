@@ -18,7 +18,7 @@ const AcceptModal = ({setShowAccept,article,community, handleModified}) => {
                     Authorization: `Bearer ${token}`
                 }
             }
-            const res = await axios.post(`http://127.0.0.1:8000/api/article/${article}/approve_for_review/`,{community: community}, config)
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/article/${article}/approve_for_review/`,{community: community}, config)
             if(res.status === 200){
                 ToastMaker(res.data.success, 3500,{
                     valign: 'top',

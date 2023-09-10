@@ -726,28 +726,23 @@ const  CommunityArticlePage = () => {
                             <strong className='text-green-700 font-[700]'> License : </strong>
                             <span>{article.license===null ?"None": article.license}</span>
                         </div>
-                        <div className="bock">
-                            <strong className='text-green-700 font-[700]'> Submission Length : </strong>
-                           <span>{article.sub_len}</span>
-
-                        </div>
-                        <div className="bock">
+                        <div className="block">
                             <strong className='text-green-700 font-[700]'>Code : </strong>
                             <a href={article.Code} className='text-[#337ab7]'> {article.Code}</a>
                         </div>
-                        <div className="bock">
+                        <div className="block">
                             <strong className='text-green-700 font-[700]'> Video Link: </strong>
                             <a href={article.video} className='text-[#337ab7]'> {article.video}</a>                          
                         </div>
                         {
                             article.link && (
-                                <div className="bock">
+                                <div className="block">
                                     <strong className='text-green-700 font-[700]'> Video Link: </strong>
                                     <a href={article.link} className='text-[#337ab7]'> {article.link}</a>                          
                                 </div>
                             )
                         }
-                        <div className="bock">
+                        <div className="block">
                             <strong className='text-green-700 font-[700]'> Submission Date : </strong>
                             <span > {findTime(article.Public_date)} </span>                            
                         </div>
