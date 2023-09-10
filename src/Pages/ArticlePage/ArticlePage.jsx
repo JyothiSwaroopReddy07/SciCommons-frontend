@@ -664,9 +664,6 @@ const  ArticlePage = () => {
                                 <img className='w-[.875rem] inline mb-1 mr-1 ml-4' src={eye} ></img>
 
                                 {article.status==="public"?"Everyone":"Private"}
-                                <img className='w-[.875rem] inline mb-1 mr-1 ml-4' src={dublicate} ></img>
-
-                                Versions
                                 <AiFillHeart className='w-[.875rem] inline mb-1 mr-1 ml-4' />
                                 {formatCount(article.favourites)}
                                 <MdOutlineViewSidebar className="w-[.875rem] inline mb-1 mr-1 ml-4" />

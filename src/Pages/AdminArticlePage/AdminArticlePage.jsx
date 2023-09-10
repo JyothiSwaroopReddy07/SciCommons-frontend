@@ -192,7 +192,7 @@ const AdminArticlePage = ({community}) => {
     }
 
     const handleNavigate = (index) => {
-        navigate(`/article/${index}`)
+        navigate(`/community/${community}/${index}`)
     } 
 
     return (
