@@ -188,11 +188,11 @@ const AllArticlesPage = () => {
 
             <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
                 { loading ? <Loader /> :  <ArticleCard articles={articles} /> }
-                <div className="flex flex-row justify-center">
+                {(loading || articles.length > 0 ) && <div className="flex flex-row justify-center">
                   <button className="bg-green-500 text-white px-2 py-1 mt-4 rounded-lg" onClick={handleLoadMore}>
                     {loadingmore?"loading...": "load More Articles"}
                   </button>
-                </div>
+                </div>}
             </div>
             <Footer />
         </>

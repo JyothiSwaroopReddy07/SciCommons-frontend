@@ -48,7 +48,7 @@ const onclickFuntion = (indext)=>{
   return(
     <div className="w-full">
         <NavBar/>
-        {(loading|| community===null) && <Loader/>}
+        {loading && <Loader/>}
 
         {!loading && 
         community!==null && (
@@ -88,7 +88,7 @@ const onclickFuntion = (indext)=>{
 
             </div>
         </div>)}
-        {!loading && community===null && (<div className='w-full md:w-4/5 mx-auto mt-4'>
+        {(!loading && community===null) && (<div className='w-full md:w-4/5 mx-auto mt-4'>
             <div className='text-center text-2xl font-bold'>You are not an admin of any community</div>
             </div>)}
 

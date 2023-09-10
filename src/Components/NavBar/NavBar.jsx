@@ -49,7 +49,7 @@ const NavBar = () => {
 
     return (
       <>
-        <nav className="sticky top-0 bg-green-50 md:text-sm z-50">
+        <nav className="sticky top-0 bg-slate-100 md:text-sm z-50">
             <div className="gap-x-7 items-center px-4 md:flex md:px-8">
 
 
@@ -61,8 +61,8 @@ const NavBar = () => {
                     <a href="/">
                         <img
                             src={process.env.PUBLIC_URL + '/logo.png'}
-                            width={70}
-                            height={30}
+                            width={40}
+                            height={20}
                             alt="logo"
                         />
                     </a>
@@ -90,7 +90,7 @@ const NavBar = () => {
                         {
                             navigation.map((item, idx) => {
                                 return (
-                                    <li key={idx} className="text-sm md:text-lg text-green-600 font-semibold hover:text-green-800">
+                                    <li key={idx} className="text-sm text-green-600 font-semibold hover:text-green-800">
                                         <a href={item.path} className="block">
                                             {item.title}
                                         </a>
@@ -101,26 +101,25 @@ const NavBar = () => {
                     </ul>
                     <div className="profile flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         {isAuth && (
-                            <>
+                            <div className="flex flex-row items-center">
                                 <a href="/notifications" className="block relative text-base font-semibold hover:text-green-700">
-                                  <RiNotification3Line className="text-gray-700 w-6 h-6" />
+                                  <RiNotification3Line className="text-gray-700 w-5 h-5" />
                                 </a>
                                <Dropdown color="orange" onLogout={handleLogout} User={ User.profile_pic_url.includes("None") ? null: User.profile_pic_url} />
-
-                            </>
+                            </div>
                         )}
 
                         {!isAuth && (
                             <>
-                            <a href="/login" className="block text-base text-green-500 font-semibold hover:text-green-700">
-                                Log in
-                            </a>
-                            <a href="/register" className="flex items-center bottom-2 justify-center gap-x-1 py-2 px-4 text-white font-medium bg-green-600 hover:bg-green-700 active:bg-green-900 rounded-full md:inline-flex">
-                                Register
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
-                                    <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
-                                </svg>
-                            </a>
+                              <a href="/login" className="block text-sm text-base text-green-500 font-semibold hover:text-green-700">
+                                  Log in
+                              </a>
+                              <a href="/register" className="flex text-sm items-center bottom-2 justify-center gap-x-1 py-2 px-4 text-white font-medium bg-green-600 hover:bg-green-700 active:bg-green-900 rounded-full md:inline-flex">
+                                  Register
+                                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="w-5 h-5">
+                                      <path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" />
+                                  </svg>
+                              </a>
                             </>
                         )}
                     </div>
@@ -157,7 +156,7 @@ const Dropdown = ({ color, onLogout,User}) => {
             <div className="relative inline-flex align-middle w-full">
               <button
                 className={
-                  "text-white font-bold uppercase text-sm px-6 rounded outline-none focus:outline-none bg-green-50"
+                  "text-white font-bold uppercase text-sm px-6 rounded outline-none focus:outline-none bg-slate-100"
                 }
                 style={{ transition: "all .15s ease", cursor:"pointer" }}
                 type="button"
@@ -172,7 +171,7 @@ const Dropdown = ({ color, onLogout,User}) => {
                   {
                     (User === null) ?
                     (<SlUser className="text-black w-6 h-6 inline-block ml-1" />):
-                    (<img className="object-cover w-8 h-8 rounded-full ring ring-gray-300 dark:ring-gray-600" src={User} alt="avatar"/>)
+                    (<img className="object-cover w-6 h-6 rounded-full ring ring-gray-300 dark:ring-gray-600 mt-1" src={User} alt="avatar"/>)
                   }
                 </span>
               </button>

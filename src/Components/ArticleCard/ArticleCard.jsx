@@ -16,7 +16,7 @@ const ArticleCard = ({articles}) => {
     }
 
     return (
-        <ul className="mt-12 space-y-6 w-full md:w-4/5">
+        <ul className="mt-12 space-y-6 w-full md:w-4/5 min-h-screen">
         {
             articles.length > 0 ? (
             articles.map((item) => (
