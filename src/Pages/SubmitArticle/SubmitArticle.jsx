@@ -116,7 +116,6 @@ const SubmitArticle = () => {
         },
       });
     } catch (error) {
-      console.log(error.response.data)
       ToastMaker(error.response.data.error, 3500,{
         valign: 'top',
           styles : {

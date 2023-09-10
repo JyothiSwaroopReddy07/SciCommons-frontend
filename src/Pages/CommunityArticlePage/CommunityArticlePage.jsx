@@ -148,7 +148,6 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
             {Title: title,Comment: comment, article: article.id, rating: rating, confidence: confidence, Type: 'review',comment_Type: comment_Type, tag:"public", parent_comment:null}, 
             config);
-            console.log(res);
             setLoading(false);
             setTitle("");
             setComment("");
@@ -512,7 +511,6 @@ const  CommunityArticlePage = () => {
         };
         try {
             const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`, config);
-            console.log(res);
             await loadCommentData(res.data.success.results);
         } catch(err){
             console.log(err);

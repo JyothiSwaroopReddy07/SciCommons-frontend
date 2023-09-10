@@ -148,7 +148,6 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
             {Title: title,Comment: comment, article: article.id, rating: rating, confidence: confidence, Type: 'review',comment_Type: comment_Type, tag:"public", parent_comment:null}, 
             config);
-            console.log(res);
             setLoading(false);
             setTitle("");
             setComment("");
@@ -477,7 +476,6 @@ const  ArticlePage = () => {
             };
             try {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`, config);
-                console.log(res);
                 await loadCommentData(res.data.success.results);
             } catch(err){
                 console.log(err);
@@ -754,7 +752,7 @@ const  ArticlePage = () => {
 
                         </div>
                     </div>
-                    <div className="w-full">
+                    <div className="w-full min-h-screen">
                         <div className='p-3'>
                             {  comments.length>0 && comments.map((comment) => (
                                         <Comments key={comment.id} comment={comment} article={article} colour={1}/>

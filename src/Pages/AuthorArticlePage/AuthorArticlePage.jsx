@@ -194,7 +194,6 @@ const SubmitCommunity = ({article, setShow}) => {
         }
         try{
             const res = await axios.get(`https://scicommons-backend.onrender.com/api/community/?search=${community.toLowerCase()}`,config);
-            console.log(res)
             const ans = await verify(res.data.success.results)
             if(ans){
                 return ans;

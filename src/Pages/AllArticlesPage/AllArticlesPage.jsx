@@ -46,7 +46,6 @@ const AllArticlesPage = () => {
                 `https://scicommons-backend.onrender.com/api/article/`,
                 config
             );
-            console.log(response.data.success.results);
             await loadData(response.data.success.results);
         } catch (error) {
             console.error(error);

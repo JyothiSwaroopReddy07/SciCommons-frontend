@@ -358,7 +358,6 @@ const AddModal = ({community, setShowAddModal, loading, setLoading, onAdd}) => {
                 username: username.current,
                 role: "member",
             }, config);
-            console.log(res);
             if(res.status === 200){
                 ToastMaker(res.data.success, 3500,{
                     valign: 'top',

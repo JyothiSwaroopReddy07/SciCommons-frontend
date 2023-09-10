@@ -94,7 +94,6 @@ const Feed = () => {
     e.preventDefault();
     const form_data = new FormData(e.target);
     form_data.append('body', body);
-    console.log(form_data.get('body'));
     const file = form_data.get('image');
     if (file && file.size > 10485760) {
       ToastMaker('File size is too large. Maximum allowed size is 10 MB', 3500,{

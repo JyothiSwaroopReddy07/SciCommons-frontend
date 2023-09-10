@@ -131,7 +131,6 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
           const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
           {Title: title,Comment: comment, article: article.id, Type: 'comment', comment_Type:comment_Type, tag: "public",parent_comment:null, version:Comment.id}, 
           config);
-          console.log(res);
           setLoading(false);
           setTitle("");
           setComment("");
@@ -534,9 +533,9 @@ const Comments = ({ comment, article, colour }) => {
                   </span>
                 </div>
               </div>
-            <div className="mt-3 ml-10">
+            <div className="mt-3 ml-1 md:ml-10">
             {repliesData.length > 0 &&
-              repliesData.map((reply) => <Comments key={reply.id} comment={reply} article={article} colour={colour===1?0:1}/>)}
+            repliesData.map((reply) => <Comments key={reply.id} comment={reply} article={article} colour={colour===1?0:1}/>)}
             </div>
             {versions[index].replies > 0 && (
               <button style={{cursor:"pointer"}} onClick={handleReply} className="ml-5 text-xs mt-4">

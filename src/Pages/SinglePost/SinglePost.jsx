@@ -146,6 +146,9 @@ const SinglePost = () => {
       );
       res.data.comment.commentavatar = user.profile_pic_url;
       res.data.comment.username = user.username;
+      res.data.comment.commentliked = 0;
+      res.data.comment.commentlikes = 0;
+      res.data.comment.personal = true;
       await loadCommentsData([res.data.comment, ...comments]);
       document.getElementsByName("comment")[0].value = "";
       ToastMaker("Comment added successfully!!!!", 3000, {

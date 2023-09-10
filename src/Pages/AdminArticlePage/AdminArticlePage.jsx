@@ -18,7 +18,7 @@ const AcceptModal = ({setShowAccept,article,community, handleModified}) => {
                     Authorization: `Bearer ${token}`
                 }
             }
-            const res = await axios.post(`https://scicommons-backend.onrender.com/api/article/${article}/approve_for_review/`,{community: community}, config)
+            const res = await axios.post(`http://127.0.0.1:8000/api/article/${article}/approve_for_review/`,{community: community}, config)
             if(res.status === 200){
                 ToastMaker(res.data.success, 3500,{
                     valign: 'top',
@@ -192,7 +192,6 @@ const AdminArticlePage = ({community}) => {
     }
 
     const handleNavigate = (index) => {
-        console.log(index);
         navigate(`/article/${index}`)
     } 
 
@@ -263,8 +262,8 @@ const AdminArticlePage = ({community}) => {
                         sortedArticles.length > 0 ? (
                         sortedArticles.map((item) => (
                         <li key={item.article.id} className="p-2 bg-slate-100 m-1 rounded-md shadow-md w-full">
-                                    <div className="flex flex-row justify-between items-center w-full" onClick={()=>{handleNavigate(item.article.id)}} style={{cursor:"pointer"}}>
-                                        <h3 className="text-xl font-medium text-green-600">
+                                    <div className="flex flex-row justify-between flex-wrap items-center w-full" onClick={()=>{handleNavigate(item.article.id)}} style={{cursor:"pointer"}}>
+                                        <h3 className="text-md md:text-xl font-medium text-green-600">
                                             {item.article.article_name.replace(/_/g, " ")}
                                         </h3>
                                         <p className="text-gray-500 mt-2 pr-2">
@@ -273,8 +272,8 @@ const AdminArticlePage = ({community}) => {
                                         </p>
                                         {item.status === "submitted" &&
                                         <div className="flex flex-row justify-between mt-2">
-                                            <button className="bg-blue-600 px-2 py-1 rounded-lg font-semibold text-white mr-2" onClick={(e)=>{e.preventDefault();setShowAccept(true); e.stopPropagation();}}>Accept for Reviewal</button>
-                                            <button className="bg-gray-500 px-2 py-1 rounded-lg font-semibold text-white" onClick={(e)=>{e.preventDefault();setShowReject(true); e.stopPropagation();}}>Reject Article</button>
+                                            <button className="bg-blue-600 px-2 py-1 rounded-lg font-semibold text-white mr-2 text-sm md:text-md" onClick={(e)=>{e.preventDefault();setShowAccept(true); e.stopPropagation();}}>Accept for Reviewal</button>
+                                            <button className="bg-gray-500 px-2 py-1 rounded-lg font-semibold text-white text-sm md:text-md" onClick={(e)=>{e.preventDefault();setShowReject(true); e.stopPropagation();}}>Reject Article</button>
                                         </div>}
                                     </div>
                                     {showReject && <RejectModal setShowReject={setShowReject} article={item.article.id} community={community} handleReject={handleReject}/>}

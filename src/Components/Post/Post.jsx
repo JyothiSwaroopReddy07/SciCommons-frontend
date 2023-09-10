@@ -154,9 +154,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
         const coloredLinks = htmlContent.replace(/<a /g, '<a style="color: blue;" ');
         return coloredLinks;
       };
-  
-  
-  
+
     return (
       <>
       
@@ -176,7 +174,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
             </div>
           </div>
           <div className="flex items-center">
-            {post.username === user.username &&
+            {post.personal &&
               <div className="ml-3">
                 <Dropdown post={post} onDeletePost={onDeletePost} handleEditChange={handleEditChange}/>
               </div>

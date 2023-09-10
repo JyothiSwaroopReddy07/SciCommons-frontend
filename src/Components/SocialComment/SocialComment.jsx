@@ -171,7 +171,7 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
     const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
     const [value, setValue] = useState(comment.comment);
     const [liked, setLiked] = useState(comment.commentliked);
-    const [likes, setLikes] = useState(comment.commentlikes);
+    const [likes, setLikes] = useState(comment.commentlikes===null?0:comment.commentlikes);
     const [loading, setLoading] = useState(false);
     const [showReply, setShowReply] = useState(false);
     const [showEdit, setShowEdit] = useState(false);
@@ -305,6 +305,10 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
     const addReply = async (res) => {
       res.commentavatar = user.profile_pic_url;
       res.username = user.username;
+      res.commentlikes = 0;
+      res.commentliked = 0;
+      res.personal = true;
+      console.log(res);
       const newReply = [...repliesData, res];
       setRepliesData(newReply);
     };
@@ -317,7 +321,6 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
     return (
       <>
         <div
-          key={key}
           className="rounded-lg pl-2 my-2 mt-2 bg-white border-l-2 border-green-600"
         >
           <div className="flex mb-2">
@@ -363,7 +366,7 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
               </button>
               <span className="text-sm">{formatCount(likes)}</span>
             </div>
-            {comment.username === user.username && (
+            {comment.personal  && (
               <span
                 className="text-xs ml-4"
                 style={{cursor:"pointer"}}
@@ -401,7 +404,7 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
               changeComment={changeComment}
             />
           )}
-          <div className="ml-10">
+          <div className="ml-1 md:ml-10">
             {repliesData.length > 0 &&
               repliesData.map((reply) => <SocialComment key={reply.id} comment={reply} />)}
           </div>
