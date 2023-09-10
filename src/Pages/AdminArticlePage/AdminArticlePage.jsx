@@ -15,10 +15,12 @@ const AcceptModal = ({setShowAccept,article,community, handleModified}) => {
             const token = localStorage.getItem('token')
             const config = {
                 headers: {
-                    Authorization: `Bearer ${token}`
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
                 }
             }
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/article/${article}/approve_for_review/`,{community: community}, config)
+            await handleModified(article);
             if(res.status === 200){
                 ToastMaker(res.data.success, 3500,{
                     valign: 'top',
@@ -28,7 +30,6 @@ const AcceptModal = ({setShowAccept,article,community, handleModified}) => {
                       }
                   })
             }
-            await handleModified(article);
         } catch (error) {
             console.log(error)
         }
@@ -67,6 +68,7 @@ const RejectModal = ({setShowReject,article,community, handleReject}) => {
                 }
             }
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/article/${article}/reject_article/`,{community:community}, config)
+            await handleReject(article)
             if(res.status === 200){
                 ToastMaker(res.data.success, 3500,{
                     valign: 'top',
@@ -76,7 +78,6 @@ const RejectModal = ({setShowReject,article,community, handleReject}) => {
                       }
                   })
             }
-            await handleReject(article)
         } catch (error) {
             console.log(error)
             ToastMaker("Please try again!!!", 3500,{
@@ -117,6 +118,7 @@ const AdminArticlePage = ({community}) => {
     const [selectedOption, setSelectedOption] = useState('All');
     const [showAccept, setShowAccept] = useState(false);
     const [showReject, setShowReject] = useState(false);
+    const [data, setData] = useState(null);
 
     const navigate = useNavigate();
 
@@ -126,9 +128,20 @@ const AdminArticlePage = ({community}) => {
     }
 
     const handleModified = async(index) => {
-        const articleIndex = articles.findIndex((article) => article.article.id === index);
-        let newarticles = [...articles]
-        newarticles[articleIndex].status = "in review";
+        let newarticles = []
+        for(var i=0;i<articles.length;i++){
+            if(articles[i].article.id===index)
+            {
+                let newarticle = articles[i];
+                newarticle.status = "in review";
+                console.log('review', newarticle)
+                newarticles.push(newarticle) 
+            }
+            else{
+                newarticles.push(articles[i])
+            }
+        }
+        console.log(newarticles);
         await loadData(newarticles);
     }
 
@@ -137,6 +150,8 @@ const AdminArticlePage = ({community}) => {
         let newarticles = [...articles]
         newarticles[articleIndex].status = "rejected";
         await loadData(newarticles);
+        console.log(sortedArticles);
+        console.log(articles)
     }
 
     const handleOptionChange = async(e) => {
@@ -272,12 +287,12 @@ const AdminArticlePage = ({community}) => {
                                         </p>
                                         {item.status === "submitted" &&
                                         <div className="flex flex-row justify-between mt-2">
-                                            <button className="bg-blue-600 px-2 py-1 rounded-lg font-semibold text-white mr-2 text-sm md:text-md" onClick={(e)=>{e.preventDefault();setShowAccept(true); e.stopPropagation();}}>Accept for Reviewal</button>
-                                            <button className="bg-gray-500 px-2 py-1 rounded-lg font-semibold text-white text-sm md:text-md" onClick={(e)=>{e.preventDefault();setShowReject(true); e.stopPropagation();}}>Reject Article</button>
+                                            <button className="bg-blue-600 px-2 py-1 rounded-lg font-semibold text-white mr-2 text-sm md:text-md" onClick={(e)=>{e.preventDefault();setShowAccept(true); setData({article:item.article.id}); e.stopPropagation();}}>Accept for Reviewal</button>
+                                            <button className="bg-gray-500 px-2 py-1 rounded-lg font-semibold text-white text-sm md:text-md" onClick={(e)=>{e.preventDefault();setShowReject(true);setData({article:item.article.id}); e.stopPropagation();}}>Reject Article</button>
                                         </div>}
                                     </div>
-                                    {showReject && <RejectModal setShowReject={setShowReject} article={item.article.id} community={community} handleReject={handleReject}/>}
-                                    {showAccept && <AcceptModal setShowAccept={setShowAccept} article={item.article.id} community={community} handleModified={handleModified}/>}
+                                    {showReject && <RejectModal setShowReject={setShowReject} article={data.article} community={community} handleReject={handleReject}/>}
+                                    {showAccept && <AcceptModal setShowAccept={setShowAccept} article={data.article} community={community} handleModified={handleModified}/>}
                         </li>
                         ))):(<h1 className="text-2xl font-bold text-gray-500">No Articles Found</h1>)
                     }

@@ -533,7 +533,7 @@ const Comments = ({ comment, article, colour }) => {
                   </span>
                 </div>
               </div>
-            <div className="mt-3 ml-1 md:ml-10">
+            <div className="mt-3 ml-1 md:ml-5">
             {repliesData.length > 0 &&
             repliesData.map((reply) => <Comments key={reply.id} comment={reply} article={article} colour={colour===1?0:1}/>)}
             </div>

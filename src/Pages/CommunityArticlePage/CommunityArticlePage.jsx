@@ -651,18 +651,18 @@ const  CommunityArticlePage = () => {
     }
 
     return (
-        <div className="bg-amber-50 min-h-screen min-w-[800px]">
+        <div className="bg-white min-h-screen min-w-[800px]">
         <Navbar/>
         {(loading || article===null || comments ===null ) && <Loader/>}
         {!loading && article && comments && (
-            < div className="bg-amber-50">
-            <div className="flex justify-center bg-amber-50 w-full md:w-5/6 mt-[1rem] mx-auto p-2 overflow-hidden">
+            < div className="bg-white">
+            <div className="flex justify-center bg-white w-full md:w-5/6 mt-[1rem] mx-auto p-2 overflow-hidden">
 
-                <div className=' mt-1 w-full  justify-self-center bg-amber-50'>
+                <div className=' mt-1 w-full  justify-self-center bg-white'>
                     <div className="py-5 ">
-                        <div className="flex bg-amber-50 flex-row justify-between">
+                        <div className="flex bg-white flex-row justify-between">
 
-                            <div className='text-lg md:text-3xl font-[700] text-gray-600 bg-amber-50'>
+                            <div className='text-lg md:text-3xl font-[700] text-gray-600 bg-white'>
                                 {article.article_name.replace(/_/g, " ")}
                             </div>
                             <div className="flex flex-row">
@@ -676,7 +676,7 @@ const  CommunityArticlePage = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="py-1 bg-amber-50">
+                        <div className="py-1 bg-white">
 
                             <span className="italic font-sans text-md md:text-lg leading-[1.5rem] ">
 
@@ -693,7 +693,7 @@ const  CommunityArticlePage = () => {
                                 .
                             </span>
                         </div>
-                        <div className="bg-amber-50">
+                        <div className="bg-white">
                             <span className="text-[.75rem] p-0">
                                 <img className='w-[.875rem] inline mb-1' src={cal} ></img>
                                 <span className="pl-1">
@@ -717,7 +717,7 @@ const  CommunityArticlePage = () => {
                         </div>
 
                     </div>
-                    <div className="text-[.75rem] leading-[1.125rem] mt-[-0.875rem] bg-amber-50">
+                    <div className="text-[.75rem] leading-[1.125rem] mt-[-0.875rem] bg-white">
                         <span className="block">
                             <strong className='text-green-700'> Abstract : </strong>
                               <span>{article.Abstract}</span>
@@ -750,7 +750,7 @@ const  CommunityArticlePage = () => {
                     </div>
 
                     <div className="ab m-0">
-                        <div className='bg-amber-50 border-[#3f6978] border-solid'>
+                        <div className='bg-white border-[#3f6978] border-solid'>
                             <div className="float-right">
                                 <span className='text-[0.75rem] text-gray-600'>
                                     Add:
@@ -765,7 +765,7 @@ const  CommunityArticlePage = () => {
                     </div>
                 </div>
             </div>
-                 <div className="flex flex-col w-full md:w-5/6 bg-amber-50 mt-[1rem] mx-auto p-2 overflow-hidden">
+                 <div className="flex flex-col w-full md:w-5/6 bg-white mt-[1rem] mx-auto p-2 overflow-hidden">
                     <div className="w-full">
                         <div className='w-full flex mx-auto mt-4'>
                             <button className={currentState === 1 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
