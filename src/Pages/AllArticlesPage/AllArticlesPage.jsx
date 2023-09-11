@@ -84,11 +84,7 @@ const AllArticlesPage = () => {
             filter = "least_"+filter;
         }
         try{
-            const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}`,{
-                params:{
-                    filter: filter,
-                },
-            },config);
+            const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}`,config);
             await loadData(response.data.success.results);
         } catch(err){
             console.log(err);
@@ -105,7 +101,7 @@ const AllArticlesPage = () => {
         }
           const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}&limit=20&offset=${articles.length}`, {
               headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, },
-              params: {filter: filter},
+            //   params: {filter: filter},
           });
           const data = response.data.success.results;
           if(response.data.success.count === articles.length) {
@@ -127,7 +123,7 @@ const AllArticlesPage = () => {
     return (
         <>
             <NavBar />
-            <div className="flex flex-col items-center justify-center w-full bg-gray-50">
+            <div className="flex flex-col items-center justify-start w-full bg-gray-50 min-h-screen">
                 <h1 className="text-3xl font-bold text-gray-700 mt-10">Articles</h1>
                 <form className="w-5/6 px-4 mt-3 md:w-2/3" onSubmit={handleSearch}>
                     <div className="relative">
@@ -184,15 +180,15 @@ const AllArticlesPage = () => {
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
+            <div className="flex flex-col items-center justify-center mx-auto w-full bg-gray-50 mb-5">
                 { loading ? <Loader /> :  <ArticleCard articles={articles} /> }
                 {(loading || articles.length > 0 ) && <div className="flex flex-row justify-center">
                   <button className="bg-green-500 text-white px-2 py-1 mt-4 rounded-lg" onClick={handleLoadMore}>
                     {loadingmore?"loading...": "load More Articles"}
                   </button>
                 </div>}
+            </div>
             </div>
             <Footer />
         </>

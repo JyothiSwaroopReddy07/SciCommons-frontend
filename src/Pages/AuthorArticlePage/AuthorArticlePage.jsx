@@ -691,7 +691,7 @@ const AuthorArticlePage = () => {
                   <div className="block">
                     <strong className="text-green-700 font-[700]">
                       {" "}
-                      Video Link:{" "}
+                      Article Link:{" "}
                     </strong>
                     <a href={article.link} className="text-[#337ab7]">
                       {" "}

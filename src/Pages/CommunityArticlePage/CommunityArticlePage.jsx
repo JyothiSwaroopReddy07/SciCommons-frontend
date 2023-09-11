@@ -737,7 +737,7 @@ const  CommunityArticlePage = () => {
                         {
                             article.link && (
                                 <div className="block">
-                                    <strong className='text-green-700 font-[700]'> Video Link: </strong>
+                                    <strong className='text-green-700 font-[700]'> Article Link: </strong>
                                     <a href={article.link} className='text-[#337ab7]'> {article.link}</a>                          
                                 </div>
                             )

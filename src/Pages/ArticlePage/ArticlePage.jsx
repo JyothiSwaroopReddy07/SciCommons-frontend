@@ -43,7 +43,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
         const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
         try {
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
-            {Title: title,Comment: comment, article: article.id, Type: 'comment', comment_Type:comment_Type, tag: "public", parent_comment:null}, 
+            {Title: title,Comment: comment, article: article.id, Type: 'comment', comment_Type:comment_Type, tag: "public", parent_comment:null, version:null}, 
             config);
             setLoading(false);
             setTitle("");
@@ -146,7 +146,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
         };
         try {
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
-            {Title: title,Comment: comment, article: article.id, rating: rating, confidence: confidence, Type: 'review',comment_Type: comment_Type, tag:"public", parent_comment:null}, 
+            {Title: title,Comment: comment, article: article.id, rating: rating, confidence: confidence, Type: 'review',comment_Type: comment_Type, tag:"public", parent_comment:null,version:null}, 
             config);
             setLoading(false);
             setTitle("");
@@ -694,7 +694,7 @@ const  ArticlePage = () => {
                         {
                             article.link && (
                                 <div className="block">
-                                    <strong className='text-green-700 font-[700]'> Video Link: </strong>
+                                    <strong className='text-green-700 font-[700]'> Article Link: </strong>
                                     <a href={article.link} className='text-[#337ab7]'> {article.link}</a>                          
                                 </div>
                             )

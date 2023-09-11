@@ -19,7 +19,7 @@ const ArticleCard = ({articles}) => {
     }
 
     return (
-        <ul className="mt-12 space-y-6 w-full md:w-4/5">
+        <ul className="mt-2 grid gap-2 xs-grid-cols-1 sm-grid-cols-2 md:grid-cols-2 lg:grid-cols-4 space-y-3 w-full">
         {
             articles.length > 0 ? (
             articles.map((item) => (
@@ -28,7 +28,7 @@ const ArticleCard = ({articles}) => {
                 <div>
                 <div className="justify-between sm:flex">
                     <div className="flex-1">
-                    <h3 className="text-xl font-medium text-green-600">
+                    <h3 className="text-md md:text-xl font-medium text-green-600">
                         {item.article_name.replace(/_/g, " ")}
                     </h3>
                     <p className="text-gray-500 mt-2 pr-2">
@@ -43,30 +43,30 @@ const ArticleCard = ({articles}) => {
                         <span className="text-green-700">Added On : </span>
                         { dayjs(item.Public_date).format('MMMM D, YYYY HH:mm A')}
                     </p>
-                    </div>
-                    <div className="mt-5 space-y-4 text-sm sm:mt-0 sm:space-y-2">
-                    <span className="flex items-center text-gray-500">
-                        <AiFillEye className="w-4 h-4 mr-2" />
-                        <span className="text-lg font-bold">{item.views == null ? 0 : formatCount(item.views)}</span>
-                    </span>
-                    <span className="flex items-center text-gray-500">
-                        <svg
-                        className="text-rose-500 w-4 h-4 mr-2 fill-current"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-                        />
-                        </svg>
-                        <span className="text-lg font-bold">{item.favourites == null ? 0 : formatCount(item.favourites)}</span>
+                    <div className="flex flex-row">
+                        <span className="flex items-center text-gray-500 mr-4">
+                            <AiFillEye className="w-4 h-4 mr-2" />
+                            <span className="text-lg font-bold">{item.views == null ? 0 : formatCount(item.views)}</span>
+                        </span>
+                        <span className="flex items-center text-gray-500">
+                            <svg
+                            className="text-rose-500 w-4 h-4 mr-2 fill-current"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                            >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
+                            />
+                            </svg>
+                            <span className="text-lg font-bold">{item.favourites == null ? 0 : formatCount(item.favourites)}</span>
 
-                    </span>
+                        </span>
+                    </div>
                     </div>
                 </div>
                 <div className="mt-4 items-center space-y-4 text-sm sm:flex sm:space-x-4 sm:space-y-0">
