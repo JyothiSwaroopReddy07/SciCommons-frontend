@@ -68,11 +68,11 @@ const UserActivity = () => {
             }
             { !loading && activity.length > 0 &&
               <div className="flex flex-row justify-center mt-3">
-                <ol className="relative border-l border-gray-600 dark:border-gray-700">                  
+                <ol className="relative border-l border-gray-600">                  
                     {activity.map((action,index) => (
                     <li key={index} className="mb-10 ml-4">
-                        <div className="absolute w-3 h-3 bg-gray-600 rounded-full mt-1.5 -left-1.5 border border-white dark:border-gray-900 dark:bg-gray-700"></div>
-                        <p className="text-base font-normal text-sm text-gray-800 ml-3 dark:text-gray-400">{action.action}</p>
+                        <div className="absolute w-3 h-3 bg-gray-600 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+                        <p className="text-base font-normal text-sm text-gray-800 ml-3">{action.action}</p>
                     </li>))}
                 </ol>
               </div>

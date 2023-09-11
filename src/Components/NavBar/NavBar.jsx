@@ -171,7 +171,7 @@ const Dropdown = ({ color, onLogout,User}) => {
                   {
                     (User === null) ?
                     (<SlUser className="text-black w-6 h-6 inline-block ml-1" />):
-                    (<img className="object-cover w-6 h-6 rounded-full ring ring-gray-300 dark:ring-gray-600 mt-1" src={User} alt="avatar"/>)
+                    (<img className="object-cover w-6 h-6 rounded-full ring ring-gray-300 mt-1" src={User} alt="avatar"/>)
                   }
                 </span>
               </button>

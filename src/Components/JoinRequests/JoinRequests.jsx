@@ -102,13 +102,13 @@ const JoinRequests = ({community}) => {
 
                             {sortedRequests.length!==0 ?(sortedRequests.map((request, index) => (
                                 <div id={index} className="bg-gray-200 rounded-3xl shadow-xl mb-2">
-                                    <div className="rounded-t-lg border border-neutral-200 dark:border-neutral-600 dark:bg-neutral-800">
+                                    <div className="rounded-t-lg border border-neutral-200">
                                     <h2 className="mb-0" id="headingOne">
                                         <button
                                         className={`${
                                             activeElement === "element1" &&
-                                            `text-primary [box-shadow:inset_0_-1px_0_rgba(229,231,235)] dark:!text-primary-400 dark:[box-shadow:inset_0_-1px_0_rgba(75,85,99)]`
-                                        } group relative flex w-full items-center rounded-t-[15px] border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none dark:bg-neutral-800 dark:text-white`}
+                                            `text-primary [box-shadow:inset_0_-1px_0_rgba(229,231,235)]`
+                                        } group relative flex w-full items-center rounded-t-[15px] border-0 bg-white px-5 py-4 text-left text-base text-neutral-800 transition [overflow-anchor:none] hover:z-[2] focus:z-[3] focus:outline-none`}
                                         type="button"
                                         style={{cursor:"pointer"}}
                                         onClick={() => handleClick("element1")}
@@ -116,15 +116,15 @@ const JoinRequests = ({community}) => {
                                         aria-controls="collapseOne"
                                         >
                                         { request.profile_pic_url.includes("None")?<SlUser className="w-6 h-6 mr-2"/>:
-                                            <img className="object-cover w-8 h-8 rounded-full mr-3 ring ring-gray-300 dark:ring-gray-600" src={request.profile_pic_url} alt="avatar"/>
+                                            <img className="object-cover w-8 h-8 rounded-full mr-3 ring ring-gray-300" src={request.profile_pic_url} alt="avatar"/>
                                         }
                                         <span className="text-lg font-semibold"><a href={`/profile/${request.username}`} >{request.username}</a></span>
                                         <span
                                             className={`${
                                             activeElement === "element1"
                                                 ? `rotate-[-180deg] -mr-1`
-                                                : `rotate-0 fill-[#212529]  dark:fill-white`
-                                            } ml-auto h-5 w-5 shrink-0 fill-[#336dec] transition-transform duration-200 ease-in-out motion-reduce:transition-none dark:fill-blue-300`}
+                                                : `rotate-0 fill-[#212529]`
+                                            } ml-auto h-5 w-5 shrink-0 fill-[#336dec] transition-transform duration-200 ease-in-out motion-reduce:transition-none`}
                                         >
                                             <svg
                                             xmlns="http://www.w3.org/2000/svg"
@@ -151,7 +151,7 @@ const JoinRequests = ({community}) => {
                                             <div className="flex flex-row items-center">
                                                 <div className="flex flex-col items-center mr-6">
                                                     {request.profile_pic_url.includes("None")?<SlUser className="w-10 h-10 md:w-20 md:h-20 mr-3"/>:
-                                                        <img className="object-cover w-10 h-10 md:w-20 md:h-20 rounded-full mr-3 ring ring-gray-300 dark:ring-gray-600" src={request.profile_pic_url} alt="avatar"/>
+                                                        <img className="object-cover w-10 h-10 md:w-20 md:h-20 rounded-full mr-3 ring ring-gray-300" src={request.profile_pic_url} alt="avatar"/>
                                                     }
                                                     <span className="text-lg font-semibold"><a href={`/profile/${request.username}`} >{request.username}</a></span>
                                                 </div>

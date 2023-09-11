@@ -148,7 +148,7 @@ const ArticleCard = ({ articles }) => {
           </li>
         ))
       ) : (
-        <h1 className="text-2xl font-bold text-gray-500">No Articles Found</h1>
+        <h1 className="text-2xl font-bold text-center w-full text-gray-500">No Articles Found</h1>
       )}
     </ul>
   );

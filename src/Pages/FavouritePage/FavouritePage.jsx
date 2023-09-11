@@ -95,9 +95,9 @@ const FavouritePage = () => {
     return (
         <>
             <NavBar />
-            <div className="flex flex-col items-center justify-center w-full bg-gray-50">
-                <h1 className="text-3xl font-bold text-gray-700 mt-10">Favourite Articles</h1>
-                <form className="w-5/6 px-4 mt-20 md:w-2/3" onSubmit={handleSearch}>
+            <div className="flex flex-col items-center justify-start w-full bg-gray-50 min-h-screen">
+                <h1 className="text-3xl font-bold text-gray-700 mt-2">Favourite Articles</h1>
+                <form className="w-5/6 px-4 mt-2 md:w-2/3" onSubmit={handleSearch}>
                     <div className="relative">
                         <div>
                             <svg
@@ -137,10 +137,9 @@ const FavouritePage = () => {
                     <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortViews}>Most Views</button>
                     <button className="mx-1 px-3 mt-4 text-black bg-green-100 rounded-md hover:bg-green-400" style={{cursor:"pointer"}} onClick={sortDate}>Most Recent</button>
                 </div>
-            </div>
-
-            <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
-                { loading ? <Loader /> :  <ArticleCard articles={sortedArticles} /> }
+                <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
+                    { loading ? <Loader /> :  <ArticleCard articles={sortedArticles} /> }
+                </div>
             </div>
             <Footer />
         </>

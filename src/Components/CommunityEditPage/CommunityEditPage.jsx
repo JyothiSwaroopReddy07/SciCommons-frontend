@@ -174,7 +174,7 @@ const CommunityEditPage = () => {
                             <form onSubmit={(e) => submitForm(e)} encType="multipart/form-data" className="w-full">
                             <label
                                 htmlFor="Community_name"
-                                className="block mb-4 text-sm font-medium text-gray-900 dark:text-white"
+                                className="block mb-4 text-sm font-medium text-gray-900"
                                 >
                                 Community Name
                                 </label>
@@ -183,13 +183,13 @@ const CommunityEditPage = () => {
                                 id="Community_name"
                                 name="Community_name"
                                 value={community?.Community_name}
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                 disabled
                                 />
                                 <div className="mb-6">
                                 <label
                                     htmlFor="subtitle"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    className="block mb-2 text-sm font-medium text-gray-900"
                                 >
                                     Subtitle
                                 </label>
@@ -199,7 +199,7 @@ const CommunityEditPage = () => {
                                     name="subtitle"
                                     value={subtitle}
                                     onChange={handleSubtitleChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                     required
                                 />
                                 </div>
@@ -207,7 +207,7 @@ const CommunityEditPage = () => {
                                 <div className="mb-6">
                                 <label
                                     htmlFor="description"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    className="block mb-2 text-sm font-medium text-gray-900"
                                 >
                                     Description
                                 </label>
@@ -217,7 +217,7 @@ const CommunityEditPage = () => {
                                     rows={8}
                                     value={description}
                                     onChange={handleDescriptionChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                     placeholder=""
                                     required
                                 />
@@ -225,7 +225,7 @@ const CommunityEditPage = () => {
                                 <div className="mb-6">
                                 <label
                                     htmlFor="location"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    className="block mb-2 text-sm font-medium text-gray-900"
                                 >
                                     Location
                                 </label>
@@ -235,7 +235,7 @@ const CommunityEditPage = () => {
                                     name="location"
                                     value={location}
                                     onChange={handleLocationChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                     required
                                 />
                                 </div>
@@ -243,7 +243,7 @@ const CommunityEditPage = () => {
                                 <div className="mb-6">
                                 <label
                                     htmlFor="github"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    className="block mb-2 text-sm font-medium text-gray-900"
                                 >
                                     Github Link (if any)
                                 </label>
@@ -253,14 +253,14 @@ const CommunityEditPage = () => {
                                     name="github"
                                     value={github}
                                     onChange={handleGithubChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                 />
                                 </div>
 
                                 <div className="mb-6">
                                 <label
                                     htmlFor="website"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    className="block mb-2 text-sm font-medium text-gray-900"
                                 >
                                     Website Link
                                 </label>
@@ -270,7 +270,7 @@ const CommunityEditPage = () => {
                                     name="website"
                                     value={website}
                                     onChange={handleWebsiteChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                     required
                                 />
                                 </div>
@@ -278,7 +278,7 @@ const CommunityEditPage = () => {
                                 <div className="mb-6">
                                 <label
                                     htmlFor="email"
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                    className="block mb-2 text-sm font-medium text-gray-900"
                                 >
                                     Email (of the Community)
                                 </label>
@@ -288,14 +288,14 @@ const CommunityEditPage = () => {
                                     name="email"
                                     value={email}
                                     onChange={handleEmailChange}
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                     required
                                 />
                                 </div>
 
                                 <button
                                 type="submit"
-                                className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                                className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
                                 >
                                     {loading && (
                                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

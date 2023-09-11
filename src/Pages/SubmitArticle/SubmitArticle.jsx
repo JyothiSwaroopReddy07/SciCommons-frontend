@@ -173,7 +173,7 @@ const SubmitArticle = () => {
           <div>
             <label
               htmlFor="article_name"
-              className="block mb-4 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-4 text-sm font-medium text-gray-900"
             >
               Title
             </label>
@@ -181,14 +181,14 @@ const SubmitArticle = () => {
               type="text"
               id="article_name"
               name="article_name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
               required
             />
           </div>
           <div>
             <label
               htmlFor="id"
-              className=" text-base mb-2 font-medium text-gray-900 dark:text-white flex flex-row"
+              className=" text-base mb-2 font-medium text-gray-900 flex flex-row"
             >
               Author(s) (Add other authors except yourself)
               <MdAddBox
@@ -204,7 +204,7 @@ const SubmitArticle = () => {
                     <div className="flex flex-row justify-between">
                       <label
                         htmlFor="userName"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-gray-900"
                       >
                         User Name
                       </label>
@@ -219,7 +219,7 @@ const SubmitArticle = () => {
                       id="username"
                       name="username"
                       onChange={(e)=>changeAuthor(e, index)}
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                     />
                   </div>
                 </div>
@@ -231,7 +231,7 @@ const SubmitArticle = () => {
         <div className="mb-6">
           <label
             htmlFor="keywords"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Keywords(separated with {'","'})
           </label>
@@ -239,14 +239,14 @@ const SubmitArticle = () => {
             type="text"
             id="keywords"
             name="keywords"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
         </div>
         <div className="mb-6">
           <label
             htmlFor="link"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             URL to article (Add the Url only if it is already published, else leave it empty)
           </label>
@@ -254,14 +254,14 @@ const SubmitArticle = () => {
             type="url"
             id="link"
             name="link"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
           />
         </div>
 
         <div className="mb-6">
           <label
             htmlFor="video"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Video Link (if any)
           </label>
@@ -269,14 +269,14 @@ const SubmitArticle = () => {
             type="url"
             id="video"
             name="video"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
           />
         </div>
 
         <div className="mb-6">
           <label
             htmlFor="Code"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Code Link (if any)
           </label>
@@ -284,17 +284,17 @@ const SubmitArticle = () => {
             type="url"
             id="Code"
             name="Code"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
           />
         </div>
         <div className="mb-6">
-            <label htmlFor="file" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">File</label>
-            <input type="file" required accept="application/pdf" name="article_file" className="block w-full px-5 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full dark:file:bg-gray-400 dark:file:text-gray-200 dark:text-gray-300 placeholder-gray-400/70 dark:placeholder-gray-500 focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 dark:border-gray-600 dark:bg-gray-900 dark:focus:border-blue-300" />
+            <label htmlFor="file" className="block mb-2 text-sm font-medium text-gray-900">File</label>
+            <input type="file" required accept="application/pdf" name="article_file" className="block w-full px-5 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
         </div>
         <div className="mb-6">
           <label
             htmlFor="Abstract"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Abstract
           </label>
@@ -302,7 +302,7 @@ const SubmitArticle = () => {
             id="Abstract"
             name="Abstract"
             rows={4}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             placeholder=""
             required
           />
@@ -311,7 +311,7 @@ const SubmitArticle = () => {
           <div className="max-w-xs">
             <label
               htmlFor="fullName"
-              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-2 text-sm font-medium text-gray-900"
             >
               Article Submission Type
             </label>
@@ -334,18 +334,18 @@ const SubmitArticle = () => {
               id="remember"
               type="checkbox"
               value=""
-              className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-green-600 dark:ring-offset-gray-800"
+              className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300"
               required
             />
           </div>
           <label
             htmlFor="remember"
-            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            className="ml-2 text-sm font-medium text-gray-900"
           >
             I agree with the{" "}
             <a
               href="/terms-and-conditions"
-              className="text-green-600 hover:underline dark:text-green-500"
+              className="text-green-600 hover:underline"
             >
               terms and conditions
             </a>
@@ -355,7 +355,7 @@ const SubmitArticle = () => {
 
         <button
           type="submit"
-          className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         >
           Submit
         </button>

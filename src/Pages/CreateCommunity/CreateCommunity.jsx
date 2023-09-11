@@ -68,7 +68,7 @@ const CreateCommunity = () => {
           <div>
             <label
               htmlFor="Community_name"
-              className="block mb-4 text-sm font-medium text-gray-900 dark:text-white"
+              className="block mb-4 text-sm font-medium text-gray-900"
             >
               Community Name
             </label>
@@ -76,7 +76,7 @@ const CreateCommunity = () => {
               type="text"
               id="Community_name"
               name="Community_name"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
               required
             />
             {
@@ -90,7 +90,7 @@ const CreateCommunity = () => {
         <div className="mb-6">
           <label
             htmlFor="subtitle"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Subtitle
           </label>
@@ -98,7 +98,7 @@ const CreateCommunity = () => {
             type="text"
             id="subtitle"
             name="subtitle"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
         </div>
@@ -106,7 +106,7 @@ const CreateCommunity = () => {
         <div className="mb-6">
           <label
             htmlFor="description"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Description
           </label>
@@ -114,7 +114,7 @@ const CreateCommunity = () => {
             id="description"
             name="description"
             rows={8}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             placeholder=""
             required
           />
@@ -122,7 +122,7 @@ const CreateCommunity = () => {
         <div className="mb-6">
           <label
             htmlFor="location"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Location
           </label>
@@ -130,7 +130,7 @@ const CreateCommunity = () => {
             type="test"
             id="location"
             name="location"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
         </div>
@@ -138,7 +138,7 @@ const CreateCommunity = () => {
         <div className="mb-6">
           <label
             htmlFor="github"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Github Link (if any)
           </label>
@@ -146,14 +146,14 @@ const CreateCommunity = () => {
             type="url"
             id="github"
             name="github"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
           />
         </div>
 
         <div className="mb-6">
           <label
             htmlFor="website"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Website Link
           </label>
@@ -161,7 +161,7 @@ const CreateCommunity = () => {
             type="url"
             id="website"
             name="website"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
         </div>
@@ -169,7 +169,7 @@ const CreateCommunity = () => {
         <div className="mb-6">
           <label
             htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900"
           >
             Email (of the Community)
           </label>
@@ -177,7 +177,7 @@ const CreateCommunity = () => {
             type="email"
             id="email"
             name="email"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
         </div>
@@ -188,18 +188,18 @@ const CreateCommunity = () => {
               id="remember"
               type="checkbox"
               value=""
-              className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-green-600 dark:ring-offset-gray-800"
+              className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300"
               required
             />
           </div>
           <label
             htmlFor="remember"
-            className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+            className="ml-2 text-sm font-medium text-gray-900"
           >
             I agree with the{" "}
             <a
               href="/terms-and-conditions"
-              className="text-green-600 hover:underline dark:text-green-500"
+              className="text-green-600 hover:underline"
             >
               terms and conditions
             </a>
@@ -209,7 +209,7 @@ const CreateCommunity = () => {
 
         <button
           type="submit"
-          className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+          className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         >
             {loading && (
           <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">

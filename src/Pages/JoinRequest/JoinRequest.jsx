@@ -105,7 +105,7 @@ const JoinRequest = () => {
                 <div className="mb-6">
                 <label
                     htmlFor="about"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                 >
                     Tell us about yourself?
                 </label>
@@ -113,7 +113,7 @@ const JoinRequest = () => {
                     id="about"
                     name="about"
                     rows={12}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                     placeholder=""
                     required
                 />
@@ -122,7 +122,7 @@ const JoinRequest = () => {
                 <div className="mb-6">
                 <label
                     htmlFor="summary"
-                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                    className="block mb-2 text-sm font-medium text-gray-900"
                 >
                     Why do you want to join this community?
                 </label>
@@ -130,7 +130,7 @@ const JoinRequest = () => {
                     id="summary"
                     name="summary"
                     rows={12}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-green-500 dark:focus:border-green-500"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                     placeholder=""
                     required
                 />
@@ -142,18 +142,18 @@ const JoinRequest = () => {
                     id="remember"
                     type="checkbox"
                     value=""
-                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-green-600 dark:ring-offset-gray-800"
+                    className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300"
                     required
                     />
                 </div>
                 <label
                     htmlFor="remember"
-                    className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    className="ml-2 text-sm font-medium text-gray-900"
                 >
                     I agree with the{" "}
                     <a
                     href="/terms-and-conditions"
-                    className="text-green-600 hover:underline dark:text-green-500"
+                    className="text-green-600 hover:underline"
                     >
                     terms and conditions
                     </a>
@@ -163,7 +163,7 @@ const JoinRequest = () => {
 
                 <button
                 type="submit"
-                className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
                 >
                     {loading && (
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
