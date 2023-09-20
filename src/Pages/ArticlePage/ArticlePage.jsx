@@ -487,6 +487,7 @@ const  ArticlePage = () => {
     },[]);
 
     const handleProfile = (data) => {
+        console.log(data);
         navigate(`/profile/${data}`);
     }
 
@@ -640,7 +641,7 @@ const  ArticlePage = () => {
 
                                 {article.authors.map((data, i) => {
                                     return (
-                                        <span key={i} style={{cursor:"pointer"}} onClick={(data)=>{handleProfile(data)}}>
+                                        <span key={i} style={{cursor:"pointer"}} onClick={(e)=>{e.preventDefault();handleProfile(data)}}>
                                             {data } 
                                             <span>  </span>
                                              

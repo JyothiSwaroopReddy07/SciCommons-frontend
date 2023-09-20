@@ -305,7 +305,6 @@ const SubmitCommunity = ({article, setShow}) => {
 };
 
 const ArticleEditPage = ({setArticleEdit, article, handleArticleEdit}) => {
-  console.log(article);
 
   const [status, setStatus] = useState("public");
   const [loading, setLoading] = useState(false);
@@ -327,7 +326,7 @@ const ArticleEditPage = ({setArticleEdit, article, handleArticleEdit}) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      await handleArticleEdit(response.data.success);
+      await handleArticleEdit(response.data.data);
     } catch (error) {
       ToastMaker(error.response.data.error, 3500,{
         valign: 'top',
@@ -725,7 +724,7 @@ const AuthorArticlePage = () => {
                 <DisplayCommunity article={articleId}/>
           </div>
           {show && <SubmitCommunity article={article} setShow={setShow}/>}
-          {articleEdit && <ArticleEditPage setArticleEdit={setArticleEdit} article={article}/>}
+          {articleEdit && <ArticleEditPage setArticleEdit={setArticleEdit} handleArticleEdit={handleArticleEdit} article={article}/>}
         </div>
       )}
     </div>
