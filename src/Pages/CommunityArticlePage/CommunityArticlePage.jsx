@@ -528,7 +528,9 @@ const  CommunityArticlePage = () => {
         setLoading(false);
     },[]);
 
-    const handleProfile = (data) => {
+    const handleProfile = (e,data) => {
+        e.preventDefault();
+        console.log(data);
         navigate(`/profile/${data}`);
     }
 
@@ -682,7 +684,7 @@ const  CommunityArticlePage = () => {
 
                                 {article.authors.map((data, i) => {
                                     return (
-                                        <span key={i} style={{cursor:"pointer"}} onClick={(data)=>{handleProfile(data)}}>
+                                        <span key={i} style={{cursor:"pointer"}} onClick={(e)=>{handleProfile(e,data)}}>
                                             {data } 
                                             <span>  </span>
                                              

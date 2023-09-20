@@ -446,6 +446,7 @@ const  ArticlePage = () => {
             };
             try {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
+                console.log(res.data.success);
                 await loadArticleData(res.data.success);
             } catch(err){
                 console.log(err);
