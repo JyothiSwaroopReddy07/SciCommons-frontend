@@ -26,6 +26,7 @@ import MyArticlesPage from './Pages/MyArticlesPage/MyArticlesPage';
 import AuthorArticlePage from './Pages/AuthorArticlePage/AuthorArticlePage';
 import UserActivity from './Pages/UserActivity/UserActivity';
 import CommunityArticlePage from './Pages/CommunityArticlePage/CommunityArticlePage';
+import MyProfile from './Pages/MyProfile/MyProfile';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -58,6 +59,7 @@ function App() {
         <Route path="/myarticles/:articleId" element={<AuthorArticlePage/>}/>
         <Route path="/myactivity" element={<UserActivity/>}/>
         <Route path="/community/:communityName/:articleId" element={<CommunityArticlePage/>}/>
+        <Route path="/myprofile" element={<MyProfile/>}/>
         <Route path = "*" element={<ErrorPage/>} />
       </Routes>
     </Router>

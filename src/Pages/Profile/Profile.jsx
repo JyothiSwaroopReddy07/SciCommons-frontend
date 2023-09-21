@@ -12,6 +12,7 @@ import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 import { Bars } from 'react-loader-spinner'
 import {RxCross2} from "react-icons/rx";
+import {AiFillThunderbolt} from "react-icons/ai";
 
 
 const Loading = () => {
@@ -434,6 +435,7 @@ const loadUserData = async(res) => {
         navigate('/');
         }
       await loadUserData(res.data.success.results[0]); 
+      console.log(res.data.success.results[0])
     }
     catch(err){
       console.log(err)
@@ -464,7 +466,7 @@ const loadUserData = async(res) => {
     <>
         <NavBar/>
         {!loading && user!==null && <div className="container mx-auto px-4 w-full md:w-1/2">
-          <div className="flex items-center mt-8">
+          <div className="flex items-center mt-8 flex-col">
               {user.profile_pic_url.includes("None")?<SlUser className="w-12 h-12 text-black-800 mr-4"/>: 
                 <img
                 src={user.profile_pic_url}
@@ -473,28 +475,31 @@ const loadUserData = async(res) => {
                 />
               }
               <div>
-                <div className="flex flex-row items-center">
-                  <h2 className="text-xl text-gray-500 font-bold mr-5">{user.username}</h2>
-                  {JSON.parse(localStorage.getItem("user")).username !== user.username && <span className={`rounded-lg ${user.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={handleFollow}>{fillFollow()}</span>}
+                <div className="flex flex-row items-center justify-center">
+                  <h2 className="text-xl text-green-500 font-bold mt-3 text-center">{user.username}</h2>
                 </div>
-                <p>{user.fullName}</p>
-                <p className="text-gray-600">{user.bio}</p>
-                <div className="mt-4">
+                <div className="mt-4 flex flex-row justify-center">
                     <span className="mr-3">
-                    <strong>{user.posts}</strong> <span className="text-xs">posts</span>
+                    <strong>{user.posts}</strong> <span className="text-sm">posts</span>
                     </span>
                     <span className="mr-3">
-                    <strong>{user.followers}</strong> <span className="text-xs" style={{cursor:"pointer"}}onClick={()=>setFollowers(true)}>followers</span>
+                    <strong>{user.followers}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowers(true)}>followers</span>
                     </span>
-                    <span>
-                    <strong>{user.following}</strong> <span className="text-xs" style={{cursor:"pointer"}}onClick={()=>setFollowing(true)}>following</span>
+                    <span className="mr-3">
+                    <strong>{user.following}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowing(true)}>following</span>
                     </span>
+                </div>
+                <div className="flex flex-row items-center justify-center mt-3">
+                  <strong>{user.rank}</strong> <span className="text-sm flex flex-row items-center"><AiFillThunderbolt className="w-4 h-4"/> Reputation</span>
+                </div>
+                <div className="flex flex-row items-center justify-center mt-2">
+                  {JSON.parse(localStorage.getItem("user")).username !== user.username && <span className={`rounded-lg ${user.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={handleFollow}>{fillFollow()}</span>}
                 </div>
               </div>
           </div>
-          <div className="flex flex-col w-full md:w-5/6 bg-white mt-[1rem] mx-auto p-2 overflow-hidden">
+          <div className="flex flex-col w-full md:w-5/6 bg-white mt-[1rem] mx-auto overflow-hidden">
             <div className="w-full">
-              <div className='w-full flex mx-auto mt-4'>
+              <div className='w-full flex mt-4'>
                 <button className={currentState === 1 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
                   style={{cursor:"pointer"}} onClick={()=> onclickFuntion(1)}>
                       Posts

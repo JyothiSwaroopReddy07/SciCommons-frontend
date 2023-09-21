@@ -47,6 +47,10 @@ const NavBar = () => {
       setMenu(!Menu)
     }
 
+    const handleNotifications = () => {
+      navigate('/notifications');
+    }
+
     return (
       <>
         <nav className="sticky top-0 bg-slate-100 md:text-sm z-50">
@@ -101,10 +105,10 @@ const NavBar = () => {
                     </ul>
                     <div className="profile flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         {isAuth && (
-                            <div className="flex flex-row items-center">
-                                <a href="/notifications" className="block relative text-base font-semibold hover:text-green-700">
-                                  <RiNotification3Line className="text-gray-700 w-5 h-5" />
-                                </a>
+                            <div className=" flex items-center">
+                              <div className="">
+                                <RiNotification3Line className="text-gray-700 w-5 h-5" onClick={handleNotifications}/>
+                              </div>
                                <Dropdown color="orange" onLogout={handleLogout} User={ User.profile_pic_url.includes("None") ? null: User.profile_pic_url} />
                             </div>
                         )}
@@ -184,7 +188,7 @@ const Dropdown = ({ color, onLogout,User}) => {
                 style={{ minWidth: "8rem" }}
               >
                 <a
-                  href="/profile"
+                  href="/myprofile"
                   className={
                     "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-white text-gray-800 hover:bg-gray-200"
                   }
