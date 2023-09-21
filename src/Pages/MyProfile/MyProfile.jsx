@@ -139,8 +139,8 @@ const MyProfile = () => {
                         <input className={`border-2 border-gray-400 rounded-md ${edit?"bg-white":"bg-gray-200"} w-4/5 h-7 px-2`} type="text" value={pubmed} disabled/>
                     </div>
                     <div className="flex flex-row justify-around">
-                        <button className="bg-green-600 text-white rounded-md w-[50px] h-10 mt-3" onClick={(e)=>{e.preventDefault();handleSubmit()}}>Save</button>
-                        <button className="bg-gray-600 text-white rounded-md w-[50px] h-10 mt-3" onClick={(e)=>{e.preventDefault();handleEdit()}}>{handleShow()}</button>
+                        <button className="bg-green-600 text-white rounded-md w-[50px] h-10 mt-3" onClick={handleEdit}>Save</button>
+                        <button className={`${!edit?"bg-gray-600":"bg-red-600"} text-white rounded-md w-[50px] h-10 mt-3`} onClick={(e)=>{e.preventDefault();handleEdit()}}>{handleShow()}</button>
                     </div>
                 </div>
             </div>
