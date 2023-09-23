@@ -106,9 +106,6 @@ const NavBar = () => {
                     <div className="profile flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
                         {isAuth && (
                             <div className=" flex items-center">
-                              <div className="">
-                                <RiNotification3Line className="text-gray-700 w-5 h-5" onClick={handleNotifications}/>
-                              </div>
                                <Dropdown color="orange" onLogout={handleLogout} User={ User.profile_pic_url.includes("None") ? null: User.profile_pic_url} />
                             </div>
                         )}
@@ -204,12 +201,12 @@ const Dropdown = ({ color, onLogout,User}) => {
                   Your Activity
                 </a>
                 <a
-                  href="/settings"
+                  href="/notifications"
                   className={
                     "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-white text-gray-800 hover:bg-gray-200"
                   }
                 >
-                  Settings
+                  Notifications
                 </a>
                 <button
                   className={

@@ -686,11 +686,11 @@ const loadUserData = async(res) => {
                     </div>
                     <div className="flex flex-row items-center">
                       <h1 className="text-lg text-green-600 font-semibold">Google Scholar Link :</h1>
-                      <p className="text-md ml-2">{user.google_scholar}</p>
+                      <a href={user.google_scholar} className="text-md text-blue-500 ml-2">{user.google_scholar}</a>
                     </div>
                     <div className="flex flex-row items-center">
                       <h1 className="text-lg text-green-600 font-semibold">Pubmed Link :</h1>
-                      <p className="text-md ml-2">{user.pubmed}</p>
+                      <a href={user.pubmed} className="text-md text-blue-500  ml-2">{user.pubmed}</a>
                     </div>
                   </div>
                 </div>)

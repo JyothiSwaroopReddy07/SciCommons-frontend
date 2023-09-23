@@ -66,8 +66,6 @@ const Login = () => {
                 },
               }
             );
-        
-            // Save the token to local storage
 
             localStorage.setItem('token', response.data.success.access);
             await getCurrentUser();
@@ -160,7 +158,7 @@ const Login = () => {
                             <br/>
                             <hr className="my-6 border-gray-200 w-full" />
                             <p className="text-center">Don't have an account? <a href="/register" className="font-medium text-green-600 hover:text-green-500">Register</a></p>
-                    
+                            <p className="text-center">Verify your account? <a href="/verify" className="font-medium text-green-600 hover:text-green-500">Verify</a></p>
                         </form>
                     </div>
                 </div>
