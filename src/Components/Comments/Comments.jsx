@@ -500,6 +500,7 @@ const Comments = ({ comment, article, colour }) => {
           </div>
             <div className="container w-full flex flex-row mt-2">
               <div className="m-1 flex flex-row items-center z-20">
+              <div className="text-xl font-semibold m-1 w-10 h-10 bg-gray-600 text-white flex flex-row justify-center items-center rounded-xl shadow-xl">{formatCount(overallrating)}</div>
                 {versions[index].personal === false && (
                   <Box sx={{ height: 100 }}>
                     <Slider
@@ -512,7 +513,7 @@ const Comments = ({ comment, article, colour }) => {
                       defaultValue={rating}
                       aria-label="Temperature"
                       valueLabelDisplay="auto"
-                      valueLabelPlacement="right"
+                      valueLabelPlacement="top"
                       step={1}
                       marks
                       min={0}
@@ -521,7 +522,6 @@ const Comments = ({ comment, article, colour }) => {
                     />
                   </Box>
                 )}
-                <div className="text-xl font-semibold m-1 w-10 h-10 bg-gray-600 text-white flex flex-row justify-center items-center rounded-xl shadow-xl">{formatCount(overallrating)}</div>
               </div>
               <div>
                 <div className="text-sm font-semibold text-green-600">
