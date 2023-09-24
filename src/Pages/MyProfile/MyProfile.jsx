@@ -105,8 +105,8 @@ const MyProfile = () => {
     return (
         <div>
             <NavBar />
-            {loading && <Loader/>}
-            {!loading && 
+            {(loading||user===null) && <Loader/>}
+            {!loading && user!==null && 
             <div className="flex flex-col items-center h-full mb-5">
             <h1 className="text-3xl font-bold mt-5 mb-5">My Profile</h1>
             <div className="flex flex-col justify-center md:flex-row md:items-center">
