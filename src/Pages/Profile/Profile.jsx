@@ -481,17 +481,17 @@ const loadUserData = async(res) => {
                 </div>
                 <div className="mt-4 flex flex-row justify-center">
                     <span className="mr-3">
-                    <strong>{user.posts}</strong> <span className="text-sm">posts</span>
+                    <strong>{formatCount(user.posts)}</strong> <span className="text-sm">posts</span>
                     </span>
                     <span className="mr-3">
-                    <strong>{user.followers}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowers(true)}>followers</span>
+                    <strong>{formatCount(user.followers)}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowers(true)}>followers</span>
                     </span>
                     <span className="mr-3">
-                    <strong>{user.following}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowing(true)}>following</span>
+                    <strong>{formatCount(user.following)}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowing(true)}>following</span>
                     </span>
                 </div>
                 <div className="flex flex-row items-center justify-center mt-3">
-                  <strong>{user.rank}</strong> <span className="text-sm flex flex-row items-center"><AiFillThunderbolt className="w-4 h-4"/> Reputation</span>
+                  <strong>{formatCount(user.rank)}</strong> <span className="text-sm flex flex-row items-center"><AiFillThunderbolt className="w-4 h-4"/> Reputation</span>
                 </div>
                 <div className="flex flex-row items-center justify-center mt-2">
                   {user.username !== user.username && <span className={`rounded-lg ${user.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={handleFollow}>{fillFollow()}</span>}

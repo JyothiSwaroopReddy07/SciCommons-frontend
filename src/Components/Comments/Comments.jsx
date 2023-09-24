@@ -7,7 +7,8 @@ import "toastmaker/dist/toastmaker.css";
 import axios from "axios";
 import {IoIosArrowBack,IoIosArrowForward} from "react-icons/io";
 import { useGlobalContext} from '../../Context/StateContext';
-
+import Box from '@mui/material/Box';
+import Slider from '@mui/material/Slider';
 
 
 const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComment }) => {
@@ -390,6 +391,16 @@ const Comments = ({ comment, article, colour }) => {
     }
   };
 
+  const formatCount = (count) => {
+    if (count < 1000) {
+      return count.toString();
+    } else if (count < 1000000) {
+      return (count / 1000).toFixed(1) + "K";
+    } else {
+      return (count / 1000000).toFixed(1) + "M";
+    }
+  };
+
 
   return (
     <>
@@ -487,54 +498,46 @@ const Comments = ({ comment, article, colour }) => {
               <span className="inline-flex items-center gap-1.5 py-1 ml-3 px-1 rounded text-xs font-medium bg-orange-500 text-white">{comment.comment_type}</span>
               {fillUserType()}
           </div>
-            <div className="container w-full mt-2">
-              <div className="text-sm font-semibold text-green-600">
-                Comment:
+            <div className="container w-full flex flex-row mt-2">
+              <div className="m-1 flex flex-row items-center z-20">
+                {versions[index].personal === false && (
+                  <Box sx={{ height: 100 }}>
+                    <Slider
+                      sx={{
+                        '& input[type="range"]': {
+                          WebkitAppearance: 'slider-vertical',
+                        },
+                      }}
+                      orientation="vertical"
+                      defaultValue={rating}
+                      aria-label="Temperature"
+                      valueLabelDisplay="auto"
+                      valueLabelPlacement="right"
+                      step={1}
+                      marks
+                      min={0}
+                      max={5}
+                      onChange={handleSliderChange}
+                    />
+                  </Box>
+                )}
+                <div className="text-xl font-semibold m-1 w-10 h-10 bg-gray-600 text-white flex flex-row justify-center items-center rounded-xl shadow-xl">{formatCount(overallrating)}</div>
               </div>
-              <ReactQuill
-                value={styleLinksWithColor(versions[index].Comment)}
-                readOnly={true}
-                modules={{toolbar: false}}
-              />
-            </div>
-              {comment.Type==="review" && <div className="container w-full mt-1">
+              <div>
+                <div className="text-sm font-semibold text-green-600">
+                  Comment:
+                </div>
+                <ReactQuill
+                  value={styleLinksWithColor(versions[index].Comment)}
+                  readOnly={true}
+                  modules={{toolbar: false}}
+                />
+                {comment.Type==="review" && <div className="container w-full mt-1">
                 <span className="font-semibold text-sm text-green-600">Confidence:</span> {fillConfidence()}
               </div>}
-              <div className="flex flex-row justify-between items-center h-full">
-                  <div className="mb-1 flex flex-row items-center h-full">
-                    {versions[index].personal === false &&
-                    <div className="w-16 my-1 mr-2 h-full relative">
-                      <input
-                        type="range"
-                        min="0"
-                        max="5"
-                        step="1"
-                        value={rating}
-                        onChange={handleSliderChange}
-                        className="w-1/4 h-full appearance-none bg-transparent outline-none transform rotate-90"
-                        style={{
-                          backgroundImage: `linear-gradient(to right, #38A169, #38A169 ${rating * 20}%, #E2E8F0 ${rating * 20}%, #E2E8F0 100%)`,
-                          borderRadius: '10px',
-                        }}
-                      />
-                      <div className="flex justify-between mt-2">
-                        <span className="text-[8px] text-gray-500">Bad</span>
-                        <span className="text-[10px] text-gray-500">{rating}</span>
-                        <span className="text-[8px] text-gray-500">Excellent</span>
-                      </div>
-                      <div
-                        className="bg-green-600 rounded-full"
-                        style={{
-                          transform: 'translateX(-50%)',
-                          left: `${rating * 20}%`,
-                        }}
-                      ></div>
-                    </div>
-                    }
-                    <div className="text-xl font-semibold ml-3">
-                      {overallrating}
-                    </div>
-                  </div>
+              </div>
+            </div>
+              <div className="flex flex-row justify-end items-center">
                 <div className="mt-2 flex flex-row">
                   {comment.personal && <span className="box-content text-white bg-[#4d8093] text-md border-solid ml-2 mr-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>{setShowEditModal(true);}}>
                     edit comment
