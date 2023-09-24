@@ -277,13 +277,13 @@ const Comments = ({ comment, article, colour }) => {
 
   const fillUserType = () => {
     if(article.isArticleModerator){
-      return (<span className="inline-flex items-center gap-1.5 py-1 ml-3 px-1 rounded text-xs font-medium bg-purple-500 text-white">Moderator</span>)
+      return (<span className="inline-flex items-center gap-1.5 ml-3 p-[2px] rounded text-xs font-medium bg-purple-500 text-white">Moderator</span>)
     }
     else if(article.isArticleReviewer){
-      return (<span className="inline-flex items-center gap-1.5 py-1 ml-3 px-1 rounded text-xs font-medium bg-purple-500 text-white">Reviewer</span>)
+      return (<span className="inline-flex items-center gap-1.5 ml-3 p-[2px] rounded text-xs font-medium bg-purple-500 text-white">Reviewer</span>)
     }
     else if(article.isAuthor) {
-      return (<span className="inline-flex items-center gap-1.5 py-1 ml-3 px-1 rounded text-xs font-medium bg-purple-500 text-white">Author</span>)
+      return (<span className="inline-flex items-center gap-1.5 ml-3 p-[2px] rounded text-xs font-medium bg-purple-500 text-white">Author</span>)
     }
   }
 
@@ -493,9 +493,9 @@ const Comments = ({ comment, article, colour }) => {
           {show && (
           <>
           <div className="w-full" style={{cursor:"pointer"}} onClick={()=>{setShow(!show)}}>
-              <span className="inline-flex items-center gap-1.5 py-1 px-1 rounded text-xs font-medium bg-red-500 text-white">{comment.Type}</span>
-              <span className="inline-flex items-center gap-1.5 py-1 ml-3 px-1 rounded text-xs font-medium bg-cyan-500 text-white">{comment.tag}</span>
-              <span className="inline-flex items-center gap-1.5 py-1 ml-3 px-1 rounded text-xs font-medium bg-orange-500 text-white">{comment.comment_type}</span>
+              <span className="inline-flex items-center gap-1.5 rounded text-xs p-[2px] font-medium bg-red-500 text-white">{comment.Type}</span>
+              <span className="inline-flex items-center gap-1.5 ml-3 rounded text-xs p-[2px] font-medium bg-cyan-500 text-white">{comment.tag}</span>
+              <span className="inline-flex items-center gap-1.5 ml-3 rounded text-xs p-[2px] font-medium bg-orange-500 text-white">{comment.comment_type}</span>
               {fillUserType()}
           </div>
             <div className="container w-full flex flex-row mt-2">
@@ -523,8 +523,8 @@ const Comments = ({ comment, article, colour }) => {
                   </Box>
                 )}
               </div>
-              <div>
-                <div className="text-sm font-semibold text-green-600">
+              <div className="border-l-2 border-gray-200 p-2 rounded-xl">
+                <div className="text-sm font-semibold text-green-800">
                   Comment:
                 </div>
                 <ReactQuill
@@ -533,7 +533,7 @@ const Comments = ({ comment, article, colour }) => {
                   modules={{toolbar: false}}
                 />
                 {comment.Type==="review" && <div className="container w-full mt-1">
-                <span className="font-semibold text-sm text-green-600">Confidence:</span> {fillConfidence()}
+                <span className="font-semibold text-sm text-green-800">Confidence:</span> {fillConfidence()}
               </div>}
               </div>
             </div>
