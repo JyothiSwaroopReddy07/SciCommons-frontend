@@ -12,7 +12,7 @@ import {useGlobalContext} from '../../Context/StateContext'
 
 const SubmitArticle = () => {
 
-  const baseURL = 'http://127.0.0.1:8000/api/article/';
+  const baseURL = 'https://scicommons-backend.onrender.com/api/article/';
   const {token} = useGlobalContext()
 
   const [authors, setAuthors] = useState([
