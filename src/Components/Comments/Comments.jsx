@@ -500,13 +500,10 @@ const Comments = ({ comment, article, colour }) => {
               {comment.Type==="review" && <div className="container w-full mt-1">
                 <span className="font-semibold text-sm text-green-600">Confidence:</span> {fillConfidence()}
               </div>}
-              <div className="flex flex-row justify-between items-center">
-                  <div className="mb-1 flex flex-row items-center">
-                    <div className="text-sm mr-2 font-semibold text-green-600">
-                      Rating of Comment:
-                    </div>
+              <div className="flex flex-row justify-between items-center h-full">
+                  <div className="mb-1 flex flex-row items-center h-full">
                     {versions[index].personal === false &&
-                    <div className="w-16 my-1 mr-2 relative">
+                    <div className="w-16 my-1 mr-2 h-full relative">
                       <input
                         type="range"
                         min="0"
@@ -514,7 +511,7 @@ const Comments = ({ comment, article, colour }) => {
                         step="1"
                         value={rating}
                         onChange={handleSliderChange}
-                        className="w-full h-1 appearance-none bg-transparent outline-none"
+                        className="w-1/4 h-full appearance-none bg-transparent outline-none transform rotate-90"
                         style={{
                           backgroundImage: `linear-gradient(to right, #38A169, #38A169 ${rating * 20}%, #E2E8F0 ${rating * 20}%, #E2E8F0 100%)`,
                           borderRadius: '10px',
@@ -528,7 +525,7 @@ const Comments = ({ comment, article, colour }) => {
                       <div
                         className="bg-green-600 rounded-full"
                         style={{
-                          transform: 'translateY(-50%)',
+                          transform: 'translateX(-50%)',
                           left: `${rating * 20}%`,
                         }}
                       ></div>
