@@ -99,7 +99,6 @@ const Following = ({setFollowingModal}) => {
     try{
         const res = await axios.get("https://scicommons-backend.onrender.com/api/user/following/", config);
           await loadData(res.data.success)
-          console.log(res.data.success);
     }
     catch(err){
         console.log(err)
@@ -233,7 +232,6 @@ const Followers = ({setFollowersModal}) => {
     try{
         const res = await axios.get("https://scicommons-backend.onrender.com/api/user/followers/", config);
           await loadData(res.data.success)
-          console.log(res.data.success);
     }
     catch(err){
         console.log(err)
@@ -439,7 +437,6 @@ const loadUserData = async(res) => {
         navigate('/');
         }
       await loadUserData(res.data.success.results[0]); 
-      console.log(res.data.success.results[0])
     }
     catch(err){
       console.log(err)

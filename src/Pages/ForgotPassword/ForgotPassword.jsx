@@ -61,7 +61,7 @@ const ForgotPassword = () => {
                 `https://scicommons-backend.onrender.com/api/user/reset_password/`,
                 {email:email,otp:otp,password:password1,password2:password2}
             );
-            console.log(response.data)
+
             ToastMaker("Password Changed Successfully!!!", 3000, {
                 valign: "top",
                 styles: {

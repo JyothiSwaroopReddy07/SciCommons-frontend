@@ -330,7 +330,6 @@ const SocialComment = ({ key, comment }) => {
     res.commentlikes = 0;
     res.commentliked = 0;
     res.personal = true;
-    console.log(res);
     const newReply = [...repliesData, res];
     setRepliesData(newReply);
   };

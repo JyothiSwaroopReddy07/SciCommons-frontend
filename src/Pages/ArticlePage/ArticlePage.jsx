@@ -453,7 +453,7 @@ const  ArticlePage = () => {
             }
             try {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
-                console.log(res.data.success);
+
                 await loadArticleData(res.data.success);
             } catch(err){
                 console.log(err);
@@ -669,8 +669,22 @@ const  ArticlePage = () => {
                                     );
 
                                 })}
-                                .
                             </span>
+                        </div>
+                        <div className="py-1 bg-white">
+                           {article.unregistered_authors.length>0 && <><span className="text-[0.75rem] font-bold text-green-800">UnRegistered User : </span>
+                            <span className="italic font-sans text-[0.75rem] leading-[1.5rem] ">
+
+                                {article.unregistered_authors.map((data, i) => {
+                                    return (
+                                        <span key={i} style={{cursor:"pointer"}}>
+                                            {data.fullName } 
+                                        </span>
+                                    );
+
+                                })}
+                            </span></>
+                            }
                         </div>
                         <div className="bg-white">
                             <span className="text-[.75rem] p-0">

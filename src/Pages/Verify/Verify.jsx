@@ -27,7 +27,6 @@ const Verify = () => {
                 `https://scicommons-backend.onrender.com/api/user/verifyrequest/`,
                 {email:email}
             );
-            console.log(response);
             ToastMaker("Otp sent to email!!", 3000, {
                 valign: "top",
                 styles: {

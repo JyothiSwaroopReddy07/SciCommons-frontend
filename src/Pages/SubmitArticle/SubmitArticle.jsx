@@ -12,7 +12,7 @@ import {useGlobalContext} from '../../Context/StateContext'
 
 const SubmitArticle = () => {
 
-  const baseURL = 'https://scicommons-backend.onrender.com/api/article/';
+  const baseURL = 'http://127.0.0.1:8000/api/article/';
   const {token} = useGlobalContext()
 
   const [authors, setAuthors] = useState([
@@ -20,6 +20,13 @@ const SubmitArticle = () => {
       username: "",
     },
   ]);
+
+  const [unregistered_authors, setUnRegistredAuthors] = useState([
+    {
+      fullName: "",
+      email: "",
+    }
+  ])
 
   const [communities, setCommunities] = useState([{
     name: "",
@@ -49,6 +56,14 @@ const SubmitArticle = () => {
 
     var authorIds = [];
     var communityIds = [];
+    var unregistered = [];
+    for(let i=0;i<unregistered_authors.length;i++){
+      if(unregistered_authors[i].fullName === "" || unregistered_authors[i].email === ""){ 
+        continue;
+      } else{
+        unregistered.push(unregistered_authors[i]);
+      }
+    }
     if(validateKeywords(form_data.get('keywords'))=== false){
       ToastMaker("Please enter the correct keywords following the format specified", 3500,{
         valign: 'top',
@@ -98,13 +113,20 @@ const SubmitArticle = () => {
     form_data.delete('authors');
     form_data.delete('communities');
     form_data.delete('username');
+    form_data.delete('unregistered_authors');
 
     form_data.append('authors[0]', JSON.stringify(0));
+    form_data.append('unregistered_authors[0]', JSON.stringify({"fullName":"", "email":""}));
   
     for(let i=0;i<authorIds.length;i++){
       form_data.append(`authors[${i+1}]`, JSON.stringify(authorIds[i]));
     }
 
+    for(let i=0;i<unregistered.length;i++){
+      form_data.append(`unregistered_authors[${i+1}]`, JSON.stringify(unregistered[i]));
+    }
+
+    console.log(form_data);
 
     form_data.append('communities[0]', JSON.stringify(0));
 
@@ -141,6 +163,35 @@ const SubmitArticle = () => {
       },
     ]);
   };
+
+  const addUnregisteredAuthor = () => {
+    setUnRegistredAuthors([
+      ...unregistered_authors,
+      {
+        fullName: "",
+        email: "",
+      },
+    ]);
+  }
+
+  const removeUnregisteredAuthor = (index) => { 
+    const newUnregisteredAuthors = [...unregistered_authors];
+    newUnregisteredAuthors.splice(index, 1);
+    setUnRegistredAuthors([...newUnregisteredAuthors]);
+  };
+
+  const changeUnregisteredAuthor = (e, index) => {
+    e.preventDefault();
+    const newUnregisteredAuthors = [...unregistered_authors];
+    if(e.target.name === "fullName"){
+      newUnregisteredAuthors[index].fullName = e.target.value;
+    }
+    else{
+      newUnregisteredAuthors[index].email = e.target.value;
+    }
+    setUnRegistredAuthors([...newUnregisteredAuthors]);
+  }
+
   const removeAuthor = (index) => {
     const newAuthors = [...authors];
     newAuthors.splice(index, 1);
@@ -222,6 +273,48 @@ const SubmitArticle = () => {
                       onChange={(e)=>changeAuthor(e, index)}
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                     />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <div>
+            <label
+              htmlFor="id"
+              className=" text-base mb-2 font-medium text-gray-900 flex flex-row"
+            >
+              UnRegistered Author(s)
+              <MdAddBox
+                className="h-7 w-7 mx-2 shadow-md fill-green-500 active:shadow-none"
+                style={{cursor:"pointer"}}
+                onClick={addUnregisteredAuthor}
+              />
+            </label>
+            {unregistered_authors.map((author, index) => {
+              return (
+                <div className="grid gap-2 md:grid-cols-2 m-2" key={index}>
+                  <div className="flex flex-row">
+                    <input
+                      type="text"
+                      id="fullName"
+                      name="fullName"
+                      onChange={(e)=>changeUnregisteredAuthor(e, index)}
+                      placeholder= "Full Name"
+                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm mr-2 rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+                    />
+                  <input
+                    type="email"
+                    id="username"
+                    name="email"
+                    onChange={(e)=>changeUnregisteredAuthor(e, index)}
+                    placeholder= "Email"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm mr-2 rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
+                  />
+                  <MdRemoveCircle
+                        className="h-10 w-10 mx-2 shadow-md fill-red-500 active:shadow-none"
+                        style={{cursor:"pointer"}}
+                        onClick={() => removeUnregisteredAuthor(index)}
+                      />
                   </div>
                 </div>
               );
