@@ -6,6 +6,7 @@ import Loader from "../../Components/Loader/Loader";
 import Footer from "../../Components/Footer/Footer";
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const AllArticlesPage = () => {
@@ -16,6 +17,7 @@ const AllArticlesPage = () => {
     const [selectedOption, setSelectedOption] = useState('All');
     const [orderOption,setOrderOption] = useState("default");
     const [loadingmore, setLoadingMore] = useState(false);
+    const {token} = useGlobalContext();
 
     const handleOptionChange = (e) => {
         setSelectedOption(e.target.value);
@@ -36,11 +38,14 @@ const AllArticlesPage = () => {
 
     const fetchArticles = async () => {
         setLoading(true)
-        const config = {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
-            },
-        };
+        let config = null
+        if(token!==null) {
+            config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+        }
         try {
             const response = await axios.get(
                 `https://scicommons-backend.onrender.com/api/article/`,
@@ -75,11 +80,14 @@ const AllArticlesPage = () => {
         e.preventDefault();
         setLoading(true);
         let filter = fillFilter()
-        const config = {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`, 
-            },
-        };
+        let config = null;
+        if(token!== null) {
+            config = {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                },
+            };
+        }
         if(orderOption==="Ascending") {
             filter = "least_"+filter;
         }
@@ -99,10 +107,15 @@ const AllArticlesPage = () => {
         if(orderOption) {
             filter = "least_"+filter;
         }
-          const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}&limit=20&offset=${articles.length}`, {
-              headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, },
-            //   params: {filter: filter},
-          });
+        let config = null;
+        if(token!== null) {
+            config = {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                },
+            };
+        }
+          const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}&limit=20&offset=${articles.length}`, config);
           const data = response.data.success.results;
           if(response.data.success.count === articles.length) {
             ToastMaker("No more articles to load", 3000, {

@@ -30,17 +30,18 @@ import 'react-quill/dist/quill.snow.css';
 import './SinglePost.css';
 import Post from "../../Components/Post/Post";
 import SocialComment from "../../Components/SocialComment/SocialComment";
-
+import { useGlobalContext } from "../../Context/StateContext";
 
 
 const SinglePost = () => {
+
+  const {token, user} = useGlobalContext()
   const [liked, setLiked] = useState(false);
   const [bookmark, setBookmark] = useState(false);
   const [likes, setLikes] = useState(false);
   const [bookmarks, setBookmarks] = useState(false);
   const [post, setPost] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [comments, setComments] = useState([]);
   const [loadSubmit, setLoadSubmit] = useState(false);
   const [loadComments, setLoadComments] = useState(false);
@@ -66,7 +67,7 @@ const SinglePost = () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
       params: {
         post: postId,
@@ -88,7 +89,7 @@ const SinglePost = () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     try {
@@ -135,7 +136,7 @@ const SinglePost = () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     try {

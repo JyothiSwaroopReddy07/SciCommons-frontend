@@ -13,6 +13,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './Timeline.css'
 import Post from '../../Components/Post/Post';
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const Timeline = () => {
@@ -21,6 +22,7 @@ const Timeline = () => {
   const [posts,setPosts] = useState([]);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const {token} = useGlobalContext();
 
   const loadData = async(res) => {
     setPosts(res)
@@ -31,7 +33,7 @@ const Timeline = () => {
     const config = {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
         },
     }
     try{

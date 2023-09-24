@@ -11,6 +11,7 @@ import 'react-quill/dist/quill.snow.css';
 import './MyPostsPage.css';
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const MyPostsPage = () => {
@@ -19,7 +20,7 @@ const MyPostsPage = () => {
     const [loading, setLoading] = useState(true);
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
     const [posts, setPosts] = useState([]);
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('user')));
+    const {token,user} = useGlobalContext();
     const [body, setBody] = useState('');
 
     const handleBodyChange = (event) => {
@@ -34,7 +35,7 @@ const MyPostsPage = () => {
         setLoading(true);
         const config = {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
                 'Content-Type': 'application/json',
             }
         };
@@ -71,7 +72,7 @@ const MyPostsPage = () => {
         } else {
           console.log('File size is ok')
         }
-        const token = localStorage.getItem("token");
+
         const config = {
             headers: {
                 "Content-Type": "multipart/form-data",

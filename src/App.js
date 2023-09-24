@@ -1,5 +1,6 @@
 import './App.css';
 import Home from './Pages/Home/Home';
+import NavBar from './Components/NavBar/NavBar';
 import Login from './Pages/Login/Login';
 import Register from './Pages/Register/Register';
 import ErrorPage from './Pages/ErrorPage/ErrorPage';
@@ -29,6 +30,7 @@ import CommunityArticlePage from './Pages/CommunityArticlePage/CommunityArticleP
 import MyProfile from './Pages/MyProfile/MyProfile';
 import ForgotPassword from './Pages/ForgotPassword/ForgotPassword';
 import Verify from './Pages/Verify/Verify';
+import PrivateRoute from './Pages/PrivateRoute/PrivateRoute'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -40,27 +42,27 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/articles' element={<AllArticlesPage />} />
         <Route path='/communities' element={<Communities/>}/>
-        <Route path='/submitarticle' element={<SubmitArticle/>}/>
-        <Route path='/articlesuccessfulsubmission' element={<SuccessfulSubmission/>}/>
-        <Route path='/registersuccessful' element={<SuccessfulRegistration/>}/>
-        <Route path='/createcommunity' element={<CreateCommunity/>}/>
-        <Route path='/communitysuccessfulcreated' element={<CommunityCreation/>}/>
-        <Route path='/notifications' element={<Notifications/>}/>
-        <Route path='/explore' element={<Feed/>}/>
-        <Route path='/mytimeline' element={<Timeline/>}/>
-        <Route path='/bookmarks' element={<BookMarks/>}/>
+        <Route path='/submitarticle' element={<PrivateRoute redirectTo="/login" component={<SubmitArticle/>}/>}/>
+        <Route path='/articlesuccessfulsubmission' element={<PrivateRoute redirectTo="/login" component={<SuccessfulSubmission/>}/>}/>
+        <Route path='/registersuccessful' element={<PrivateRoute redirectTo="/login" component={<SuccessfulRegistration/>}/>}/>
+        <Route path='/createcommunity' element={<PrivateRoute redirectTo="/login" component={<CreateCommunity/>}/>}/>
+        <Route path='/communitysuccessfulcreated' element={<PrivateRoute redirectTo="/login" component={<CommunityCreation/>}/>}/>
+        <Route path='/notifications' element={<PrivateRoute redirectTo="/login" component={<Notifications/>}/>}/>
+        <Route path='/explore' element={<PrivateRoute redirectTo="/login" component={<Feed/>}/>}/>
+        <Route path='/mytimeline' element={<PrivateRoute redirectTo="/login" component={<Timeline/>}/>}/>
+        <Route path='/bookmarks' element={<PrivateRoute redirectTo="/login" component={<BookMarks/>}/>}/>
         <Route path="/community/:communityName" element={<CommunityPage/>}/>
-        <Route path="/join-community/:communityName" element={<JoinRequest/>}/>
-        <Route path="/mycommunity" element={<CommunityAdminPage/>}/>
+        <Route path="/join-community/:communityName" element={<PrivateRoute redirectTo="/login" component={<JoinRequest/>}/>}/>
+        <Route path="/mycommunity" element={<PrivateRoute redirectTo="/login" component={<CommunityAdminPage/>}/>}/>
         <Route path="/post/:postId" element={<SinglePost/>}/>
         <Route path="/profile/:username" element={<Profile/>}/>
         <Route path="/article/:articleId" element={<ArticlePage/>}/>
-        <Route path="/favourites" element={<FavouritePage/>} />
-        <Route path="/myposts" element={<MyPostsPage/>}/>
-        <Route path="/myarticles" element={<MyArticlesPage/>}/>
-        <Route path="/myarticles/:articleId" element={<AuthorArticlePage/>}/>
-        <Route path="/myactivity" element={<UserActivity/>}/>
-        <Route path="/community/:communityName/:articleId" element={<CommunityArticlePage/>}/>
+        <Route path="/favourites" element={<PrivateRoute redirectTo="/login" component={<FavouritePage/>}/>} />
+        <Route path="/myposts" element={<PrivateRoute redirectTo="/login" component={<MyPostsPage/>}/>}/>
+        <Route path="/myarticles" element={<PrivateRoute redirectTo="/login" component={<MyArticlesPage/>}/>}/>
+        <Route path="/myarticles/:articleId" element={<PrivateRoute redirectTo="/login" component={<AuthorArticlePage/>} />}/>
+        <Route path="/myactivity" element={<PrivateRoute redirectTo="/login" component={<UserActivity/>}/>}/>
+        <Route path="/community/:communityName/:articleId" element={<PrivateRoute redirectTo="/login" component={<CommunityArticlePage/>}/>}/>
         <Route path="/myprofile" element={<MyProfile/>}/> 
         <Route path="/forgotpassword" element={<ForgotPassword/>}/>
         <Route path="/verify" element={<Verify/>}/>

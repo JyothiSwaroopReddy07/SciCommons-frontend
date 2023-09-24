@@ -15,9 +15,10 @@ import axios from "axios";
 import "./SocialComment.css";
 import { useParams, useNavigate } from "react-router-dom";
 import { SlUser } from "react-icons/sl";
+import {useGlobalContext} from '../../Context/StateContext';
 
 const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const {user, token} = useGlobalContext();
   const [loading, setLoading] = useState(false);
   const { postId } = useParams();
   const [body, setBody] = useState("");
@@ -33,7 +34,7 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     try {
@@ -111,6 +112,7 @@ const EditModal = ({ comment, setShowEdit, changeComment }) => {
   const [editedComment, setEditedComment] = useState(comment.comment);
   const [loading, setLoading] = useState(false);
   const [body, setBody] = useState(comment.comment);
+  const {token} = useGlobalContext()
 
   const handleBodyChange = (event) => {
     setBody(event);
@@ -127,7 +129,7 @@ const EditModal = ({ comment, setShowEdit, changeComment }) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     try {
@@ -187,7 +189,7 @@ const EditModal = ({ comment, setShowEdit, changeComment }) => {
 
 const SocialComment = ({ key, comment }) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+ const {token,user} = useGlobalContext();
   const [value, setValue] = useState(comment.comment);
   const [liked, setLiked] = useState(comment.commentliked);
   const [likes, setLikes] = useState(
@@ -216,7 +218,7 @@ const SocialComment = ({ key, comment }) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     if (liked) {
@@ -262,7 +264,7 @@ const SocialComment = ({ key, comment }) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
       params: {
         comment: comment.id,

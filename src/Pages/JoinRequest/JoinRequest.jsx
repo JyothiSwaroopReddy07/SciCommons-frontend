@@ -4,6 +4,7 @@ import axios from 'axios'
 import NavBar from '../../Components/NavBar/NavBar'
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const JoinRequest = () => {
@@ -12,6 +13,7 @@ const JoinRequest = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [community, setCommunity] = useState(null);
+    const {token} = useGlobalContext();
 
 
     const loadCommunity = async (res) => {
@@ -22,7 +24,6 @@ const JoinRequest = () => {
         setLoading(true)
         const getCommunity = async () => {
             try {
-                const token = localStorage.getItem('token')
                 const config = {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -56,7 +57,6 @@ const JoinRequest = () => {
       e.preventDefault();
       setLoading(true)
       const form_data = new FormData(e.target);
-      const token = localStorage.getItem('token');
       try {
         const response = await axios.post(`https://scicommons-backend.onrender.com/api/community/${communityName}/join_request/`, form_data, {
           headers: {

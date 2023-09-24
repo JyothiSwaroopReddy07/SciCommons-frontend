@@ -6,6 +6,8 @@ import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 import axios from "axios";
 import {IoIosArrowBack,IoIosArrowForward} from "react-icons/io";
+import { useGlobalContext} from '../../Context/StateContext';
+
 
 
 const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComment }) => {
@@ -13,6 +15,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComme
   const [title, setTitle] = useState("");
   const [comment, setComment] = useState("");
   const [loading, setLoading] = useState(false);
+  const {token} = useGlobalContext();
 
   const handleCommentChange = (event) => {
       setComment(event);
@@ -24,7 +27,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComme
       const config={
           headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${token}`,
           }
       };
       const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
@@ -112,6 +115,7 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
   const [title, setTitle] = useState(version.Title);
   const [comment, setComment] = useState(version.Comment);
   const [loading, setLoading] = useState(false);
+  const {token} = useGlobalContext();
 
   const handleCommentChange = (event) => {
       setComment(event);
@@ -123,7 +127,7 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
       const config={
           headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${token}`,
           }
       };
       const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
@@ -216,6 +220,7 @@ const Comments = ({ comment, article, colour }) => {
   const [versions,setVersions] = useState([comment,...comment.versions]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [index,setIndex] = useState(comment.versions.length);
+  const {token} = useGlobalContext();
 
   const colorClasses = {
     0: 'bg-slate-100',
@@ -318,7 +323,7 @@ const Comments = ({ comment, article, colour }) => {
     const config={
       headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
       }
     };
     try {
@@ -344,16 +349,26 @@ const Comments = ({ comment, article, colour }) => {
 
   const handleReply = async () => {
     setLoading(true);
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      params: {
-        parent_comment: versions[index].id,
-        article: article.id,
-      },
-    };
+    let config=null;
+    if(token !== null){
+      config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          parent_comment: versions[index].id,
+          article: article.id,
+        },
+      };
+    } else {
+      config = {
+        params: {
+          parent_comment: versions[index].id,
+          article: article.id,
+        },
+      };
+    }
     try {
       const res = await axios.get(
         `https://scicommons-backend.onrender.com/api/comment/?limit=20&offset=${repliesData.length}`,

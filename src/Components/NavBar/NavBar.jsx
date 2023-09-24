@@ -1,44 +1,75 @@
 import React, { useEffect, useState } from 'react'
 import './NavBar.css'
 import {SlUser} from 'react-icons/sl';
-import {RiNotification3Line} from 'react-icons/ri';
+import axios from 'axios';
 import Popper from "popper.js";
 import {useNavigate} from 'react-router-dom';
 import {CiMenuFries} from 'react-icons/ci';
 import SideNav from '../SideNav/SideNav';
 import {FiLogOut} from 'react-icons/fi';
+import { useGlobalContext} from '../../Context/StateContext';
+
+const Spinner = () => {
+  return (
+    <div className="flex justify-center items-center">
+      <div className="animate-spin rounded-full border-t-2 border-b-2 border-gray-900 h-6 w-6"></div>
+    </div>
+  );
+};
 
 const NavBar = () => {
 
+  const {setToken, token} = useGlobalContext(); 
     const navigate = useNavigate();
     const [state, setState] = useState(false)
     const [Menu, setMenu] = useState(false)
-    const [isAuth,setIsAuth] = useState(localStorage.getItem('token')?true:false)
+    const [isAuth,setIsAuth] = useState(null);
+    const [user,setUser] = useState(null);
     const [isOpen, setIsOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const navigation = [
         { title: "Submit Article", path: "/submitarticle" },
         { title: "Communities", path: "/communities" },
         { title: "Articles", path: "/articles" },
         { title: "About", path: "/about" }
-    ]
+    ];
 
-    const User = JSON.parse(localStorage.getItem('user'))
+    const loadUserData = async (res) => {
+      setUser(res);
+      setIsAuth(true);
+  }
 
-    useEffect(() => {
-        document.onclick = (e) => {
-            const target = e.target;
-            if (!target.closest(".menu-btn")) setState(false);
-        };
-        setIsAuth(localStorage.getItem('token')?true:false)
-    }, [isAuth]);
+  const getCurrentUser = async () => {
+      try {
+          const response = await axios.get('https://scicommons-backend.onrender.com/api/user/get_current_user/', {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+              },
+          }); 
+          const user = response.data.success;
+          await loadUserData(user);
+      } catch (error) {
+        setIsAuth(false);
+        console.error(error);
+      }
+  };
+
+    useEffect(()=> {
+      setLoading(true);
+      const fetchData = async()=>{
+        await getCurrentUser();
+      }
+      fetchData();
+      setLoading(false);
+    },[])
 
     const handleLogout = (e) => {
+        setIsAuth(false)
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-        localStorage.removeItem('refresh')
         localStorage.removeItem('Menu')
-        setIsAuth(false)
+        setToken(null)
         setIsOpen(false)
         navigate('/');
     };
@@ -47,16 +78,10 @@ const NavBar = () => {
       setMenu(!Menu)
     }
 
-    const handleNotifications = () => {
-      navigate('/notifications');
-    }
-
     return (
       <>
         <nav className="sticky top-0 bg-slate-100 md:text-sm z-50">
             <div className="gap-x-7 items-center px-4 md:flex md:px-8">
-
-
                 <div className="flex items-center justify-between py-5 md:block">
                   <div className="flex flex-row items-center  justify-between">
                     <button style={{cursor:"pointer"}} onClick={handleChange}>
@@ -104,13 +129,14 @@ const NavBar = () => {
                         }
                     </ul>
                     <div className="profile flex-1 gap-x-6 items-center justify-end mt-6 space-y-6 md:flex md:space-y-0 md:mt-0">
-                        {isAuth && (
+                        {(loading || isAuth===null) && <Spinner/>}
+                        {!loading && isAuth && (
                             <div className=" flex items-center">
-                               <Dropdown color="orange" onLogout={handleLogout} User={ User.profile_pic_url.includes("None") ? null: User.profile_pic_url} />
+                               <Dropdown color="orange" onLogout={handleLogout} User={ user.profile_pic_url.includes("None") ? null: user.profile_pic_url} />
                             </div>
                         )}
 
-                        {!isAuth && (
+                        {!loading && isAuth!==null && !isAuth && (
                             <>
                               <a href="/login" className="block text-sm text-base text-green-500 font-semibold hover:text-green-700">
                                   Log in

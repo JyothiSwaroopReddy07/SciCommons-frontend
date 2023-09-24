@@ -3,6 +3,7 @@ import axios from 'axios'
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 import {useNavigate} from 'react-router-dom'
+import {useGlobalContext} from '../../Context/StateContext'
 
 const Verify = () => {
 
@@ -10,9 +11,10 @@ const Verify = () => {
     const [email,setEmail] = useState('')
     const [loading, setLoading] = useState(false);
     const [otp,setOtp] = useState('');
+    const {token} = useGlobalContext();
 
     useEffect(()=> {
-        if(localStorage.getItem('token')){ 
+        if(token){ 
             navigate('/')
         }
     },[])

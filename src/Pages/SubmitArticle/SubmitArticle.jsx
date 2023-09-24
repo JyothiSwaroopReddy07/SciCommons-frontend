@@ -8,10 +8,12 @@ import Loader from "../../Components/Loader/Loader";
 import axios from "axios";
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext'
 
 const SubmitArticle = () => {
 
   const baseURL = 'https://scicommons-backend.onrender.com/api/article/';
+  const {token} = useGlobalContext()
 
   const [authors, setAuthors] = useState([
     {
@@ -44,7 +46,6 @@ const SubmitArticle = () => {
   const submitForm = async(e) => {
     e.preventDefault();
     const form_data = new FormData(e.target);
-    const token = localStorage.getItem('token');
 
     var authorIds = [];
     var communityIds = [];

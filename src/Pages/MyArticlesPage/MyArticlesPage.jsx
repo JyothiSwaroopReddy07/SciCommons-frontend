@@ -5,6 +5,7 @@ import Loader from "../../Components/Loader/Loader";
 import Footer from "../../Components/Footer/Footer";
 import {AiFillEye} from "react-icons/ai";
 import dayjs from 'dayjs';
+import {useGlobalContext} from '../../Context/StateContext'
 
 const ArticleCard = ({articles}) => {
 
@@ -155,6 +156,7 @@ const MyArticlesPage = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(false);
     const [sortedArticles, setSortedArticles] = useState([]);
+    const {token} = useGlobalContext();
 
     const loadData = async (res) => {
         setArticles(res);
@@ -167,7 +169,7 @@ const MyArticlesPage = () => {
 
     const fetchArticles = async () => {
         setLoading(true)
-        const token = localStorage.getItem('token');
+
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,

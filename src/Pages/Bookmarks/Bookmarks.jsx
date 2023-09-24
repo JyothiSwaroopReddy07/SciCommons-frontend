@@ -21,14 +21,15 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './Bookmarks.css';
 import Post from "../../Components/Post/Post";
+import { useGlobalContext } from "../../Context/StateContext";
 
 
 const BookMarks = () => {
-  // Sample data for posts
 
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const {token} = useGlobalContext();
 
   const loadData = async (res) => {
     setPosts(res);
@@ -37,7 +38,7 @@ const BookMarks = () => {
   const removePosts = async (id) => {
     const newPosts = posts.filter((post) => post.id !== id);
     setPosts(newPosts);
-    };
+  };
 
 
   const getPosts = async () => {
@@ -45,7 +46,7 @@ const BookMarks = () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     try {
@@ -69,7 +70,7 @@ const BookMarks = () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     try {

@@ -11,6 +11,7 @@ import {CgWebsite} from 'react-icons/cg';
 import {FaUsers, FaBook, FaPencilAlt} from 'react-icons/fa';
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext'
 
 const AdminArticlePage = ({community}) => {
 
@@ -19,6 +20,7 @@ const AdminArticlePage = ({community}) => {
     const [loading, setLoading] = useState(false);
     const [sortedArticles, setSortedArticles] = useState([]);
     const [selectedOption, setSelectedOption] = useState('All');
+    const {token} = useGlobalContext() 
 
     const navigate = useNavigate();
 
@@ -46,7 +48,7 @@ const AdminArticlePage = ({community}) => {
 
     const fetchArticles = async () => {
         setLoading(true)
-        const token = localStorage.getItem('token');
+
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -182,7 +184,7 @@ const CommunityPage = () => {
     const [community, setCommunity] = useState(null)
     const [loading, setLoading] = useState(false)
     const [subscribed, setSubscribed] = useState(null);
-    const [User, setUser] = useState(localStorage.getItem('user'));
+    const {user,token} = useGlobalContext();
 
     const loadCommunity = async (res) => {
             setCommunity(res)
@@ -199,7 +201,6 @@ const CommunityPage = () => {
         setLoading(true)
         const getCommunity = async () => {
             try {
-                const token = localStorage.getItem('token')
                 const config = {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -235,8 +236,6 @@ const CommunityPage = () => {
         setLoading(true)
         try {
             const updatedStatus = !subscribed;
-            const token = localStorage.getItem('token');
-
             const config = {
                 headers: {
                      Authorization: `Bearer ${token}`,
@@ -245,7 +244,7 @@ const CommunityPage = () => {
             if(subscribed === false){
                 const response = await axios.post(
                     `https://scicommons-backend.onrender.com/api/community/${community.Community_name}/subscribe/`,{
-                        "user": User.id
+                        "user": user.id
                     },
                     config
                 );
@@ -256,7 +255,7 @@ const CommunityPage = () => {
             } else {
                 const response = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community.Community_name}/unsubscribe/`,
                 {
-                    "user": User.id
+                    "user": user.id
                 },config);
                 if (response.status === 200) {
                     await loadData(updatedStatus);

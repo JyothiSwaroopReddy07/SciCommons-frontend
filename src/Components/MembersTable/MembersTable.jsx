@@ -5,6 +5,7 @@ import {AiOutlineEdit,AiOutlineDelete,AiOutlineUserAdd} from 'react-icons/ai'
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
 import {SlUser} from 'react-icons/sl';
+import {useGlobalContext} from '../../Context/StateContext'
 
 
 const MembersTable = ({community}) => {
@@ -18,6 +19,7 @@ const MembersTable = ({community}) => {
     const [editModalData, setEditModalData] = useState(null)
     const [showAddModal, setShowAddModal] = useState(false)
     const [addModalData, setAddModalData] = useState(null)    
+    const {token} = useGlobalContext()
 
     const loadData = async (res) => {
         setMembers(res)
@@ -27,7 +29,6 @@ const MembersTable = ({community}) => {
     const getCommunity = async () => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -197,11 +198,11 @@ export default MembersTable;
 
 const DeleteModal = ({username,community, onDelete, userId,index, setShowDeleteModal,loading, setLoading}) => {
 
+    const {token} = useGlobalContext();
 
     const handleDelete = async () => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -255,11 +256,11 @@ const DeleteModal = ({username,community, onDelete, userId,index, setShowDeleteM
 const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRole,loading, setLoading}) => {
 
     const role = useRef(handleRole(member))
+    const {token} = useGlobalContext();
     
     const handleEdit = async () => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -344,11 +345,11 @@ const AddModal = ({community, setShowAddModal, loading, setLoading, onAdd}) => {
 
 
     const username = useRef(null)
+    const {token} = useGlobalContext();
 
     const handleAdd = async () => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`

@@ -14,12 +14,17 @@ const Login = () => {
     const username = useRef(null)
     const password = useRef(null)
     const [loading, setLoading] = useState(false)
-    const {User} = useGlobalContext();
+    const {user, setUser, setToken} = useGlobalContext();
 
     const isValidEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
     }
+
+    const loadUserData = async (res) => {
+        setUser(res);
+    }
+
     const getCurrentUser = async () => {
         try {
             const token = localStorage.getItem('token'); 
@@ -30,16 +35,19 @@ const Login = () => {
                 },
             }); 
             const user = response.data.success;
-            User.current = user;
-            localStorage.setItem('user', JSON.stringify(user));
+            await loadUserData(user);
         } catch (error) {
           console.error(error);
         }
     };
 
+    const loadTokenData = async(res)=>{
+        setToken(res);
+    }
+
     const handleSubmit = async(e) => {
         e.preventDefault()
-        setLoading(true); // Show the loader while the login request is in
+        setLoading(true);
         let data;
         if(isValidEmail(username.current.value)) {
             data = {
@@ -68,6 +76,7 @@ const Login = () => {
             );
 
             localStorage.setItem('token', response.data.success.access);
+            await loadTokenData(response.data.success.access);
             await getCurrentUser();
             navigate('/');
           } catch (error) {

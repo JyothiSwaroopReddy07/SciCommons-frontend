@@ -6,16 +6,18 @@ import axios from 'axios';
 import Loader from "../../Components/Loader/Loader";
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext'
 
 const UserActivity = () => {
     const [activity, setActivity] = useState([]);
     const [loading, setLoading] = useState(false);
+    const {token} = useGlobalContext();
 
     const fetchActivity = async () => {
       setLoading(true);
       try {
             const response = await axios.get('https://scicommons-backend.onrender.com/api/user/myactivity/', {
-                headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+                headers: { Authorization: `Bearer ${token}` },
             });
             const data = response.data.success;
             await loadData(data);
@@ -26,7 +28,7 @@ const UserActivity = () => {
     };
 
     useEffect(() => {
-      if (!localStorage.getItem('token')) {
+      if (!token) {
         window.location.href = '/login';
       }
       fetchActivity();

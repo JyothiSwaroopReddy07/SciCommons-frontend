@@ -17,6 +17,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => {
@@ -24,6 +25,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
     const [title, setTitle] = useState("");
     const [comment, setComment] = useState("");
     const [loading, setLoading] = useState(false);
+    const {token} = useGlobalContext();
 
     const handleCommentChange = (event) => {
         setComment(event);
@@ -37,7 +39,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
         const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
@@ -129,6 +131,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
     const [loading, setLoading] = useState(false);
     const [rating, setRating] = useState(0);
     const [confidence, setConfidence] = useState(0);
+    const {token} = useGlobalContext();
 
     const handleBodyChange = (event) => {
         setComment(event);
@@ -141,7 +144,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
         try {
@@ -279,6 +282,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
     const [comment, setComment] = useState("");
     const [loading, setLoading] = useState(false);
     const [decision, setDecision] = useState("");
+    const {token} = useGlobalContext();
 
     const handleBodyChange = (event) => {
         setComment(event);
@@ -291,7 +295,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
 
@@ -410,6 +414,7 @@ const  ArticlePage = () => {
     const [showDecisionModal, setShowDecisionModal] = useState(false);
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [loadComments, setLoadComments] = useState(false);
+    const {token} = useGlobalContext();
 
     const loadArticleData = async (res) => {
         setArticle(res);
@@ -424,7 +429,7 @@ const  ArticlePage = () => {
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
         try{
@@ -438,12 +443,14 @@ const  ArticlePage = () => {
 
         const getArticle = async () => {
             setLoading(true)
-            const config={
+            let config = null;
+            if(token!== null) {
+                config = {
                     headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                }
-            };
+                        Authorization: `Bearer ${token}`, 
+                    },
+                };
+            }
             try {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
                 console.log(res.data.success);
@@ -466,15 +473,24 @@ const  ArticlePage = () => {
 
         const getComments = async () => {
             setLoading(true);
-            const config={
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                    params:{
+            let config=null;
+            if(token!==null) {
+                config={
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: `Bearer ${token}`,
+                        },
+                        params:{
+                            article: articleId
+                        }
+                };
+            } else {
+                config = {
+                    params: {
                         article: articleId
                     }
-            };
+                }
+            }
             try {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`, config);
                 await loadCommentData(res.data.success.results);
@@ -527,7 +543,7 @@ const  ArticlePage = () => {
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
         if(article.isFavourite === false) {
@@ -577,14 +593,17 @@ const  ArticlePage = () => {
 
     const loadMore = async () => {
         setLoadComments(true);
-        const config = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          params: {
-            article:articleId,
-          },
+        let config = null;
+        if(token!== null){
+            config = {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                params: {
+                    article:articleId,
+                },
+            };
         };
         try {
           const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/?limit=20&offset=${comments.length}`, config);

@@ -6,10 +6,12 @@ import Footer from "../../Components/Footer/Footer";
 import axios from "axios";
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext'
 
 const CreateCommunity = () => {
 
   const baseURL = 'https://scicommons-backend.onrender.com/api/community/'; 
+  const {token} = useGlobalContext()
 
   const navigate = useNavigate();
 
@@ -22,7 +24,6 @@ const CreateCommunity = () => {
     e.preventDefault();
     setLoading(true)
     const form_data = new FormData(e.target);
-    const token = localStorage.getItem('token');
     
     try {
       const response = await axios.post(baseURL, form_data, {

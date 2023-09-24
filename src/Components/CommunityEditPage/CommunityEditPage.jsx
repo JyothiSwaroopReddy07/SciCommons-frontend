@@ -8,6 +8,7 @@ import {BsGithub} from 'react-icons/bs';
 import {BiLogoGmail} from 'react-icons/bi';
 import {CgWebsite} from 'react-icons/cg';
 import {FaUsers, FaBook, FaPencilAlt} from 'react-icons/fa';
+import { useGlobalContext} from '../../Context/StateContext';
 
 const CommunityEditPage = () => {
 
@@ -21,6 +22,7 @@ const CommunityEditPage = () => {
     const [website, setWebsite] = useState('')
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
+    const {token} = useGlobalContext();
 
     const loadData = async(res)=>{
         setCommunity(res)
@@ -40,7 +42,6 @@ const CommunityEditPage = () => {
         setLoading(true)
         const getCommunity = async () => {
             try {
-                const token = localStorage.getItem('token')
                 const config = {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -63,9 +64,7 @@ const CommunityEditPage = () => {
         e.preventDefault();
         
         setLoading(true)
-        const form_data = new FormData(e.target);
-        const token = localStorage.getItem('token');
-        
+        const form_data = new FormData(e.target);   
         try {
           const response = await axios.put(`https://scicommons-backend.onrender.com/api/community/${community.Community_name}/`, form_data, {
             headers: {

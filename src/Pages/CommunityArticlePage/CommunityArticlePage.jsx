@@ -17,6 +17,7 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => {
@@ -24,6 +25,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
     const [title, setTitle] = useState("");
     const [comment, setComment] = useState("");
     const [loading, setLoading] = useState(false);
+    const {token} = useGlobalContext();
 
     const handleCommentChange = (event) => {
         setComment(event);
@@ -37,7 +39,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
         const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
@@ -129,6 +131,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
     const [loading, setLoading] = useState(false);
     const [rating, setRating] = useState(0);
     const [confidence, setConfidence] = useState(0);
+    const {token} = useGlobalContext();
 
     const handleBodyChange = (event) => {
         setComment(event);
@@ -141,7 +144,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
         try {
@@ -279,6 +282,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
     const [comment, setComment] = useState("");
     const [loading, setLoading] = useState(false);
     const [decision, setDecision] = useState("");
+    const {token} = useGlobalContext();
 
     const handleBodyChange = (event) => {
         setComment(event);
@@ -291,7 +295,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
 
@@ -411,6 +415,7 @@ const  CommunityArticlePage = () => {
     const [showDecisionModal, setShowDecisionModal] = useState(false);
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [loadComments, setLoadComments] = useState(false);
+    const {token} = useGlobalContext();
 
     const loadArticleData = async (res) => {
         setArticle(res);
@@ -425,7 +430,7 @@ const  CommunityArticlePage = () => {
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
         try{
@@ -441,7 +446,6 @@ const  CommunityArticlePage = () => {
 
     const getCommunity = async () => {
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -478,7 +482,7 @@ const  CommunityArticlePage = () => {
         const config={
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    Authorization: `Bearer ${token}`,
             }
         };
         try {
@@ -503,7 +507,7 @@ const  CommunityArticlePage = () => {
         const config={
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    Authorization: `Bearer ${token}`,
                 },
                 params:{
                     article: articleId
@@ -569,7 +573,7 @@ const  CommunityArticlePage = () => {
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
         if(article.isFavourite === false) {
@@ -622,7 +626,7 @@ const  CommunityArticlePage = () => {
         const config = {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
           },
           params: {
             article:articleId,

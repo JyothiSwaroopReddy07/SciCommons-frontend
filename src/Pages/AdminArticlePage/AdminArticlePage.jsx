@@ -4,15 +4,16 @@ import {useNavigate} from 'react-router-dom';
 import Loader from "../../Components/Loader/Loader";
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from "../../Context/StateContext";
 
 const AcceptModal = ({setShowAccept,article,community, handleModified}) => {
 
     const [loading, setLoading] = useState(false);
+    const {token, user} = useGlobalContext();
 
     const handleAccept = async () => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -57,11 +58,11 @@ const AcceptModal = ({setShowAccept,article,community, handleModified}) => {
 const RejectModal = ({setShowReject,article,community, handleReject}) => {
 
     const [loading, setLoading] = useState(false);
+    const {token} = useGlobalContext();
 
     const handleDelete = async () => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -119,6 +120,7 @@ const AdminArticlePage = ({community}) => {
     const [showAccept, setShowAccept] = useState(false);
     const [showReject, setShowReject] = useState(false);
     const [data, setData] = useState(null);
+    const {token} = useGlobalContext();
 
     const navigate = useNavigate();
 
@@ -173,7 +175,6 @@ const AdminArticlePage = ({community}) => {
 
     const fetchArticles = async () => {
         setLoading(true)
-        const token = localStorage.getItem('token');
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,

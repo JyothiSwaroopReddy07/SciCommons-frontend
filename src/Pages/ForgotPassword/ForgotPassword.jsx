@@ -4,6 +4,7 @@ import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 import {useNavigate} from 'react-router-dom'
 import Loader from '../../Components/Loader/Loader';
+import {useGlobalContext} from '../../Context/StateContext'
 
 const ForgotPassword = () => {
 
@@ -14,11 +15,12 @@ const ForgotPassword = () => {
     const [loading, setLaoding] = useState(false);
     const [isPasswordHidden1, setPasswordHidden1] = useState(false)
     const [isPasswordHidden2, setPasswordHidden2] = useState(false)
+    const {token} = useGlobalContext()
 
     const navigate = useNavigate()
 
     useEffect(()=> {
-        if(localStorage.getItem('token')){ 
+        if(token){ 
             navigate('/')
         }
     },[])

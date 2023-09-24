@@ -13,6 +13,7 @@ import "toastmaker/dist/toastmaker.css";
 import { Bars } from 'react-loader-spinner'
 import {RxCross2} from "react-icons/rx";
 import {AiFillThunderbolt} from "react-icons/ai";
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const Loading = () => {
@@ -35,6 +36,7 @@ const Following = ({setFollowingModal}) => {
 
   const [loading, setLoading] = useState(false);
   const [followers, setFollowers] = useState([]);
+  const {token, user} = useGlobalContext();
 
   const {username} = useParams();
 
@@ -48,7 +50,7 @@ const Following = ({setFollowingModal}) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     if(!followers[index].isFollowing){
@@ -88,7 +90,7 @@ const Following = ({setFollowingModal}) => {
     const config = {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
         },
         params: {
           username:username,
@@ -144,7 +146,7 @@ const Following = ({setFollowingModal}) => {
                             {follower.username}
                           </Link>
 
-                          {JSON.parse(localStorage.getItem("user")).username!== follower.username &&<button 
+                          {user.username!== follower.username &&<button 
                             className={`rounded-lg ${follower.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={(e)=>{handleFollow(e,index)}}>{fillFollow(follower)}
                           </button>}
                         </div>
@@ -168,6 +170,7 @@ const Followers = ({setFollowersModal}) => {
 
   const [loading, setLoading] = useState(false);
   const [followers, setFollowers] = useState([]);
+  const {token, user} = useGlobalContext();
 
   const {username} = useParams();
 
@@ -181,7 +184,7 @@ const Followers = ({setFollowersModal}) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     if(!followers[index].isFollowing){
@@ -221,7 +224,7 @@ const Followers = ({setFollowersModal}) => {
     const config = {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
         },
         params: {
           username:username,
@@ -277,7 +280,7 @@ const Followers = ({setFollowersModal}) => {
                             {follower.username}
                           </Link>
 
-                          {JSON.parse(localStorage.getItem("user")).username!== follower.username &&<button 
+                          {user.username!== follower.username &&<button 
                             className={`rounded-lg ${follower.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={(e)=>{handleFollow(e,index)}}>{fillFollow(follower)}
                           </button>}
                         </div>
@@ -308,6 +311,7 @@ const Profile = () => {
   const [followers,setFollowers] = useState(false);
   const [following,setFollowing] = useState(false);
   const navigate = useNavigate();
+  const {token} = useGlobalContext();
 
 
   const handleFollow = async(e) => {
@@ -315,7 +319,7 @@ const Profile = () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     if(!user.isFollowing){
@@ -380,7 +384,7 @@ const Profile = () => {
     const config = {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
         },
     }
     try{
@@ -392,7 +396,7 @@ const Profile = () => {
   };
 
   const fetchArticles = async () => {
-    const token = localStorage.getItem('token');
+
     const config = {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -418,7 +422,7 @@ const loadUserData = async(res) => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     try {
@@ -493,7 +497,7 @@ const loadUserData = async(res) => {
                   <strong>{user.rank}</strong> <span className="text-sm flex flex-row items-center"><AiFillThunderbolt className="w-4 h-4"/> Reputation</span>
                 </div>
                 <div className="flex flex-row items-center justify-center mt-2">
-                  {JSON.parse(localStorage.getItem("user")).username !== user.username && <span className={`rounded-lg ${user.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={handleFollow}>{fillFollow()}</span>}
+                  {user.username !== user.username && <span className={`rounded-lg ${user.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={handleFollow}>{fillFollow()}</span>}
                 </div>
               </div>
           </div>

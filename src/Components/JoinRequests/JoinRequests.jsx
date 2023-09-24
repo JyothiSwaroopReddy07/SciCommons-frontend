@@ -3,13 +3,14 @@ import axios from 'axios'
 import Loader from '../Loader/Loader'
 import { TECollapse } from "tw-elements-react"
 import {SlUser} from "react-icons/sl";
+import {useGlobalContext} from '../../Context/StateContext'
 
 
 const JoinRequests = ({community}) => {
 
+    const {user,token} = useGlobalContext()
     const [loading, setLoading] = useState(false)
     const [requests, setRequests] = useState([])
-    const [User, setUser] = useState(localStorage.getItem('user'))
     const [activeElement, setActiveElement] = useState("");
     const [sortedRequests, setSortedRequests] = useState([])
     const [show, setShow] = useState(false)
@@ -33,7 +34,6 @@ const JoinRequests = ({community}) => {
     const getJoinRequests = async() => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -194,11 +194,11 @@ export default JoinRequests;
 
 const AcceptModal = ({setShow, request, community,index, onDelete, loading, setLoading}) => {
 
+    const {token} = useGlobalContext();
     
     const handleAccept = async() => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -235,11 +235,11 @@ const AcceptModal = ({setShow, request, community,index, onDelete, loading, setL
 
 const RejectModal = ({setReject, request, community,index, onDelete, loading, setLoading}) => {
 
+    const {token} = useGlobalContext()
 
     const handleReject = async() => {
         setLoading(true)
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`

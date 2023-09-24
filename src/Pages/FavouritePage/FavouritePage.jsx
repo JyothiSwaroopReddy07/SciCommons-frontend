@@ -4,6 +4,7 @@ import axios from "axios";
 import ArticleCard from "../../Components/ArticleCard/ArticleCard";
 import Loader from "../../Components/Loader/Loader";
 import Footer from "../../Components/Footer/Footer";
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const FavouritePage = () => {
@@ -12,6 +13,7 @@ const FavouritePage = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(false);
     const [sortedArticles, setSortedArticles] = useState([]);
+    const {token} = useGlobalContext();
 
     const loadData = async (res) => {
         setArticles(res);
@@ -23,7 +25,7 @@ const FavouritePage = () => {
     }
     const fetchArticles = async () => {
         setLoading(true)
-        const token = localStorage.getItem('token'); // Retrieve the token from local storage
+
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`, // Include the token in the Authorization header

@@ -13,6 +13,7 @@ import { MdOutlineViewSidebar } from "react-icons/md";
 import "./AuthorArticlePage.css";
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext';
 
 const DisplayCommunity = ({article}) => {
 
@@ -21,6 +22,7 @@ const DisplayCommunity = ({article}) => {
     const [loading, setLoading] = useState(false);
     const [sortedArticles, setSortedArticles] = useState([]);
     const [selectedOption, setSelectedOption] = useState('All');
+    const {token} = useGlobalContext();
 
     const navigate = useNavigate();
 
@@ -48,7 +50,6 @@ const DisplayCommunity = ({article}) => {
 
     const fetchArticles = async () => {
         setLoading(true)
-        const token = localStorage.getItem('token');
         const config = {
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -174,6 +175,7 @@ const SubmitCommunity = ({article, setShow}) => {
     const [community, setCommunity] = useState("");
     const [loading, setLoading] = useState(false);
     const [communityId,setCommunityId] = useState(0);
+    const {token} = useGlobalContext();
 
 
     const verify = async(res) => {
@@ -189,7 +191,7 @@ const SubmitCommunity = ({article, setShow}) => {
         const config = {
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             },
         }
         try{
@@ -226,7 +228,7 @@ const SubmitCommunity = ({article, setShow}) => {
         const config={
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
+                Authorization: `Bearer ${token}`,
             }
         };
         const val = await handleCommunityName();
@@ -311,11 +313,11 @@ const ArticleEditPage = ({setArticleEdit, article, handleArticleEdit}) => {
   const [Abstract, setAbstract] = useState(article.Abstract===null?"":article.Abstract);
   const [Code,setCode] = useState(article.Code);
   const [video, setVideo] = useState(article.video);
+  const {token} = useGlobalContext();
 
   const submitForm = async(e) => {
     e.preventDefault();
     const form_data = new FormData(e.target);
-    const token = localStorage.getItem('token');
 
 
     setLoading(true);
@@ -450,6 +452,7 @@ const AuthorArticlePage = () => {
   const [loading, setLoading] = useState(true);
   const [show,setShow] = useState(false);
   const [articleEdit, setArticleEdit] = useState(false);
+  const {token} = useGlobalContext();
 
   const loadArticleData = async (res) => {
     setArticle(res);
@@ -461,7 +464,7 @@ const AuthorArticlePage = () => {
       const config = {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
+          Authorization: `Bearer ${token}`,
         },
       };
       try {
@@ -528,7 +531,7 @@ const AuthorArticlePage = () => {
     const config = {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        Authorization: `Bearer ${token}`,
       },
     };
     if (article.isFavourite === false) {

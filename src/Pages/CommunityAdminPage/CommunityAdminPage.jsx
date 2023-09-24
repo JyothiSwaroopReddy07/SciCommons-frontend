@@ -7,6 +7,7 @@ import axios from "axios"
 import Loader from '../../Components/Loader/Loader';
 import MembersTable from '../../Components/MembersTable/MembersTable';
 import AdminArticlePage from '../AdminArticlePage/AdminArticlePage';
+import {useGlobalContext} from '../../Context/StateContext'
 
 
 const  CommunityAdminPage =()=>{
@@ -14,6 +15,7 @@ const  CommunityAdminPage =()=>{
 const [currentState, setcurrentState] = useState(1);
 const [community,setCommunity] = useState(null);
 const [loading, setLoading] = useState(false);
+const {token} = useGlobalContext();
 
 const loadData = async (res) => {
     setCommunity(res);
@@ -23,7 +25,6 @@ useEffect(() => {
     setLoading(true)
     const getCommunity = async () => {
         try {
-            const token = localStorage.getItem('token')
             const config = {
                 headers: {
                     Authorization: `Bearer ${token}`

@@ -7,6 +7,7 @@ import './Communities.css';
 import Footer from '../../Components/Footer/Footer';
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext';
 
 const Communities = () => {
 
@@ -14,6 +15,7 @@ const Communities = () => {
     const [communities, setCommunities] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingmore, setLoadingMore] = useState(false);
+    const {token} = useGlobalContext();
 
     const loadMoreData = async (res) => {
         const newCommunities = [...communities, ...res]
@@ -22,12 +24,14 @@ const Communities = () => {
 
     const fetchCommunities = async () => {
         setLoading(true)
-        const token = localStorage.getItem('token'); // Retrieve the token from local storage
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-            },
-        };
+        let config = null;
+        if(token!==null) {
+            config = {
+                headers: {
+                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                },
+            };
+        }
         try {
             const response = await axios.get(
                 `https://scicommons-backend.onrender.com/api/community?search=${searchTerm}`,
@@ -53,9 +57,15 @@ const Communities = () => {
     const handleLoadMore = async() => {
         setLoadingMore(true);
         try{
-          const response = await axios.get(`https://scicommons-backend.onrender.com/api/community/?search=${searchTerm}&limit=20&offset=${communities.length}`, {
-              headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, },
-          });
+            let config = null;
+            if(token!== null) {
+                config = {
+                    headers: {
+                        Authorization: `Bearer ${token}`, 
+                    },
+                };
+            }
+          const response = await axios.get(`https://scicommons-backend.onrender.com/api/community/?search=${searchTerm}&limit=20&offset=${communities.length}`, config);
           const data = response.data.success.results;
           if(response.data.success.count === communities.length) {
             ToastMaker("No more communities to load", 3000, {

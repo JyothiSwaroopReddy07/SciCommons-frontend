@@ -6,6 +6,7 @@ import axios from 'axios';
 import Loader from "../../Components/Loader/Loader";
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const NotificationCard = ({ notification, handleMarked }) => {
@@ -13,12 +14,13 @@ const NotificationCard = ({ notification, handleMarked }) => {
     const formattedDate = dayjs(notification.date).format('MMMM D, YYYY HH:mm A');
     const [isread, setIsRead] = useState(is_read);
     const [loading, setLoading] = useState(false);
+    const {token} = useGlobalContext();
   
     const handleSeen = async() => {
       setLoading(true);
       const config = {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${token}`,
         },
       }
       try{
@@ -69,12 +71,13 @@ const Notifications = () => {
     const [notifications, setNotifications] = useState([]);
     const [loading, setLoading] = useState(false);
     const [loadingmore, setLoadingMore] = useState(false);
+    const {token} = useGlobalContext();
 
     const fetchNotifications = async () => {
       setLoading(true);
       try {
         const response = await axios.get('https://scicommons-backend.onrender.com/api/notification/', {
-          headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const data = response.data.success;
         setNotifications(data.results);
@@ -85,7 +88,7 @@ const Notifications = () => {
     };
 
     useEffect(() => {
-      if (!localStorage.getItem('token')) {
+      if (!token) {
         window.location.href = '/login';
       }
       fetchNotifications();
@@ -100,7 +103,7 @@ const Notifications = () => {
       setLoadingMore(true);
       try{
         const response = await axios.get(`https://scicommons-backend.onrender.com/api/notification/?limit=20&offset=${notifications.length}`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
+            headers: { Authorization: `Bearer ${token}` },
         });
         const data = response.data.success.results;
         if(response.data.success.count === notifications.length) {

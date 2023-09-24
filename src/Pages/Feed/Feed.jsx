@@ -17,6 +17,8 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import './Feed.css';
 import Post from '../../Components/Post/Post';
+import {useGlobalContext} from '../../Context/StateContext'
+
 
 const Feed = () => {
   // Sample data for posts
@@ -26,6 +28,7 @@ const Feed = () => {
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
   const [body, setBody] = useState('');
+  const {token} = useGlobalContext();
 
   const handleBodyChange = (event) => {
     setBody(event);
@@ -40,7 +43,7 @@ const Feed = () => {
     const config = {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
         },
     }
     try{
@@ -63,7 +66,7 @@ const Feed = () => {
     const config = {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            Authorization: `Bearer ${token}`,
         },
     }
     try{
@@ -108,7 +111,7 @@ const Feed = () => {
     } else {
       console.log('File size is ok')
     }
-    const token = localStorage.getItem("token");
+    
     const config = {
         headers: {
             "Content-Type": "multipart/form-data",

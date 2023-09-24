@@ -11,6 +11,8 @@ import Popper from 'popper.js';
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
 import './Post.css';
+import {useGlobalContext} from '../../Context/StateContext'
+import { RxTokens } from 'react-icons/rx';
 
 
 const Post = ({ post, onDeletePost, handleEditChange }) => {
@@ -18,7 +20,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
     const [bookmark, setBookmark] = useState(post.isbookmarked);
     const [likes, setLikes] = useState(post.likes);
     const [bookmarks, setBookmarks] = useState(post.bookmarks);
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+    const {user, token} = useGlobalContext()
     const navigate = useNavigate();
   
     const handleLike = async(e) => {
@@ -26,7 +28,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
       const config = {
           headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${token}`,
           },
       }
       if(liked) {
@@ -64,7 +66,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
       const config = {
           headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
+              Authorization: `Bearer ${token}`,
           },
       }
       if(bookmark) {
@@ -254,8 +256,9 @@ const Dropdown = ({post, onDeletePost, handleEditChange}) => {
       setShowEdit(true);
     }
   
+    const {token} = useGlobalContext();
+
     const DeletePost = async() => {
-      const token = localStorage.getItem("token");
       const config = {
           headers: {
               "Content-Type": "multipart/form-data",
@@ -332,6 +335,7 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
 
     const [updatedImage, setUpdatedImage] = useState(null);
     const [updatedBody, setUpdatedBody] = useState(post.body);
+    const {token} = useGlobalContext();
   
     const handleImageChange = (event) => {
       const imageFile = event.target.files[0];
@@ -366,7 +370,7 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
       } else {
         console.log('File size is ok')
       }
-      const token = localStorage.getItem("token");
+      
       const config = {
           headers: {
               "Content-Type": "multipart/form-data",

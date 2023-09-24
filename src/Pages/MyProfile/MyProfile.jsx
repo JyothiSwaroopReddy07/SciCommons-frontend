@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../../Components/NavBar/NavBar';
 import Loader from '../../Components/Loader/Loader';
+import {useGlobalContext} from '../../Context/StateContext'
 
 const MyProfile = () => {
 
@@ -15,6 +16,7 @@ const MyProfile = () => {
     const [loading,setLoading] = useState(false);
     const [edit,setEdit] = useState(false); 
     const [user,setUser] = useState(null)
+    const {token} = useGlobalContext();
 
 
     useEffect(() => { 
@@ -33,14 +35,13 @@ const MyProfile = () => {
         setGoogleScholar(res.google_scholar===null?"":res.google_scholar)
         setPubmed(res.pubmed===null?"":res.pubmed)
         setProfilePicUrl(res.profile_pic_url===null?"":res.profile_pic_url)
-        localStorage.setItem('user',JSON.stringify(res))
         setEdit(false)
     }
 
     const fetchProfile = async () => {
         const config = {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                Authorization: `Bearer ${token}`,
             },
         };
         try {
@@ -60,7 +61,7 @@ const MyProfile = () => {
         setLoading(true);
         const config = {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`,
+                Authorization: `Bearer ${token}`,
                 "Content-Type": "multipart/form-data",
             },
         };
