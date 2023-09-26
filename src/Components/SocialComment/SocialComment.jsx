@@ -264,16 +264,29 @@ const SocialComment = ({ key, comment }) => {
   const handleReply = async (e) => {
     e.preventDefault();
     setLoading(true);
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      params: {
-        comment: comment.id,
-        post: comment.post,
-      },
-    };
+    let config=null;
+    if(token === null) {
+      config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        params: {
+          comment: comment.id,
+          post: comment.post,
+        },
+      }
+    } else {
+      config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          comment: comment.id,
+          post: comment.post,
+        },
+      };
+    }
     try {
       const res = await axios.get(
         `https://scicommons-backend.onrender.com/api/feedcomment/?limit=20&offset=${repliesData.length}`,
@@ -439,7 +452,7 @@ const SocialComment = ({ key, comment }) => {
             changeComment={changeComment}
           />
         )}
-        <div className="ml-1 md:ml-5">
+        <div className="ml-1">
           {repliesData.length > 0 &&
             repliesData.map((reply) => (
               <SocialComment key={reply.id} comment={reply} />

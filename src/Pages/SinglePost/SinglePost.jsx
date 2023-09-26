@@ -204,7 +204,7 @@ const SinglePost = () => {
   return (
     <>
       <NavBar />
-      <div className="overflow-hidden">
+      <div className="overflow-hidden bg-green-50 min-h-screen">
         {(loading || post === null) && <Loader />}
         {!loading && post !== null && (
           <>
@@ -241,7 +241,7 @@ const SinglePost = () => {
                 </button>
               </div>}
             </div>
-            <div className="border p-6 bg-zinc-50">
+            <div className="mx-auto border p-6 w-full md:w-1/2 bg-white">
               <div className="text-3xl font-semibold text-green-600">
                 Comments {comments.length > 0 && `(${formatCount(comments.length)})`}
               </div>

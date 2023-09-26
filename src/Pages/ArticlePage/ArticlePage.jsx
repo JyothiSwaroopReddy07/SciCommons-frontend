@@ -650,13 +650,13 @@ const  ArticlePage = () => {
                                 {article.article_name.replace(/_/g, " ")}
                             </div>
                             <div className="flex flex-row">
-                                <div className="icon mr-2" style={{cursor:"pointer"}} onClick={handleFavourites}>
+                                <div className="icon" style={{cursor:"pointer"}} onClick={handleFavourites}>
                                     {
-                                        article.isFavourite === true ? (<AiFillHeart className='w-[40px] h-[40px]'/>):(<AiOutlineHeart className='w-[40px] h-[40px]'/>) 
+                                        article.isFavourite === true ? (<AiFillHeart className='w-[4rem] h-[2rem]'/>):(<AiOutlineHeart className='w-[4rem] h-[2rem]'/>) 
                                     }
                                 </div>
-                                <div className="icon" onClick={handleFile}>
-                                    <img className='w-[40px] h-[40px]' src={img}></img>
+                                <div className="icon" style={{cursor: "pointer"}} onClick={handleFile}>
+                                    <img className='w-[4rem] h-[2rem]'  src={img}></img>
                                 </div>
                             </div>
                         </div>

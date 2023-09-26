@@ -31,8 +31,7 @@ const NavBar = () => {
     const navigation = [
         { title: "Submit Article", path: "/submitarticle" },
         { title: "Communities", path: "/communities" },
-        { title: "Articles", path: "/articles" },
-        { title: "About", path: "/about" }
+        { title: "Articles", path: "/articles" }
     ];
 
     const loadUserData = async (res) => {
