@@ -313,6 +313,9 @@ const Profile = () => {
 
 
   const handleFollow = async(e) => {
+    if(token === null) {
+      navigate("/login");
+    }
     e.preventDefault();
     const config = {
       headers: {
@@ -362,6 +365,9 @@ const Profile = () => {
   }
 
   const onDeletePost = async(id) => {
+    if(token===null) {
+      navigate("/login");
+    }
     const updatedPosts = posts.filter(post => post.id !== id);
     await loadData(updatedPosts);
   }
@@ -379,27 +385,50 @@ const Profile = () => {
   }
 
   const getPosts = async() => {
-    const config = {
+    setLoading(true);
+    let config = null;
+    if(token === null) {
+        config = {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }
+    } else {
+      config = {
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
+      }
     }
+
     try{
         const res = await axios.get(`https://scicommons-backend.onrender.com/api/user/${username}/posts/`, config)
         await loadData(res.data.success)
     } catch(err) {
         console.log(err)
     }
+    setLoading(false);
   };
 
   const fetchArticles = async () => {
-
-    const config = {
+    setLoading(true);
+    let config = null;
+    if(token !== null){
+      config = {
         headers: {
+            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-    };
+      };
+    } else {
+      config = {
+        headers: {
+            "Content-Type": "application/json",
+        },
+      };
+    }
+
     try {
         const response = await axios.get(
             `https://scicommons-backend.onrender.com/api/user/${username}/articles/`,
@@ -409,6 +438,7 @@ const Profile = () => {
     } catch (error) {
         console.error(error);
     } 
+    setLoading(false);
 };
 
 const loadUserData = async(res) => {
@@ -416,13 +446,23 @@ const loadUserData = async(res) => {
 }
 
   const fetchUser = async() => {
+    setLoading(true);
+    let config = null;
+    if(token === null) {
+      config = {
+          headers: {
+              "Content-Type": "application/json",
+          },
+      }
+    } else {
+      config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+    }
 
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
     try {
       const res = await axios.get(
         `https://scicommons-backend.onrender.com/api/user?search=${username}`,config)
@@ -441,6 +481,7 @@ const loadUserData = async(res) => {
     catch(err){
       console.log(err)
     }
+    setLoading(false);
   };
 
   const onclickFuntion = (indext)=>{
@@ -448,11 +489,9 @@ const loadUserData = async(res) => {
   };
 
   useEffect(()=> {
-    setLoading(true);
     getPosts();
     fetchArticles();
     fetchUser();
-    setLoading(false);
   },[])
 
   const fillFollow = () => {

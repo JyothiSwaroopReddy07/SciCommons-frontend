@@ -48,12 +48,21 @@ const AdminArticlePage = ({community}) => {
 
     const fetchArticles = async () => {
         setLoading(true)
+        let config = null;
+        if(token) {
+            config = {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            };
+        } else {
+            config = {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            };
+        }
 
-        const config = {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        };
         try {
             const response = await axios.get(
                 `https://scicommons-backend.onrender.com/api/community/${community.Community_name}/articles/`,
@@ -201,9 +210,18 @@ const CommunityPage = () => {
         setLoading(true)
         const getCommunity = async () => {
             try {
-                const config = {
-                    headers: {
-                        Authorization: `Bearer ${token}`
+                let config = null;
+                if(token === null) {
+                    config = {
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                    };
+                } else {
+                    config = {
+                        headers: {
+                            Authorization: `Bearer ${token}`
+                        }
                     }
                 }
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/community/${communityName}/`, config )
@@ -233,6 +251,9 @@ const CommunityPage = () => {
 
     const handleSubscribe = async (e) => {
         e.preventDefault()
+        if(token===null){
+            navigate('/login');
+        }
         setLoading(true)
         try {
             const updatedStatus = !subscribed;
@@ -337,7 +358,7 @@ const CommunityPage = () => {
                             </div>
                         </div>
                         <div className="mt-8 flex flex-row justify-end">
-                                <button className="bg-teal-500 text-white md:px-4 md:py-2 rounded-xl mr-3 p-1" style={{cursor:"pointer"}} onClick={()=> navigate(`/join-community/${community.Community_name}`)}>Join Community</button>
+                                <button className="bg-teal-500 text-white md:px-4 md:py-2 rounded-xl mr-3 p-1" style={{cursor:"pointer"}} onClick={()=> {if(token===null){navigate("/login")} else {navigate(`/join-community/${community.Community_name}`)}}}>Join Community</button>
                                     <button
                                         className={`${
                                             subscribed

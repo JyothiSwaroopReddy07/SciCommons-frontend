@@ -48,7 +48,7 @@ function App() {
         <Route path='/createcommunity' element={<PrivateRoute redirectTo="/login" component={<CreateCommunity/>}/>}/>
         <Route path='/communitysuccessfulcreated' element={<PrivateRoute redirectTo="/login" component={<CommunityCreation/>}/>}/>
         <Route path='/notifications' element={<PrivateRoute redirectTo="/login" component={<Notifications/>}/>}/>
-        <Route path='/explore' element={<PrivateRoute redirectTo="/login" component={<Feed/>}/>}/>
+        <Route path='/explore' element={<Feed/>}/>
         <Route path='/mytimeline' element={<PrivateRoute redirectTo="/login" component={<Timeline/>}/>}/>
         <Route path='/bookmarks' element={<PrivateRoute redirectTo="/login" component={<BookMarks/>}/>}/>
         <Route path="/community/:communityName" element={<CommunityPage/>}/>
@@ -63,7 +63,7 @@ function App() {
         <Route path="/myarticles/:articleId" element={<PrivateRoute redirectTo="/login" component={<AuthorArticlePage/>} />}/>
         <Route path="/myactivity" element={<PrivateRoute redirectTo="/login" component={<UserActivity/>}/>}/>
         <Route path="/community/:communityName/:articleId" element={<PrivateRoute redirectTo="/login" component={<CommunityArticlePage/>}/>}/>
-        <Route path="/myprofile" element={<MyProfile/>}/> 
+        <Route path="/myprofile" element={<PrivateRoute redirectTo="/login" component={<MyProfile/>}/>}/> 
         <Route path="/forgotpassword" element={<ForgotPassword/>}/>
         <Route path="/verify" element={<Verify/>}/>
         <Route path = "*" element={<ErrorPage/>} />

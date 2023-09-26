@@ -12,7 +12,7 @@ import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
 import './Post.css';
 import {useGlobalContext} from '../../Context/StateContext'
-import { RxTokens } from 'react-icons/rx';
+
 
 
 const Post = ({ post, onDeletePost, handleEditChange }) => {
@@ -24,6 +24,9 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
     const navigate = useNavigate();
   
     const handleLike = async(e) => {
+      if(token === null) {
+        navigate("/login");
+      }
       e.preventDefault()
       const config = {
           headers: {
@@ -61,7 +64,10 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
   
   
     const handleBookmark = async(e) => {
-      // Implement bookmark logic here
+
+      if(token === null) {
+        navigate("/login");
+      }
       e.preventDefault()
       const config = {
           headers: {
@@ -239,6 +245,7 @@ const Dropdown = ({post, onDeletePost, handleEditChange}) => {
   
 
     const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
+    const {token} = useGlobalContext();
     const btnDropdownRef = React.createRef();
     const [showEdit, setShowEdit] = useState(false);
     const popoverDropdownRef = React.createRef();
@@ -251,14 +258,20 @@ const Dropdown = ({post, onDeletePost, handleEditChange}) => {
     const closeDropdownPopover = () => {
       setDropdownPopoverShow(false);
     };
+    const navigate = useNavigate();
   
     const EditPost = async() => {
+      if(token===null) {
+        navigate("/login");
+      }
       setShowEdit(true);
     }
-  
-    const {token} = useGlobalContext();
+
 
     const DeletePost = async() => {
+      if(token===null){
+        navigate("/login")
+      }
       const config = {
           headers: {
               "Content-Type": "multipart/form-data",
@@ -336,6 +349,7 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
     const [updatedImage, setUpdatedImage] = useState(null);
     const [updatedBody, setUpdatedBody] = useState(post.body);
     const {token} = useGlobalContext();
+    const navigate = useNavigate();
   
     const handleImageChange = (event) => {
       const imageFile = event.target.files[0];
@@ -351,6 +365,9 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
     }
   
     const handleEditSubmit = async(e) => {
+      if(token===null){ 
+        navigate("/login")
+      }
       e.preventDefault(); 
       const form_data = new FormData(e.target);
   

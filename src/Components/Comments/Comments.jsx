@@ -353,9 +353,6 @@ const Comments = ({ comment, article, colour }) => {
   };
 
   const handleReply = async () => {
-    if(token === null) {
-      navigate("/login");
-    }
     setLoading(true);
     let config=null;
     if(token !== null){
@@ -409,6 +406,9 @@ const Comments = ({ comment, article, colour }) => {
     }
   };
 
+  const handleEditModal = () => {
+    setShowEditModal(true);
+  }
 
   return (
     <>
@@ -547,10 +547,10 @@ const Comments = ({ comment, article, colour }) => {
             </div>
               <div className="flex flex-row justify-end items-center">
                 <div className="mt-2 flex flex-row">
-                  {comment.personal && <span className="box-content text-white bg-[#4d8093] text-md border-solid ml-2 mr-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>{setShowEditModal(true);}}>
+                  {comment.personal && <span className="box-content text-white bg-[#4d8093] text-md border-solid ml-2 mr-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={handleEditModal}>
                     edit comment
                   </span>}
-                  <span className="box-content text-white bg-[#4d8093] text-md border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>{setShowCommentModal(true);}}>
+                  <span className="box-content text-white bg-[#4d8093] text-md border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>{if(token===null){navigate("/login")}setShowCommentModal(true);}}>
                     reply
                   </span>
                 </div>

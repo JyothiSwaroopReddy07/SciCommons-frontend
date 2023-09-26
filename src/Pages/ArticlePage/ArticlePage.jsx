@@ -539,6 +539,9 @@ const  ArticlePage = () => {
       };
 
     const handleFavourites = async () => {
+        if(token===null) {
+            navigate("/login");
+        }
         const config={
             headers: {
                 "Content-Type": "application/json",

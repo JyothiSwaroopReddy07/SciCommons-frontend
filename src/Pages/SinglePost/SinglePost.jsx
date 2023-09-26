@@ -64,15 +64,25 @@ const SinglePost = () => {
 
   const loadMore = async () => {
     setLoadComments(true);
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      params: {
-        post: postId,
-      },
-    };
+    let config = null;
+    if(token===null){
+      config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    }
+    else {
+      config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          post: postId,
+        },
+      };
+    }
     try {
       const res = await axios.get(
         `https://scicommons-backend.onrender.com/api/feedcomment/?limit=20&offset=${comments.length}`,
@@ -86,12 +96,23 @@ const SinglePost = () => {
   };
 
   const fetchPost = async () => {
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
+    setLoading(true);
+    let config = null;
+    if(token === null) {
+      config = {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    } else {
+      config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+    }
+    
     try {
       const res = await axios.get(
         `https://scicommons-backend.onrender.com/api/feed/${postId}/`,
@@ -111,6 +132,8 @@ const SinglePost = () => {
         navigate('/explore')
       }
     }
+    setLoading(false);
+
   };
 
   const formatCount = (count)=>{
@@ -124,12 +147,13 @@ const SinglePost = () => {
   }
 
   useEffect(() => {
-    setLoading(true);
     fetchPost();
-    setLoading(false);
   }, []);
 
   const handleComment = async (e) => {
+    if(token === null) {
+      navigate("/login");
+    }
     e.preventDefault();
     setLoadSubmit(true);
     const comment = document.getElementsByName("comment")[0].value;
@@ -188,7 +212,7 @@ const SinglePost = () => {
               <Post post={post} />
            </div>
             <div className="border p-4 mt-[-20px] shadow-2xl bg-white w-full md:w-1/2 mx-auto">
-              <div className="flex flex-row items-center justify-between mb-2">
+              {user!==null && <div className="flex flex-row items-center justify-between mb-2">
                 {user.profile_pic_url.includes("None") ? (
                   <SlUser className="w-8 h-8 mr-2" />
                 ) : (
@@ -215,9 +239,9 @@ const SinglePost = () => {
                     <AiOutlineSend className="text-xl" />
                   )}
                 </button>
-              </div>
+              </div>}
             </div>
-            <div className="border p-6 bg-white">
+            <div className="border p-6 bg-zinc-50">
               <div className="text-3xl font-semibold text-green-600">
                 Comments {comments.length > 0 && `(${formatCount(comments.length)})`}
               </div>

@@ -214,6 +214,9 @@ const SocialComment = ({ key, comment }) => {
   };
 
   const handleLike = async (e) => {
+    if(token === null) {
+      navigate("/login");
+    }
     e.preventDefault();
     const config = {
       headers: {
@@ -397,6 +400,9 @@ const SocialComment = ({ key, comment }) => {
               className="text-xs ml-4"
               style={{ cursor: "pointer" }}
               onClick={() => {
+                if(token===null){
+                  navigate("/login");
+                }
                 setShowEdit(true);
                 setEditData(comment);
               }}
@@ -408,6 +414,9 @@ const SocialComment = ({ key, comment }) => {
             className="text-xs ml-4"
             style={{ cursor: "pointer" }}
             onClick={() => {
+              if(token === null) {
+                navigate("/login");
+              }
               setShowReply(true);
               setReplyData(comment);
             }}
