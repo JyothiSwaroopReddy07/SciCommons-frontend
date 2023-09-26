@@ -640,6 +640,7 @@ const AuthorArticlePage = () => {
                                     return (
                                         <span key={i} style={{cursor:"pointer"}}>
                                             {data.fullName } 
+                                            <span> , </span>
                                         </span>
                                     );
 

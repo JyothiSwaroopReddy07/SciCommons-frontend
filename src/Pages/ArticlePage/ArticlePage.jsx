@@ -440,7 +440,6 @@ const  ArticlePage = () => {
     }
 
     useEffect (() => {
-
         const getArticle = async () => {
             setLoading(true)
             let config = null;
@@ -465,8 +464,8 @@ const  ArticlePage = () => {
                           fontSize: "20px",
                         },
                       });
-                    navigate('/articles');
                 }
+                navigate("/404")
             }
             setLoading(false);
         }
@@ -570,6 +569,9 @@ const  ArticlePage = () => {
     };
 
     const handleShow = () => {
+        if(token === null) {
+            navigate("/login");
+        }
         if(currentState===1){
             if(article.isArticleModerator){
                 setShowDecisionModal(true);
@@ -679,6 +681,7 @@ const  ArticlePage = () => {
                                     return (
                                         <span key={i} style={{cursor:"pointer"}}>
                                             {data.fullName } 
+                                            <span> , </span>
                                         </span>
                                     );
 
@@ -776,7 +779,6 @@ const  ArticlePage = () => {
                             style={{cursor:"pointer"}} onClick={()=> onclickFuntion(4)}>
                                     Discussions
                             </button>
-
                         </div>
                     </div>
                     <div className="w-full min-h-screen">

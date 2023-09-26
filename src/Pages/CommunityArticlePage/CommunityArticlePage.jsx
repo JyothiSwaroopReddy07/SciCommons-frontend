@@ -498,8 +498,8 @@ const  CommunityArticlePage = () => {
                       fontSize: "20px",
                     },
                   });
-                navigate('/articles');
             }
+            navigate('/404');
         }
     }
 
@@ -707,6 +707,7 @@ const  CommunityArticlePage = () => {
                                     return (
                                         <span key={i} style={{cursor:"pointer"}}>
                                             {data.fullName } 
+                                            <span> , </span>
                                         </span>
                                     );
 

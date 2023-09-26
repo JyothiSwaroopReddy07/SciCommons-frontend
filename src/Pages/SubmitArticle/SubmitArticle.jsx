@@ -8,13 +8,157 @@ import Loader from "../../Components/Loader/Loader";
 import axios from "axios";
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
-import {useGlobalContext} from '../../Context/StateContext'
+import {useGlobalContext} from '../../Context/StateContext';
+
+
+const PubMedSearch = () => {
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const {token} = useGlobalContext()
+
+  const loadData = async(res) => {
+    setResults(res);
+  }
+
+  const handleSearch = async () => {
+    setLoading(true);
+    const response = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&retmode=json`);
+    const data = await response.json();
+    let ids = data.esearchresult.idlist;
+    if(ids === undefined || ids === null) {
+      setResults([]);
+      setLoading(false);
+      return;
+    }
+
+    if(ids.length > 4) {
+      ids = ids.slice(0, 4);
+    }
+    let articles = [];
+
+    const summaryResponse = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`);
+    const summaryData = await summaryResponse.json();
+    articles = Object.values(summaryData.result).map(async (article) => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      if(article.uid === undefined) return;
+      try {
+      const abstractResponse = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${article.uid}&retmode=xml`);
+      const abstractData = await abstractResponse.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(abstractData, 'text/xml');
+      const abstract = xml.querySelector('AbstractText').textContent;
+      return {
+        title: article.sorttitle,
+        authors: article.authors,
+        journal: article.source,
+        pubdate: article.pubdate,
+        url: `https://pubmed.ncbi.nlm.nih.gov/${article.uid}`,
+        abstract: abstract,
+      };
+  } catch(error) {
+    console.log(error);
+    return {
+      title: article.sorttitle,
+      authors: article.authors,
+      journal: article.source,
+      pubdate: article.pubdate,
+      url: `https://pubmed.ncbi.nlm.nih.gov/${article.uid}`,
+      abstract: 'Error fetching abstract',
+    };
+  }
+});
+
+    const resolvedArticles = await Promise.all(articles);
+    const newArticles = resolvedArticles.filter((article)=>{
+      if(article === undefined) return false;
+      return true;
+    })
+    await loadData(newArticles);
+    setLoading(false);
+  };
+  let form_data = new FormData();
+  const handleSubmit = async (article) => {
+    const baseURL = 'https://scicommons-backend.onrender.com/api/article/';
+    setLoading(true);
+    try {
+      const response = await axios.post(baseURL, {
+        article_name: article.title,
+        unregistered_authors: article.authors.map((author)=>{return JSON.stringify({fullName: author.name,email: ""})}),
+        keywords: 'pubmed',
+        Abstract: article.abstract,
+        link: article.url,
+        video: "",
+        Code: "",
+        status: "public",
+        article_file: "",
+        authors: [JSON.stringify(0)],
+        communities: [JSON.stringify(0)],
+      },{
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    } catch (error) {
+      ToastMaker(error.response.data.error, 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      console.log(error);
+      return;
+    }
+    setLoading(false);
+    ToastMaker("Article Added Successfully", 3500,{
+      valign: 'top',
+        styles : {
+            backgroundColor: 'green',
+            fontSize: '20px',
+        }
+    })
+  }
+
+  return (
+    <div className="w-full flex flex-col items-center min-h-screen">
+      <div className="w-full h-20 flex flex-row justify-center">
+        <input type="text" className="w-2/3 rounded-xl m-4 shadow-xl" placeholder="Enter article name to serach using pubmed" value={query} onChange={e => setQuery(e.target.value)} />
+        <button onClick={handleSearch} className="ml-2 my-4 bg-gray-600 text-white font-bold p-2 rounded-xl shadow-xl">Search</button>
+      </div>
+      <div className="m-4">
+        {loading && <Loader/>}
+        {!loading && results.length > 0 && results.map(article => (
+          <div key={article.url} className="shadow-xl bg-gray-50 rounded-lg p-2 my-2 w-2/3 md:w-5/6 mx-auto">
+            <h2 className="text-3xl text-gray-600 font-bold">{article.title}</h2>
+            <p className="text-sm"><span className="text-green-600 font-bold">Author(s) : </span>{article.authors.map((author)=>{
+              return author.name+" , "
+            })}</p>
+            <p className="text-lg"><span className="text-green-600 font-bold">Journal : </span>{article.journal}</p>
+            <p className="text-xs"><span className="text-green-600 font-bold">Abstract : </span>{article.abstract}</p>
+            <div className="flex flex-row justify-between">
+              <a href={article.url} className="text-blue-600 font-semibold" target="_blank" rel="noopener noreferrer">Read more</a>
+              <button className="bg-green-600 text-white font-semibold p-1 m-1 rounded-lg" onClick={()=>{handleSubmit(article)}}>Add Article</button>
+            </div>
+          </div>
+        ))}
+        {
+          !loading && results.length === 0 && <h1 className="text-xl font-bold text-gray-600">No Articles Found</h1>
+        }
+      </div>
+    </div>
+  );
+}
+
 
 const SubmitArticle = () => {
 
   const baseURL = 'https://scicommons-backend.onrender.com/api/article/';
   const {token} = useGlobalContext()
 
+  const [currentState, setCurrentState] = useState(1);
   const [authors, setAuthors] = useState([
     {
       username: "",
@@ -204,13 +348,33 @@ const SubmitArticle = () => {
     setAuthors([...newAuthors]);
   };
 
+  const fillLoad = () => {
+    if(loading){
+      return "Submitting..."
+    }
+    return "Submit";
+  }
+
+  const onclickFuntion = (value) => {
+    setCurrentState(value);
+  }
 
   return (
     <>
     <NavBar/>
-    {
-      loading ? (<Loader/>) :
-    (<>
+    <div className="w-full mt-4">
+      <div className="flex flex-row justify-center">
+        <button className={currentState === 1 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
+          style={{cursor:"pointer"}} onClick={()=> onclickFuntion(1)}>
+            New Article
+        </button>
+        <button className={currentState === 2 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200  py-2'} 
+          style={{cursor:"pointer"}} onClick={()=> onclickFuntion(2)}>
+            Existing Article
+        </button>
+      </div>
+    </div>
+    { currentState === 1 && (<>
     <div className="flex flex-col items-center justify-center">
       <h1 className="text-4xl font-bold mb-4 mt-4 text-center text-gray-500">
         Submit Your Article
@@ -300,6 +464,7 @@ const SubmitArticle = () => {
                       name="fullName"
                       onChange={(e)=>changeUnregisteredAuthor(e, index)}
                       placeholder= "Full Name"
+                      required
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm mr-2 rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                     />
                   <input
@@ -308,6 +473,7 @@ const SubmitArticle = () => {
                     name="email"
                     onChange={(e)=>changeUnregisteredAuthor(e, index)}
                     placeholder= "Email"
+                    required
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm mr-2 rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                   />
                   <MdRemoveCircle
@@ -451,16 +617,18 @@ const SubmitArticle = () => {
           type="submit"
           className="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center"
         >
-          Submit
+          {fillLoad()}
         </button>
       </form>
     </div>
+    </>)}
+    { currentState === 2 && (<>
+      <PubMedSearch/>
     </>)
     }
     <Footer/>
     </>
   );
 };
-
 
 export default SubmitArticle;

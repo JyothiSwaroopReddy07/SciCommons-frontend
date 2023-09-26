@@ -9,6 +9,7 @@ import {IoIosArrowBack,IoIosArrowForward} from "react-icons/io";
 import { useGlobalContext} from '../../Context/StateContext';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import { useNavigate } from "react-router-dom";
 
 
 const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComment }) => {
@@ -221,6 +222,7 @@ const Comments = ({ comment, article, colour }) => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [index,setIndex] = useState(comment.versions.length);
   const {token} = useGlobalContext();
+  const navigate = useNavigate();
 
   const colorClasses = {
     0: 'bg-slate-100',
@@ -312,6 +314,9 @@ const Comments = ({ comment, article, colour }) => {
   }
 
   const handleSliderChange = async(event) => {
+    if(token === null) {
+      navigate("/login");
+    }
     await loadRatingData(event);
     await handleLike(event);
   };
@@ -348,6 +353,9 @@ const Comments = ({ comment, article, colour }) => {
   };
 
   const handleReply = async () => {
+    if(token === null) {
+      navigate("/login");
+    }
     setLoading(true);
     let config=null;
     if(token !== null){
