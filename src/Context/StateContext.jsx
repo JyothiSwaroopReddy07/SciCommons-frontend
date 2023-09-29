@@ -1,6 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { FaBullseye } from 'react-icons/fa';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 
 
 const AppContext = React.createContext()
@@ -11,6 +10,7 @@ const AppProvider = ({ children }) => {
 
   const [user, setUser] = useState(null)
   const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [loading, setLoading] = useState(false);
 
   const loadUserData = async (res) => {
     setUser(res);
@@ -37,10 +37,12 @@ const AppProvider = ({ children }) => {
     };
 
   useEffect(()=> {
+    setLoading(true);
     const fetchData = async() => {
-      getCurrentUser();
+       getCurrentUser();
     }
     fetchData();
+    setLoading(false);
   },[])
 
 

@@ -66,10 +66,8 @@ const AllArticlesPage = () => {
             return "favourite"
         }else if (selectedOption==="Views"){
             return "viewed"
-        } else if(selectedOption==='Date') {
-            return "recent"
         }
-        return "";
+        return "recent";
     }
 
     useEffect(() => {
@@ -90,9 +88,15 @@ const AllArticlesPage = () => {
         }
         if(orderOption==="Ascending") {
             filter = "least_"+filter;
+        } else {
+            filter = "most_"+filter;
         }
         try{
-            const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}`,config);
+            const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}`,{
+                params:{
+                    order: filter
+                },
+            },config);
             await loadData(response.data.success.results);
         } catch(err){
             console.log(err);
@@ -104,8 +108,10 @@ const AllArticlesPage = () => {
         setLoadingMore(true);
         try{
         let filter = fillFilter()
-        if(orderOption) {
+        if(orderOption==="Ascending") {
             filter = "least_"+filter;
+        } else {
+            filter = "most_"+filter;
         }
         let config = null;
         if(token!== null) {
@@ -115,7 +121,11 @@ const AllArticlesPage = () => {
                 },
             };
         }
-          const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}&limit=20&offset=${articles.length}`, config);
+          const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}&limit=20&offset=${articles.length}`,{
+            params: {
+                order: filter
+            }
+          }, config);
           const data = response.data.success.results;
           if(response.data.success.count === articles.length) {
             ToastMaker("No more articles to load", 3000, {
@@ -169,11 +179,10 @@ const AllArticlesPage = () => {
                                 value={selectedOption}
                                 onChange={handleOptionChange}
                             >
-                                <option value="All">All</option>
+                                <option value="Date">Date</option>
                                 <option value="Rating">Rating</option>
                                 <option value="Favourites">Favourites</option>
                                 <option value="Views">Views</option>
-                                <option value="Date">Date</option>
                             </select>
                         </div>
                     </div>

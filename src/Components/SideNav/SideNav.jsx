@@ -53,9 +53,9 @@ const SideNav = ({onMenuChange}) => {
             <Sidebar.Item href="/bookmarks" icon={BsBookmarkCheck}>
               <p className="font-semibold">Bookmarks</p>
             </Sidebar.Item>
-            <Sidebar.Item href="/messages" icon={TbMessageCircle2}>
+            {/* <Sidebar.Item href="/messages" icon={TbMessageCircle2}>
               <p className="font-semibold">Messages</p>
-            </Sidebar.Item>
+            </Sidebar.Item> */}
           </Sidebar.ItemGroup>
         </Sidebar.Items>
       </Sidebar>

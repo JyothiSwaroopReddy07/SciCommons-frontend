@@ -86,6 +86,50 @@ const DisplayCommunity = ({article}) => {
         navigate(`/community/${index}/${article}`)
     } 
 
+    const handlePublish = async (e, communityName) => {
+      e.preventDefault();
+      setLoading(true);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        try {
+            const response = await axios.post(
+                `https://scicommons-backend.onrender.com/api/article/${article}/publish/`,
+                {published: communityName, status: "published"},
+                config
+            );
+            console.log(response);
+            fetchArticles();
+        } catch (error) {
+            console.error(error);
+        }
+        setLoading(false);
+    }
+
+    const handleReject = async (e, communityName) => {
+      e.preventDefault();
+      setLoading(true);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
+        try {
+            const response = await axios.post(
+                `https://scicommons-backend.onrender.com/api/article/${article}/publish/`,
+                {published: communityName, status: "rejected by user"},
+                config
+            );
+            console.log(response);
+            fetchArticles();
+        } catch (error) {
+            console.error(error);
+        }
+        setLoading(false);
+    }
+
     return (
         <>
             <div className="flex flex-col items-center justify-center w-full bg-white">
@@ -161,6 +205,16 @@ const DisplayCommunity = ({article}) => {
                                             <span className="text-green-700">Status : </span>
                                             <span className="inline-flex items-center gap-1.5 py-1 px-1 rounded text-sm font-medium text-red-500">{item.status}</span>
                                         </p>
+                                        {item.status==="accepted" &&(
+                                          <div className="flex flex-row">
+                                            <button onClick={(e)=>{handlePublish(e,item.community.Community_name)}} className="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">
+                                                Publish 
+                                            </button>
+                                            <button onClick={(e)=>{handleReject(e,item.community.Community_name)}} className="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center ml-2">
+                                                Reject
+                                            </button>
+                                          </div>
+                                        )}
                                     </div>
                         </li>
                         ))):(<h1 className="text-2xl font-bold text-gray-500">No Communities Found</h1>)
@@ -599,11 +653,11 @@ const AuthorArticlePage = () => {
                   <div className="flex flex-row">
                       <div className="icon" style={{cursor:"pointer"}} onClick={handleFavourites}>
                         {
-                          article.isFavourite === true ? (<AiFillHeart className='w-[4rem] h-[2rem]'/>):(<AiOutlineHeart className='w-[4rem] h-[2rem]'/>) 
+                          article.isFavourite === true ? (<AiFillHeart className='w-[2rem] h-[2rem]'/>):(<AiOutlineHeart className='w-[4rem] h-[2rem]'/>) 
                         }
                       </div>
                       <div className="icon" style={{cursor: "pointer"}} onClick={handleFile}>
-                        <img className='w-[4rem] h-[2rem]'  src={img}></img>
+                        <img className='w-[2rem] h-[2rem]'  src={img}></img>
                     </div>
                   </div>
                 </div>

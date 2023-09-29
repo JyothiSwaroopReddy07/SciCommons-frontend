@@ -17,7 +17,6 @@ import {useGlobalContext} from '../../Context/StateContext';
 
 
 const Timeline = () => {
-  // Sample data for posts
 
   const [posts,setPosts] = useState([]);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
@@ -61,9 +60,9 @@ const Timeline = () => {
     <>
       <NavBar />
       { !loading &&
-          <> 
-            <div className="container mx-auto px-4 w-full md:w-1/2 mt-2">
-              <h1 className="text-2xl font-semibold text-center">My Timeline</h1>
+          <div className="bg-green-50 mt-[-10px] w-full min-h-screen"> 
+            <div className="container mx-auto px-4 w-full md:w-1/2 mt-2 pt-3">
+              <h1 className="text-3xl font-semibold text-center">My Timeline</h1>
                 {posts.length > 0 && posts.map((post) => (
                     <Post key={post.id} post={post} />
                 ))}
@@ -74,7 +73,7 @@ const Timeline = () => {
                     </div>
                 }
             </div>
-          </>
+          </div>
         }
         {loading && <Loader/>}
     </>

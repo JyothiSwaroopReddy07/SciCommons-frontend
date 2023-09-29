@@ -30,7 +30,9 @@ import CommunityArticlePage from './Pages/CommunityArticlePage/CommunityArticleP
 import MyProfile from './Pages/MyProfile/MyProfile';
 import ForgotPassword from './Pages/ForgotPassword/ForgotPassword';
 import Verify from './Pages/Verify/Verify';
-import PrivateRoute from './Pages/PrivateRoute/PrivateRoute'
+import PrivateRoute from './Pages/PrivateRoute/PrivateRoute';
+// import AllMessagesPage from './Pages/AllMessagesPage/AllMessagesPage';
+// import ChatPage from './Pages/ChatPage/ChatPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -49,6 +51,7 @@ function App() {
         <Route path='/communitysuccessfulcreated' element={<PrivateRoute redirectTo="/login" component={<CommunityCreation/>}/>}/>
         <Route path='/notifications' element={<PrivateRoute redirectTo="/login" component={<Notifications/>}/>}/>
         <Route path='/explore' element={<Feed/>}/>
+        {/* <Route path='/messages' element={<PrivateRoute redirectTo="/login" component={<AllMessagesPage/>}/>}/> */}
         <Route path='/mytimeline' element={<PrivateRoute redirectTo="/login" component={<Timeline/>}/>}/>
         <Route path='/bookmarks' element={<PrivateRoute redirectTo="/login" component={<BookMarks/>}/>}/>
         <Route path="/community/:communityName" element={<CommunityPage/>}/>
@@ -63,6 +66,7 @@ function App() {
         <Route path="/myarticles/:articleId" element={<PrivateRoute redirectTo="/login" component={<AuthorArticlePage/>} />}/>
         <Route path="/myactivity" element={<PrivateRoute redirectTo="/login" component={<UserActivity/>}/>}/>
         <Route path="/community/:communityName/:articleId" element={<PrivateRoute redirectTo="/login" component={<CommunityArticlePage/>}/>}/>
+        {/* <Route path="/chat/:channel" element={<ChatPage/>}/> */}
         <Route path="/myprofile" element={<PrivateRoute redirectTo="/login" component={<MyProfile/>}/>}/> 
         <Route path="/forgotpassword" element={<ForgotPassword/>}/>
         <Route path="/verify" element={<Verify/>}/>

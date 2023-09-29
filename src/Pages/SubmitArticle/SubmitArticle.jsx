@@ -133,6 +133,7 @@ const PubMedSearch = () => {
         {!loading && results.length > 0 && results.map(article => (
           <div key={article.url} className="shadow-xl bg-gray-50 rounded-lg p-2 my-2 w-2/3 md:w-5/6 mx-auto">
             <h2 className="text-3xl text-gray-600 font-bold">{article.title}</h2>
+            <br/>
             <p className="text-sm"><span className="text-green-600 font-bold">Author(s) : </span>{article.authors.map((author)=>{
               return author.name+" , "
             })}</p>

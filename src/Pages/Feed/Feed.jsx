@@ -170,7 +170,7 @@ const Feed = () => {
     <>
     <NavBar />
     { !loading &&
-        <> 
+        <div className="bg-green-50 min-h-screen"> 
         <div className="p-4 w-full md:w-1/2 mx-auto">
         <div className="flex items-center mb-2">
             <Toggle
@@ -222,7 +222,7 @@ const Feed = () => {
           }
 
         </div>
-        </>
+        </div>
         }
         {loading && <Loader/>}
     </>

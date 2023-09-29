@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import NavBar from '../../Components/NavBar/NavBar';
 import Loader from '../../Components/Loader/Loader';
-import {useGlobalContext} from '../../Context/StateContext'
+import {useGlobalContext} from '../../Context/StateContext';
+import {SlUser} from "react-icons/sl";
 
 const MyProfile = () => {
 
@@ -112,7 +113,7 @@ const MyProfile = () => {
             <div className="flex flex-col justify-center md:flex-row md:items-center">
                 <div className="flex flex-col mr-3 mt-3 items-center md:mr-10">
                     <form className="flex flex-col items-center" onSubmit={(e)=>handleSubmit(e)} encType="multipart/form-data">
-                        <img className="w-[200px] h-[200px]" src={profile_pic_url} alt="Profile Picture"/>
+                        {profile_pic_url.includes("None")?<SlUser className="w-[200px] h-[200px]" />:<img className="w-[200px] h-[200px]" src={profile_pic_url} alt="Profile Picture"/>}
                         <input className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="profile_picture" type="file"/>
                         <button className="bg-green-500 text-white rounded-md w-1/2 h-10 mt-3" type="submit">Upload</button>
                     </form>

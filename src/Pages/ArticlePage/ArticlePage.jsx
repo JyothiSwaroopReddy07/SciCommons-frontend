@@ -454,6 +454,7 @@ const  ArticlePage = () => {
                 const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
 
                 await loadArticleData(res.data.success);
+                console.log(res.data.success);
             } catch(err){
                 console.log(err);
                 if(err.response.data.detail==="Not found."){
@@ -656,7 +657,7 @@ const  ArticlePage = () => {
                                     }
                                 </div>
                                 <div className="icon" style={{cursor: "pointer"}} onClick={handleFile}>
-                                    <img className='w-[4rem] h-[2rem]'  src={img}></img>
+                                    <img className='w-[2rem] h-[2rem]'  src={img}></img>
                                 </div>
                             </div>
                         </div>
@@ -754,8 +755,7 @@ const  ArticlePage = () => {
                                     Add:
                                 </span>
                                 <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={handleShow}>
-                                    {article.isArticleModerator && currentState === 1 && "add decision"}
-                                    {article.isArticleModerator === false && currentState === 1 && "add review"}
+                                    {currentState === 1 && "add review"}
                                     {currentState!==1 && "add comment"}
                                 </span>
                             </div>

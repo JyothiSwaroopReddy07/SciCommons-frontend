@@ -27,6 +27,8 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
     const [loading, setLoading] = useState(false);
     const {token} = useGlobalContext();
 
+    const {communityName} = useParams()
+
     const handleCommentChange = (event) => {
         setComment(event);
     }
@@ -45,7 +47,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
         const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
         try {
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
-            {Title: title,Comment: comment, article: article.id, Type: 'comment', comment_Type:comment_Type, tag: "public", parent_comment:null}, 
+            {Title: title,Comment: comment, article: article.id, Type: 'comment', comment_Type:comment_Type, tag: communityName, parent_comment:null,version:null}, 
             config);
             setLoading(false);
             setTitle("");
@@ -133,6 +135,8 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
     const [confidence, setConfidence] = useState(0);
     const {token} = useGlobalContext();
 
+    const {communityName} = useParams()
+
     const handleBodyChange = (event) => {
         setComment(event);
     }
@@ -149,7 +153,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
         };
         try {
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
-            {Title: title,Comment: comment, article: article.id, rating: rating, confidence: confidence, Type: 'review',comment_Type: comment_Type, tag:"public", parent_comment:null}, 
+            {Title: title,Comment: comment, article: article.id, rating: rating, confidence: confidence, Type: 'review',comment_Type: comment_Type, tag:communityName, parent_comment:null,version:null}, 
             config);
             setLoading(false);
             setTitle("");
@@ -283,6 +287,8 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
     const [loading, setLoading] = useState(false);
     const [decision, setDecision] = useState("");
     const {token} = useGlobalContext();
+    const navigate = useNavigate();
+    const {communityName} = useParams();
 
     const handleBodyChange = (event) => {
         setComment(event);
@@ -302,7 +308,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
         const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
         try {
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
-            {Title: title,Comment: comment, article: article.id,decision: decision, Type: 'decision',comment_Type: comment_Type, tag:"public",parent_comment:null}, 
+            {Title: title,Comment: comment, article: article.id,decision: decision, Type: 'decision',comment_Type: comment_Type, tag:communityName,parent_comment:null,version:null}, 
             config);
             setLoading(false);
             setTitle("");
@@ -332,7 +338,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
         }
     }
 
-    const handleSelectChange = (event) => {
+    const handleSelectChange = async(event) => {
         setDecision(event.target.value);
     };
 
@@ -374,8 +380,8 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
                                 className="mt-1 block w-full p-2 border border-gray-300 bg-white rounded-md shadow-sm focus:ring focus:ring-indigo-300 focus:outline-none"
                             >
                                 <option value="">Select...</option>
-                                <option value="reject">Accept</option>
-                                <option value="accept">Reject</option>
+                                <option value="accepted">Accept</option>
+                                <option value="rejected">Reject</option>
                             </select>
                         </div>
                         <button
@@ -678,7 +684,7 @@ const  CommunityArticlePage = () => {
                                     }
                                 </div>
                                 <div className="icon" style={{cursor: "pointer"}} onClick={handleFile}>
-                                    <img className='w-[4rem] h-[2rem]'  src={img}></img>
+                                    <img className='w-[2rem] h-[2rem]'  src={img}></img>
                                 </div>
                             </div>
                         </div>

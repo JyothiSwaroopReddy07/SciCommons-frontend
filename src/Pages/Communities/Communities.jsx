@@ -28,7 +28,7 @@ const Communities = () => {
         if(token!==null) {
             config = {
                 headers: {
-                    Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+                    Authorization: `Bearer ${token}`,
                 },
             };
         }
@@ -87,8 +87,8 @@ const Communities = () => {
     <>
         <NavBar />
         <div className="flex flex-col items-center justify-center w-full bg-gray-50">
-            <form className="w-5/6 px-4 mt-20 md:w-2/3" onSubmit={handleSearch}>
-                <div className="relative">
+            <form className="w-5/6 px-4 mt-20 md:w-2/3 flex flex-row" onSubmit={handleSearch}>
+                <div className="relative w-full">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
@@ -108,9 +108,10 @@ const Communities = () => {
                         placeholder="Search Communities"
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full py-3 pl-12 pr-4 text-green-600 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-green-600"
+                        className="w-full py-1 pl-12 pr-4 text-green-600 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-green-600"
                     />
                 </div>
+                <button className="px-1 text-white text-lg bg-gray-600 rounded-xl ml-2" onClick={handleSearch}>Search</button>
             </form>
             <div className="flex flex-col items-center justify-center w-full bg-gray-50 p-5">
             { loading ? (<Loader />): 

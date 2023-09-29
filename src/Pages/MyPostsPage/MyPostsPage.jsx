@@ -109,6 +109,7 @@ const MyPostsPage = () => {
   return (
     <>
      <NavBar />
+     {(loading || posts===null) && <Loader/>}
     { !loading &&
         <> 
         <div className="p-4 w-full md:w-1/2 mx-auto">
@@ -161,7 +162,6 @@ const MyPostsPage = () => {
         </div>
         </>
         }
-        {loading && <Loader/>}
     </>
   )
 }

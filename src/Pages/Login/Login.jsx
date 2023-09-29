@@ -81,6 +81,7 @@ const Login = () => {
             navigate('/');
           } catch (error) {
             console.error(error);
+            if(error.response.data.error){
                 ToastMaker(error.response.data.error[0], 3500,{
                     valign: 'top',
                       styles : {
@@ -88,6 +89,7 @@ const Login = () => {
                           fontSize: '20px',
                       }
                   })
+            }
           } finally {
             setLoading(false);
         }

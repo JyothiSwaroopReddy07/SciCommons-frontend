@@ -301,7 +301,7 @@ const Followers = ({setFollowersModal}) => {
 const Profile = () => {
 
   const {username} = useParams();
-  const [user, setUser] = useState(null)
+  const [User, setUser] = useState(null)
   const [loading, setLoading] = useState(false);
   const [currentState, setcurrentState] = useState(1);
   const [posts,setPosts] = useState([]);
@@ -309,7 +309,7 @@ const Profile = () => {
   const [followers,setFollowers] = useState(false);
   const [following,setFollowing] = useState(false);
   const navigate = useNavigate();
-  const {token} = useGlobalContext();
+  const {token, user} = useGlobalContext();
 
 
   const handleFollow = async(e) => {
@@ -323,11 +323,11 @@ const Profile = () => {
         Authorization: `Bearer ${token}`,
       },
     };
-    if(!user.isFollowing){
+    if(!User.isFollowing){
       try {
         const res = await axios.post(
-          `https://scicommons-backend.onrender.com/api/user/follow/`,{followed_user:user.id},config)
-        let updatedUser = {...user};
+          `https://scicommons-backend.onrender.com/api/user/follow/`,{followed_user:User.id},config)
+        let updatedUser = {...User};
         updatedUser.isFollowing = !updatedUser.isFollowing;
         updatedUser.followers = updatedUser.followers + 1;
         await loadUserData(updatedUser);
@@ -338,8 +338,8 @@ const Profile = () => {
     }else{
       try {
         const res = await axios.post(
-          `https://scicommons-backend.onrender.com/api/user/unfollow/`,{followed_user:user.id},config)
-        let updatedUser = {...user};
+          `https://scicommons-backend.onrender.com/api/user/unfollow/`,{followed_user:User.id},config)
+        let updatedUser = {...User};
         updatedUser.isFollowing = !updatedUser.isFollowing;
         updatedUser.followers = updatedUser.followers - 1;
         await loadUserData(updatedUser);
@@ -489,13 +489,15 @@ const loadUserData = async(res) => {
   };
 
   useEffect(()=> {
+    setLoading(true);
     getPosts();
     fetchArticles();
     fetchUser();
-  },[])
+    setLoading(false);
+  },[user!==null])
 
   const fillFollow = () => {
-    if(user.isFollowing){
+    if(User.isFollowing){
       return "Unfollow"
     }
     return "Follow";
@@ -505,35 +507,35 @@ const loadUserData = async(res) => {
   return (
     <>
         <NavBar/>
-        {!loading && user!==null && <div className="container mx-auto px-4 w-full md:w-1/2">
+        {!loading && User!==null && <div className="container mx-auto px-4 w-full md:w-1/2">
           <div className="flex items-center mt-8 flex-col">
-              {user.profile_pic_url.includes("None")?<SlUser className="w-12 h-12 text-black-800 mr-4"/>: 
+              {User.profile_pic_url.includes("None")?<SlUser className="w-12 h-12 text-black-800 mr-4"/>: 
                 <img
-                src={user.profile_pic_url}
-                alt={user.username}
+                src={User.profile_pic_url}
+                alt={User.username}
                 className="w-24 h-24 rounded-full mr-4"
                 />
               }
               <div>
                 <div className="flex flex-row items-center justify-center">
-                  <h2 className="text-xl text-green-500 font-bold mt-3 text-center">{user.username}</h2>
+                  <h2 className="text-xl text-green-500 font-bold mt-3 text-center">{User.username}</h2>
                 </div>
                 <div className="mt-4 flex flex-row justify-center">
                     <span className="mr-3">
-                    <strong>{formatCount(user.posts)}</strong> <span className="text-sm">posts</span>
+                    <strong>{formatCount(User.posts)}</strong> <span className="text-sm">posts</span>
                     </span>
                     <span className="mr-3">
-                    <strong>{formatCount(user.followers)}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowers(true)}>followers</span>
+                    <strong>{formatCount(User.followers)}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowers(true)}>followers</span>
                     </span>
                     <span className="mr-3">
-                    <strong>{formatCount(user.following)}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowing(true)}>following</span>
+                    <strong>{formatCount(User.following)}</strong> <span className="text-sm" style={{cursor:"pointer"}}onClick={()=>setFollowing(true)}>following</span>
                     </span>
                 </div>
                 <div className="flex flex-row items-center justify-center mt-3">
-                  <strong>{formatCount(user.rank)}</strong> <span className="text-sm flex flex-row items-center"><AiFillThunderbolt className="w-4 h-4"/> Reputation</span>
+                  <strong>{formatCount(User.rank)}</strong> <span className="text-sm flex flex-row items-center"><AiFillThunderbolt className="w-4 h-4"/> Reputation</span>
                 </div>
                 <div className="flex flex-row items-center justify-center mt-2">
-                  {user.username !== user.username && <span className={`rounded-lg ${user.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={handleFollow}>{fillFollow()}</span>}
+                  {!User.personal && <span className={`rounded-lg ${User.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={handleFollow}>{fillFollow()}</span>}
                 </div>
               </div>
           </div>
@@ -710,27 +712,27 @@ const loadUserData = async(res) => {
                   <div className="flex flex-col items-start">
                     <div className="flex flex-row items-center">
                       <h1 className="text-lg text-green-600 font-semibold">Email : </h1>
-                      <p className="text-md ml-2">{user.email}</p>
+                      <p className="text-md ml-2">{User.email}</p>
                     </div>
                     <div className="flex flex-row items-center">
                       <h1 className="text-lg text-green-600 font-semibold">First Name : </h1>
-                      <p className="text-md ml-2">{user.first_name}</p>
+                      <p className="text-md ml-2">{User.first_name}</p>
                     </div>
                     <div className="flex flex-row items-center">
                       <h1 className="text-lg text-green-600 font-semibold">Last Name : </h1>
-                      <p className="text-md ml-2">{user.last_name}</p>
+                      <p className="text-md ml-2">{User.last_name}</p>
                     </div>
                     <div className="flex flex-row items-center">
                       <h1 className="text-lg text-green-600 font-semibold">Institute :</h1>
-                      <p className="text-md ml-2">{user.institute}</p>
+                      <p className="text-md ml-2">{User.institute}</p>
                     </div>
                     <div className="flex flex-row items-center">
                       <h1 className="text-lg text-green-600 font-semibold">Google Scholar Link :</h1>
-                      <a href={user.google_scholar} className="text-md text-blue-500 ml-2">{user.google_scholar}</a>
+                      <a href={User.google_scholar} className="text-md text-blue-500 ml-2">{User.google_scholar}</a>
                     </div>
                     <div className="flex flex-row items-center">
                       <h1 className="text-lg text-green-600 font-semibold">Pubmed Link :</h1>
-                      <a href={user.pubmed} className="text-md text-blue-500  ml-2">{user.pubmed}</a>
+                      <a href={User.pubmed} className="text-md text-blue-500  ml-2">{User.pubmed}</a>
                     </div>
                   </div>
                 </div>)
@@ -739,7 +741,7 @@ const loadUserData = async(res) => {
           </div>
         </div>
       }
-      {(loading||user===null || articles===null || posts===null) && <Loader/>}
+      {(loading||User===null || articles===null || posts===null) && <Loader/>}
       {followers && <Followers setFollowersModal={setFollowers}/>}
       {following && <Following setFollowingModal={setFollowing}/>} 
     </>
