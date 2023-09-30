@@ -110,6 +110,73 @@ const RejectModal = ({setShowReject,article,community, handleReject}) => {
     )
 }
 
+const PublishModal = ({setShowPublish,article,community}) => {
+
+    const [loading, setLoading] = useState(false);
+    const {token} = useGlobalContext();
+
+    const handlePublish = async (e) => {
+        e.preventDefault();
+        const form_data = new FormData(e.target);
+        setLoading(true)
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+
+            const res = await axios.post(`https://scicommons-backend.onrender.com/api/community/${community}/article/${article}/publish/`,form_data, config)
+            if(res.status === 200){
+                ToastMaker(res.data.success, 3500,{
+                    valign: 'top',
+                        styles : {
+                            backgroundColor: 'green',
+                            fontSize: '20px',
+                        }
+                    })
+            }
+            setShowPublish(false)
+        } catch (error) {
+            console.log(error)
+            ToastMaker("Please try again!!!", 3500,{
+                valign: 'top',
+                    styles : {
+                        backgroundColor: 'red',
+                        fontSize: '20px',
+                    }
+                })
+        }
+        setLoading(false)
+        
+    }
+
+    return (
+        <>
+            <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
+                <div className="w-full h-full flex flex-col items-center justify-center"> 
+                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Update Publication details</h1>
+                        <form onSubmit={(e) => handlePublish(e)} encType="multipart/form-data">
+                            <div className="w-full flex flex-col items-center justify-center">
+                                    <input className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="doi" type="text" placeholder="Add Doi"/>
+                                    <input className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="license" on type="text" placeholder="Add License"/>
+                                    <input type="file" required accept="application/pdf" name="published_article_file" className="block w-full px-5 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+                                
+                            </div>
+                            <div className="w-full flex flex-row items-center justify-center">
+                                <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex mt-3" type="submit" style={{cursor:"pointer"}}>{loading?"loading...":"Publish"}</button>
+                                <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2 mt-3" style={{cursor:"pointer"}} onClick={() => {setShowPublish(false)}}>Cancel</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>    
+        </>
+    )
+};
+
+
 const AdminArticlePage = ({community}) => {
 
     const [searchTerm, setSearchTerm] = useState('');
@@ -119,6 +186,7 @@ const AdminArticlePage = ({community}) => {
     const [selectedOption, setSelectedOption] = useState('All');
     const [showAccept, setShowAccept] = useState(false);
     const [showReject, setShowReject] = useState(false);
+    const [showPublish, setShowPublish] = useState(false);
     const [data, setData] = useState(null);
     const {token} = useGlobalContext();
 
@@ -291,9 +359,16 @@ const AdminArticlePage = ({community}) => {
                                             <button className="bg-blue-600 px-2 py-1 rounded-lg font-semibold text-white mr-2 text-sm md:text-md" onClick={(e)=>{e.preventDefault();setShowAccept(true); setData({article:item.article.id}); e.stopPropagation();}}>Accept for Reviewal</button>
                                             <button className="bg-gray-500 px-2 py-1 rounded-lg font-semibold text-white text-sm md:text-md" onClick={(e)=>{e.preventDefault();setShowReject(true);setData({article:item.article.id}); e.stopPropagation();}}>Reject Article</button>
                                         </div>}
+                                        {
+                                            item.status === "published" &&
+                                            <div className="flex flex-row justify-between mt-2">
+                                                <button className="bg-blue-600 px-2 py-1 rounded-lg font-semibold text-white mr-2 text-sm md:text-md" onClick={(e)=>{e.preventDefault();setShowPublish(true); setData({article:item.article.id});e.stopPropagation();}}>Update Publish Details</button>
+                                            </div>
+                                        }
                                     </div>
                                     {showReject && <RejectModal setShowReject={setShowReject} article={data.article} community={community} handleReject={handleReject}/>}
                                     {showAccept && <AcceptModal setShowAccept={setShowAccept} article={data.article} community={community} handleModified={handleModified}/>}
+                                    {showPublish && <PublishModal setShowPublish={setShowPublish} article={data.article} community={community}/>}
                         </li>
                         ))):(<h1 className="text-2xl font-bold text-gray-500">No Articles Found</h1>)
                     }

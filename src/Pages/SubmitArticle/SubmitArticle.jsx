@@ -32,9 +32,6 @@ const PubMedSearch = () => {
       return;
     }
 
-    if(ids.length > 4) {
-      ids = ids.slice(0, 4);
-    }
     let articles = [];
 
     const summaryResponse = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`);
@@ -43,18 +40,14 @@ const PubMedSearch = () => {
       await new Promise(resolve => setTimeout(resolve, 1000));
       if(article.uid === undefined) return;
       try {
-      const abstractResponse = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${article.uid}&retmode=xml`);
-      const abstractData = await abstractResponse.text();
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(abstractData, 'text/xml');
-      const abstract = xml.querySelector('AbstractText').textContent;
       return {
+        uid: article.uid,
         title: article.sorttitle,
         authors: article.authors,
         journal: article.source,
         pubdate: article.pubdate,
         url: `https://pubmed.ncbi.nlm.nih.gov/${article.uid}`,
-        abstract: abstract,
+        // abstract: abstract,
       };
   } catch(error) {
     console.log(error);
@@ -77,16 +70,22 @@ const PubMedSearch = () => {
     await loadData(newArticles);
     setLoading(false);
   };
-  let form_data = new FormData();
+
   const handleSubmit = async (article) => {
     const baseURL = 'https://scicommons-backend.onrender.com/api/article/';
     setLoading(true);
     try {
+      const abstractResponse = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=${article.uid}&retmode=xml`);
+      const abstractData = await abstractResponse.text();
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(abstractData, 'text/xml');
+      const abstract = xml.querySelector('AbstractText').textContent;
+
       const response = await axios.post(baseURL, {
         article_name: article.title,
         unregistered_authors: article.authors.map((author)=>{return JSON.stringify({fullName: author.name,email: ""})}),
         keywords: 'pubmed',
-        Abstract: article.abstract,
+        Abstract: abstract,
         link: article.url,
         video: "",
         Code: "",
@@ -138,7 +137,6 @@ const PubMedSearch = () => {
               return author.name+" , "
             })}</p>
             <p className="text-lg"><span className="text-green-600 font-bold">Journal : </span>{article.journal}</p>
-            <p className="text-xs"><span className="text-green-600 font-bold">Abstract : </span>{article.abstract}</p>
             <div className="flex flex-row justify-between">
               <a href={article.url} className="text-blue-600 font-semibold" target="_blank" rel="noopener noreferrer">Read more</a>
               <button className="bg-green-600 text-white font-semibold p-1 m-1 rounded-lg" onClick={()=>{handleSubmit(article)}}>Add Article</button>

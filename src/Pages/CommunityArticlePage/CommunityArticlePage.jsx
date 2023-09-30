@@ -762,6 +762,15 @@ const  CommunityArticlePage = () => {
                             <strong className='text-green-700 font-[700]'> Video Link: </strong>
                             <a href={article.video} className='text-[#337ab7]'> {article.video}</a>                          
                         </div>
+                        <div className="block">
+                            <strong className="text-green-700 font-[700]">
+                                {" "}
+                                DOI:{" "}
+                            </strong>
+                            <a href={article.doi} className="text-[#337ab7]">
+                                {article.doi}
+                            </a>
+                        </div>
                         {
                             article.link && (
                                 <div className="block">

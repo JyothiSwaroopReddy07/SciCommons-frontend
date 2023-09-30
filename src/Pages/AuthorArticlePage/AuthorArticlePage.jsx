@@ -770,6 +770,15 @@ const AuthorArticlePage = () => {
                 <div className="block">
                   <strong className="text-green-700 font-[700]">
                     {" "}
+                    DOI:{" "}
+                  </strong>
+                  <a href={article.doi} className="text-[#337ab7]">
+                    {article.doi}
+                  </a>
+                </div>
+                <div className="block">
+                  <strong className="text-green-700 font-[700]">
+                    {" "}
                     Submission Date :{" "}
                   </strong>
                   <span> {findTime(article.Public_date)} </span>

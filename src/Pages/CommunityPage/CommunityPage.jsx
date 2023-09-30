@@ -320,7 +320,7 @@ const CommunityPage = () => {
         { loading && community===null && (<Loader/>)}
         { !loading && community!==null &&    (
             <>
-                <div className="w-4/5 md:w-2/3 flex flex-col justify-center mx-auto rounded-2xl shadow-2xl bg-green-50 mt-4 p-3 mb-8 md:p-6">
+                <div className="w-4/5 md:w-2/3 flex flex-col justify-center mx-auto mt-4 p-3 mb-8 md:p-6">
                     <div className="m-4 flex flex-col justify-center">
                         <h1 className="text-xl md:text-7xl font-bold text-center text-gray-500">{community?.Community_name}</h1>
                     </div>
