@@ -152,6 +152,7 @@ const AllArticlesPage = () => {
                     <div className="relative">
                         <div>
                             <input
+                            style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 placeholder="Search using keywords, authors, articles"
                                 value={searchTerm}

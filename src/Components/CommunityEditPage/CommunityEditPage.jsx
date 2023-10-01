@@ -178,6 +178,7 @@ const CommunityEditPage = () => {
                                 Community Name
                                 </label>
                                 <input
+                                style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 id="Community_name"
                                 name="Community_name"
@@ -193,6 +194,7 @@ const CommunityEditPage = () => {
                                     Subtitle
                                 </label>
                                 <input
+                                style={{"border": "2px solid #2d3748"}}
                                     type="text"
                                     id="subtitle"
                                     name="subtitle"
@@ -229,7 +231,8 @@ const CommunityEditPage = () => {
                                     Location
                                 </label>
                                 <input
-                                    type="test"
+                                    style={{"border": "2px solid #2d3748"}}
+                                    type="text"
                                     id="location"
                                     name="location"
                                     value={location}
@@ -247,6 +250,7 @@ const CommunityEditPage = () => {
                                     Github Link (if any)
                                 </label>
                                 <input
+                                style={{"border": "2px solid #2d3748"}}
                                     type="url"
                                     id="github"
                                     name="github"
@@ -264,6 +268,7 @@ const CommunityEditPage = () => {
                                     Website Link
                                 </label>
                                 <input
+                                style={{"border": "2px solid #2d3748"}}
                                     type="url"
                                     id="website"
                                     name="website"
@@ -282,6 +287,7 @@ const CommunityEditPage = () => {
                                     Email (of the Community)
                                 </label>
                                 <input
+                                style={{"border": "2px solid #2d3748"}}
                                     type="email"
                                     id="email"
                                     name="email"

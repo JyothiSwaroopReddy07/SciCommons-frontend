@@ -223,6 +223,7 @@ const SinglePost = () => {
                   />
                 )}
                 <input
+                style={{"border": "2px solid #2d3748"}}
                   type="text"
                   placeholder="Add a comment..."
                   className="w-full border rounded-lg p-2 mr-2 rounded-xl"

@@ -74,6 +74,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComme
                               Title
                           </label>
                           <input
+                          style={{"border": "2px solid #2d3748"}}
                               type="text"
                               id="Title"
                               value={title}
@@ -173,6 +174,7 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
                               Title
                           </label>
                           <input
+                          style={{"border": "2px solid #2d3748"}}
                               type="text"
                               id="Title"
                               value={title}

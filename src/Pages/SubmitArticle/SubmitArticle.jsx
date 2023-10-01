@@ -124,7 +124,7 @@ const PubMedSearch = () => {
   return (
     <div className="w-full flex flex-col items-center min-h-screen">
       <div className="w-full h-20 flex flex-row justify-center">
-        <input type="text" className="w-2/3 rounded-xl m-4 shadow-xl" placeholder="Enter article name to serach using pubmed" value={query} onChange={e => setQuery(e.target.value)} />
+        <input style={{"border": "2px solid #2d3748"}} type="text" className="w-2/3 rounded-xl m-4 shadow-xl" placeholder="Enter article name to serach using pubmed" value={query} onChange={e => setQuery(e.target.value)} />
         <button onClick={handleSearch} className="ml-2 my-4 bg-gray-600 text-white font-bold p-2 rounded-xl shadow-xl">Search</button>
       </div>
       <div className="m-4">
@@ -393,6 +393,7 @@ const SubmitArticle = () => {
               Title
             </label>
             <input
+            style={{"border": "2px solid #2d3748"}}
               type="text"
               id="article_name"
               name="article_name"
@@ -430,6 +431,7 @@ const SubmitArticle = () => {
                       />
                     </div>
                     <input
+                    style={{"border": "2px solid #2d3748"}}
                       type="text"
                       id="username"
                       name="username"
@@ -458,6 +460,7 @@ const SubmitArticle = () => {
                 <div className="grid gap-2 md:grid-cols-2 m-2" key={index}>
                   <div className="flex flex-row">
                     <input
+                    style={{"border": "2px solid #2d3748"}}
                       type="text"
                       id="fullName"
                       name="fullName"
@@ -467,6 +470,7 @@ const SubmitArticle = () => {
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm mr-2 rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                     />
                   <input
+                  style={{"border": "2px solid #2d3748"}}
                     type="email"
                     id="username"
                     name="email"
@@ -495,6 +499,7 @@ const SubmitArticle = () => {
             Keywords(separated with {'","'})
           </label>
           <input
+          style={{"border": "2px solid #2d3748"}}
             type="text"
             id="keywords"
             name="keywords"
@@ -510,6 +515,7 @@ const SubmitArticle = () => {
             URL to article (Add the Url only if it is already published, else leave it empty)
           </label>
           <input
+          style={{"border": "2px solid #2d3748"}}
             type="url"
             id="link"
             name="link"
@@ -525,6 +531,7 @@ const SubmitArticle = () => {
             Video Link (if any)
           </label>
           <input
+          style={{"border": "2px solid #2d3748"}}
             type="url"
             id="video"
             name="video"
@@ -540,6 +547,7 @@ const SubmitArticle = () => {
             Code Link (if any)
           </label>
           <input
+          style={{"border": "2px solid #2d3748"}}
             type="url"
             id="Code"
             name="Code"
@@ -548,7 +556,7 @@ const SubmitArticle = () => {
         </div>
         <div className="mb-6">
             <label htmlFor="file" className="block mb-2 text-sm font-medium text-gray-900">File</label>
-            <input type="file" required accept="application/pdf" name="article_file" className="block w-full px-5 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+            <input style={{"border": "2px solid #2d3748"}} type="file" required accept="application/pdf" name="article_file" className="block w-full px-5 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
         </div>
         <div className="mb-6">
           <label
@@ -590,6 +598,7 @@ const SubmitArticle = () => {
         <div className="flex items-start mb-6 mt-3">
           <div className="flex items-center h-5">
             <input
+            style={{"border": "2px solid #2d3748"}}
               id="remember"
               type="checkbox"
               value=""

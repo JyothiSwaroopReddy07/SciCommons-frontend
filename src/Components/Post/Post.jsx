@@ -422,6 +422,7 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
                 <ReactQuill theme="snow" value={updatedBody} onChange={handleBodyChange} className="w-full p-2 mb-4 resize-none border rounded"/>
                   <div className="flex justify-between items-center">
                       <input
+                      style={{"border": "2px solid #2d3748"}}
                       type="file"
                       accept="image/*"
                       className="mb-4 rounded-xl"

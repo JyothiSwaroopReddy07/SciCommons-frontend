@@ -159,9 +159,9 @@ const PublishModal = ({setShowPublish,article,community}) => {
                         <h1 className="text-2xl font-bold text-gray-600 mb-4">Update Publication details</h1>
                         <form onSubmit={(e) => handlePublish(e)} encType="multipart/form-data">
                             <div className="w-full flex flex-col items-center justify-center">
-                                    <input className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="doi" type="text" placeholder="Add Doi"/>
-                                    <input className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="license" on type="text" placeholder="Add License"/>
-                                    <input type="file" required accept="application/pdf" name="published_article_file" className="block w-full px-5 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+                                    <input style={{"border": "2px solid #2d3748"}} className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="doi" type="text" placeholder="Add Doi"/>
+                                    <input style={{"border": "2px solid #2d3748"}} className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="license" on type="text" placeholder="Add License"/>
+                                    <input style={{"border": "2px solid #2d3748"}} type="file" required accept="application/pdf" name="published_article_file" className="block w-full px-5 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
                                 
                             </div>
                             <div className="w-full flex flex-row items-center justify-center">
@@ -300,6 +300,7 @@ const AdminArticlePage = ({community}) => {
                                 />
                             </svg>
                             <input
+                            style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 placeholder="Search using keywords, authors, articles"
                                 value={searchTerm}

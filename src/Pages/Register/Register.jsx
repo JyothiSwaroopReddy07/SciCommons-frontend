@@ -102,6 +102,7 @@ const Register = () => {
         
                             >
                                     <input
+                                    style={{"border": "2px solid #2d3748"}}
                                         type="text"
                                         required
                                         placeholder="Username"
@@ -109,6 +110,7 @@ const Register = () => {
                                         className="w-full mt-2 px-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                                     <input
+                                    style={{"border": "2px solid #2d3748"}}
                                         type="text"
                                         required
                                         placeholder="First Name"
@@ -116,6 +118,7 @@ const Register = () => {
                                         className="w-full mt-2 px-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                                     <input
+                                    style={{"border": "2px solid #2d3748"}}
                                         type="text"
                                         required
                                         placeholder="Last Name"
@@ -123,6 +126,7 @@ const Register = () => {
                                         className="w-full mt-2 px-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                                     <input
+                                    style={{"border": "2px solid #2d3748"}}
                                         type="email"
                                         required
                                         placeholder="Email"
@@ -149,6 +153,7 @@ const Register = () => {
                                             }
                                         </button>
                                         <input
+                                        style={{"border": "2px solid #2d3748"}}
                                             type={!isPasswordHidden ? "password" : "text"}
                                             required
                                             placeholder="Password"
@@ -176,6 +181,7 @@ const Register = () => {
                                             }
                                         </button>
                                         <input
+                                        style={{"border": "2px solid #2d3748"}}
                                             type={!isPasswordHidden2 ? "password" : "text"}
                                             required
                                             placeholder="Confirm Password"

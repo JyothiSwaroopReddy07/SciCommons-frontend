@@ -87,6 +87,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
                                 Title
                             </label>
                             <input
+                            style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 id="Title"
                                 value={title}
@@ -200,6 +201,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
                                 Title
                             </label>
                             <input
+                            style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 id="Title"
                                 value={title}
@@ -221,6 +223,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
                             </label>
                             <div className="w-64  my-1">
                                 <input
+                                style={{"border": "2px solid #2d3748"}}
                                     type="range"
                                     min="0"
                                     max="5"
@@ -348,6 +351,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
                                 Title
                             </label>
                             <input
+                            style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 id="Title"
                                 value={title}

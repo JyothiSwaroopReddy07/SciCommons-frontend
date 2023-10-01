@@ -151,6 +151,7 @@ const DisplayCommunity = ({article}) => {
                                 />
                             </svg>
                             <input
+                            style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 placeholder="Search using community names"
                                 value={searchTerm}
@@ -329,6 +330,7 @@ const SubmitCommunity = ({article, setShow}) => {
                                 Enter Community Name:
                             </label>
                             <input
+                            style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 id="Community"
                                 value={community}
@@ -412,6 +414,7 @@ const ArticleEditPage = ({setArticleEdit, article, handleArticleEdit}) => {
             Video Link (if any)
           </label>
           <input
+          style={{"border": "2px solid #2d3748"}}
             type="url"
             id="video"
             name="video"
@@ -429,6 +432,7 @@ const ArticleEditPage = ({setArticleEdit, article, handleArticleEdit}) => {
             Code Link (if any)
           </label>
           <input
+          style={{"border": "2px solid #2d3748"}}
             type="url"
             id="Code"
             name="Code"

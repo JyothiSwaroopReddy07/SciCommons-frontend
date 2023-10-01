@@ -7,7 +7,7 @@ import './AllMessagesPage.css';
 import NavBar from '../../Components/NavBar/NavBar';
 import { FaSearch } from 'react-icons/fa'; 
 import {SlUser} from 'react-icons/sl';
-import { Audio } from 'react-loader-spinner'
+import {ColorRing} from 'react-loader-spinner';
 
 const Suggestions = ({ suggestions }) => {
 
@@ -129,16 +129,15 @@ const AllMessagesPage = () => {
                 <div className="w-full md:w-2/3 mt-4 shadow-xl mx-auto">
                     <h1 className="text-2xl font-bold text-gray-600 text-center">Messages</h1>
                     <div className="bg-gray-100 rounded-full px-4 py-2 flex items-center">
-                            {loading?<Audio
+                            {loading?<ColorRing
                                         height="20"
                                         width="20"
                                         radius="4"
                                         color="green"
                                         ariaLabel="loading"
-                                        wrapperStyle
-                                        wrapperClass
                                         />:<FaSearch className="text-gray-500 text-xl mr-2" />}
                             <input
+                            style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 placeholder="Search"
                                 className="bg-transparent focus:outline-none w-full border-0 rounded-full"
@@ -168,20 +167,19 @@ const AllMessagesPage = () => {
             }
             {
                 messages.length===0 &&
-                <div className="bg-green-50">
-                    <div className=" py-4 w-full md:w-2/3 shadow-xl mx-auto bg-white">
+                <div className="bg-green-50 h-screen p-2">
+                    <div className=" py-4 w-full md:w-2/3 h-[90vh] overflow-hidden my-auto shadow-xl mx-auto bg-white">
                         <h1 className="text-2xl font-bold text-gray-600 text-center pb-1 border-b-2">Messages</h1>
                         <div className="bg-gray-100 rounded-full px-4 py-2 flex items-center">
-                            {loading?<Audio
+                            {loading?<ColorRing
                                             height="20"
                                             width="20"
                                             radius="4"
                                             color="green"
                                             ariaLabel="loading"
-                                            wrapperStyle
-                                            wrapperClass
                                             />:<FaSearch className="text-gray-500 text-xl mr-2" />}
                             <input
+                            style={{"border": "2px solid #2d3748"}}
                                 type="text"
                                 placeholder="Search"
                                 onKeyDown={handleSearch}
@@ -190,7 +188,7 @@ const AllMessagesPage = () => {
                         </div>
                         {suggestions.length > 0 && <Suggestions suggestions={suggestions} />}
                         <div className="min-h-screen flex flex-row justify-center items-center">
-                            <h1 className="text-md text-gray-600 text-center">No messages found!!</h1>
+                            <h1 className="text-xl text-gray-600 text-center font-bold">No messages found!!</h1>
                         </div>
                     </div>
                 </div>

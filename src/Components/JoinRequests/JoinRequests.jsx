@@ -92,7 +92,7 @@ const JoinRequests = ({community}) => {
                         </div>:
                         <div className="w-full">
                             <div className="w-full flex flex-row items-center justify-between mb-3">
-                                <input type="text" onChange={handleChange} className="w-1/2 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Search members"/>
+                                <input style={{"border": "2px solid #2d3748"}}type="text" onChange={handleChange} className="w-1/2 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Search members"/>
                                 <div className="flex flex-row items-center">
                                     <span className="text-gray-600 text-sm font-semibold mr-2">Sort By :</span>
                                     <button className="px-4 py-2 mr-3 bg-green-200 rounded-xl" style={{cursor:"pointer"}} onClick={()=>{handleRank()}}>Reputation</button>

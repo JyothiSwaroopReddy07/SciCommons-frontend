@@ -139,6 +139,7 @@ const JoinRequest = () => {
                 <div className="flex items-start mb-6 mt-3">
                 <div className="flex items-center h-5">
                     <input
+                    style={{"border": "2px solid #2d3748"}}
                     id="remember"
                     type="checkbox"
                     value=""
