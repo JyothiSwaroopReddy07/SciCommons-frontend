@@ -75,7 +75,7 @@ const PostModal = ({setIsAccordionOpen}) => {
                 <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[40vh] overflow-y-auto" value={body} onChange={handleBodyChange}/>
                 <div className="flex justify-between items-center">
                     <input
-                    style={{"border": "2px solid #2d3748"}}
+                    style={{"border": "2px solid #cbd5e0"}}
                     type="file"
                     accept="image/*"
                     className="mb-4 rounded-xl"

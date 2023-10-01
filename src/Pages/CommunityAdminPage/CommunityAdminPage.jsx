@@ -55,20 +55,20 @@ const onclickFuntion = (indext)=>{
         community!==null && (
         <div>
             <div className='w-full md:w-4/5 flex mx-auto mt-4'>
-                <button className={currentState === 1 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
-                   style={{cursor:"pointer"}} onClick={()=> onclickFuntion(1)}>
+                <button style={{ borderBottom:currentState===1  ? '2px solid #68D391' : '2px solid #000',cursor:"pointer" }} className={currentState === 1 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
+                   onClick={()=> onclickFuntion(1)}>
                      Community Info
                 </button>
                 <button className={currentState === 2 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200  py-2'} 
-                   style={{cursor:"pointer"}} onClick={()=> onclickFuntion(2)}>
+                   style={{ borderBottom:currentState===2  ? '2px solid #68D391' : '2px solid #000',cursor:"pointer" }} onClick={()=> onclickFuntion(2)}>
                         Articles
                 </button>
                 <button className={currentState === 3 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 md:px-5 py-2  border-b-2 border-green-600' : 'mb-2 text-sm md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
-                   style={{cursor:"pointer"}} onClick={()=> onclickFuntion(3)}>
+                   style={{ borderBottom:currentState===3  ? '2px solid #68D391' : '2px solid #000',cursor:"pointer" }} onClick={()=> onclickFuntion(3)}>
                         Members
                 </button>
                 <button className={currentState === 4 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
-                   style={{cursor:"pointer"}} onClick={()=> onclickFuntion(4)}>
+                   style={{ borderBottom:currentState===4  ? '2px solid #68D391' : '2px solid #000',cursor:"pointer" }} onClick={()=> onclickFuntion(4)}>
                         Join Requests
                 </button>
 

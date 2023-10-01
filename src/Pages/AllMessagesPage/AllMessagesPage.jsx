@@ -137,7 +137,7 @@ const AllMessagesPage = () => {
                                         ariaLabel="loading"
                                         />:<FaSearch className="text-gray-500 text-xl mr-2" />}
                             <input
-                            style={{"border": "2px solid #2d3748"}}
+                            style={{"border": "2px solid #cbd5e0"}}
                                 type="text"
                                 placeholder="Search"
                                 className="bg-transparent focus:outline-none w-full border-0 rounded-full"
@@ -179,7 +179,7 @@ const AllMessagesPage = () => {
                                             ariaLabel="loading"
                                             />:<FaSearch className="text-gray-500 text-xl mr-2" />}
                             <input
-                            style={{"border": "2px solid #2d3748"}}
+                            style={{"border": "2px solid #cbd5e0"}}
                                 type="text"
                                 placeholder="Search"
                                 onKeyDown={handleSearch}

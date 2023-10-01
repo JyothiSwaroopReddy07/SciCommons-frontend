@@ -135,7 +135,7 @@ const MembersTable = ({community}) => {
                 }}><AiOutlineUserAdd className="w-6 h-6"/> Member</button>
             </div>
             <div className="w-full flex flex-row items-center justify-between mb-3">
-                <input style={{"border": "2px solid #2d3748"}} type="text" onChange={handleChange} className="w-1/2 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Search members"/>
+                <input style={{"border": "2px solid #cbd5e0"}} type="text" onChange={handleChange} className="w-1/2 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent" placeholder="Search members"/>
                 <select onChange={handleSelect} className="w-1/4 p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent">
                     <option value="all">All</option>
                     <option value="admin">Admin</option>
@@ -313,11 +313,11 @@ const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRo
                         <div className="w-full flex flex-col items-center justify-center">
                             <div className="flex flex-row mt-4">
                                 <span className='text-lg font-semibold text-gray-800 mr-5 mt-1'>UserName: </span>
-                                <input style={{"border": "2px solid #2d3748"}} type="text" disabled value={member.username} className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
+                                <input style={{"border": "2px solid #cbd5e0"}} type="text" disabled value={member.username} className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
                             </div>
                             <div className="flex flex-row mt-4">
                                 <span className="text-lg font-semibold text-gray-800 mr-5 mt-1">Email: </span>
-                                <input style={{"border": "2px solid #2d3748"}} type="text" disabled value={member.email} className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
+                                <input style={{"border": "2px solid #cbd5e0"}} type="text" disabled value={member.email} className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
                             </div>
                             <div className="flex flex-row mt-4">
                                 <span className="text-lg font-semibold text-gray-800 mr-5 mt-1">Role:</span>
@@ -395,7 +395,7 @@ const AddModal = ({community, setShowAddModal, loading, setLoading, onAdd}) => {
                         <div className="w-full flex flex-col items-center justify-center">
                             <div className="flex flex-row mt-4">
                                 <span className='text-lg font-semibold text-gray-800 mr-5 mt-1'>UserName: </span>
-                                <input style={{"border": "2px solid #2d3748"}} type="text" id="username" onChange={(e)=> {username.current = e.target.value}} placeHolder="enter the username" className="w-full p-2 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
+                                <input style={{"border": "2px solid #cbd5e0"}} type="text" id="username" onChange={(e)=> {username.current = e.target.value}} placeHolder="enter the username" className="w-full p-2 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
                             </div>
                         </div>
                         <div className="w-full flex flex-row items-center justify-center mt-4">

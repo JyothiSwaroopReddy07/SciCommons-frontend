@@ -89,7 +89,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
                                 Title
                             </label>
                             <input
-                            style={{"border": "2px solid #2d3748"}}
+                            style={{"border": "2px solid #cbd5e0"}}
                                 type="text"
                                 id="Title"
                                 value={title}
@@ -205,7 +205,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
                                 Title
                             </label>
                             <input
-                            style={{"border": "2px solid #2d3748"}}
+                            style={{"border": "2px solid #cbd5e0"}}
                                 type="text"
                                 id="Title"
                                 value={title}
@@ -227,7 +227,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
                             </label>
                             <div className="w-64  my-1">
                                 <input
-                                style={{"border": "2px solid #2d3748"}}
+                                style={{"border": "2px solid #cbd5e0"}}
                                     type="range"
                                     min="0"
                                     max="5"
@@ -357,7 +357,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
                                 Title
                             </label>
                             <input
-                            style={{"border": "2px solid #2d3748"}}
+                            style={{"border": "2px solid #cbd5e0"}}
                                 type="text"
                                 id="Title"
                                 value={title}
@@ -810,19 +810,19 @@ const  CommunityArticlePage = () => {
                     <div className="w-full">
                         <div className='w-full flex mx-auto mt-4'>
                             <button className={currentState === 1 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
-                            style={{cursor:"pointer"}} onClick={()=> onclickFuntion(1)}>
+                            style={{ borderBottom:currentState===1  ? '2px solid #68D391' : '2px solid #000',cursor:"pointer" }} onClick={()=> onclickFuntion(1)}>
                                 Reviews
                             </button>
                             <button className={currentState === 2 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200  py-2'} 
-                            style={{cursor:"pointer"}} onClick={()=> onclickFuntion(2)}>
+                            style={{ borderBottom:currentState===2  ? '2px solid #68D391' : '2px solid #000',cursor:"pointer" }} onClick={()=> onclickFuntion(2)}>
                                 Blogs
                             </button>
                             <button className={currentState === 3 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2  border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
-                            style={{cursor:"pointer"}} onClick={()=> onclickFuntion(3)}>
+                            style={{ borderBottom:currentState===3  ? '2px solid #68D391' : '2px solid #000',cursor:"pointer" }} onClick={()=> onclickFuntion(3)}>
                                     Videos
                             </button>
                             <button className={currentState === 4 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200 py-2'} 
-                            style={{cursor:"pointer"}} onClick={()=> onclickFuntion(4)}>
+                            style={{ borderBottom:currentState===4  ? '2px solid #68D391' : '2px solid #000',cursor:"pointer" }} onClick={()=> onclickFuntion(4)}>
                                     Discussions
                             </button>
 

@@ -74,7 +74,7 @@ const CreateCommunity = () => {
               Community Name
             </label>
             <input
-            style={{"border": "2px solid #2d3748"}}
+            style={{"border": "2px solid #cbd5e0"}}
               type="text"
               id="Community_name"
               name="Community_name"
@@ -97,7 +97,7 @@ const CreateCommunity = () => {
             Subtitle
           </label>
           <input
-          style={{"border": "2px solid #2d3748"}}
+          style={{"border": "2px solid #cbd5e0"}}
             type="text"
             id="subtitle"
             name="subtitle"
@@ -130,7 +130,7 @@ const CreateCommunity = () => {
             Location
           </label>
           <input
-          style={{"border": "2px solid #2d3748"}}
+          style={{"border": "2px solid #cbd5e0"}}
             type="test"
             id="location"
             name="location"
@@ -147,7 +147,7 @@ const CreateCommunity = () => {
             Github Link (if any)
           </label>
           <input
-          style={{"border": "2px solid #2d3748"}}
+          style={{"border": "2px solid #cbd5e0"}}
             type="url"
             id="github"
             name="github"
@@ -163,7 +163,7 @@ const CreateCommunity = () => {
             Website Link
           </label>
           <input
-          style={{"border": "2px solid #2d3748"}}
+          style={{"border": "2px solid #cbd5e0"}}
             type="url"
             id="website"
             name="website"
@@ -180,7 +180,7 @@ const CreateCommunity = () => {
             Email (of the Community)
           </label>
           <input
-          style={{"border": "2px solid #2d3748"}}
+          style={{"border": "2px solid #cbd5e0"}}
             type="email"
             id="email"
             name="email"
@@ -192,7 +192,7 @@ const CreateCommunity = () => {
         <div className="flex items-start mb-6 mt-3">
           <div className="flex items-center h-5">
             <input
-            style={{"border": "2px solid #2d3748"}}
+            style={{"border": "2px solid #cbd5e0"}}
               id="remember"
               type="checkbox"
               value=""

@@ -90,7 +90,7 @@ const Verify = () => {
                     <div className="px-3 py-2.5 rounded-l-md bg-gray-50 border-r">
                         @
                     </div>
-                    <input style={{"border": "2px solid #2d3748"}}
+                    <input style={{"border": "2px solid #cbd5e0"}}
                         type="email"
                         placeholder="Enter the email"
                         value={email}
@@ -106,7 +106,7 @@ const Verify = () => {
             <div className="w-full mx-auto mt-6">
                 <div className="flex items-center text-gray-700 border rounded-md m-2">
 
-                    <input style={{"border": "2px solid #2d3748"}}
+                    <input style={{"border": "2px solid #cbd5e0"}}
                         type="text"
                         placeholder="Enter the otp"
                         value={otp}

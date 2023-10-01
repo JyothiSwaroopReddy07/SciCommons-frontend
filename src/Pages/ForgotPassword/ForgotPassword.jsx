@@ -98,7 +98,7 @@ const ForgotPassword = () => {
                                     <div className="px-3 py-2.5 rounded-l-md bg-gray-50 border-r">
                                         @
                                     </div>
-                                    <input style={{"border": "2px solid #2d3748"}}
+                                    <input style={{"border": "2px solid #cbd5e0"}}
                                         type="email"
                                         placeholder="Enter the email"
                                         value={email}
@@ -114,7 +114,7 @@ const ForgotPassword = () => {
                 <div className="w-full mx-auto m-4">
                     <h1 className="text-3xl font-bold text-gray-600 m-5 text-center">Reset Password</h1>
                     <div className="relative max-w-screen m-2">
-                        <input style={{"border": "2px solid #2d3748"}} type="text" className="w-full bg-transparent outline-none rounded-lg" placeholder="Enter OTP" value={otp} onChange={(e)=>{setOtp(e.target.value)}} />
+                        <input style={{"border": "2px solid #cbd5e0"}} type="text" className="w-full bg-transparent outline-none rounded-lg" placeholder="Enter OTP" value={otp} onChange={(e)=>{setOtp(e.target.value)}} />
                     </div>
                     <div className="relative max-w-screen m-2">
                                     <button className="text-gray-700 absolute right-3 inset-y-0 my-auto active:text-gray-600"
@@ -135,7 +135,7 @@ const ForgotPassword = () => {
                                         }
                                     </button>
                                     <input
-                                    style={{"border": "2px solid #2d3748"}}
+                                    style={{"border": "2px solid #cbd5e0"}}
                                         type={!isPasswordHidden1 ? "password" : "text"}
                                         id="password"
                                         placeholder="enter the password"
@@ -163,7 +163,7 @@ const ForgotPassword = () => {
                                         }
                                     </button>
                                     <input
-                                    style={{"border": "2px solid #2d3748"}}
+                                    style={{"border": "2px solid #cbd5e0"}}
                                         type={!isPasswordHidden2 ? "password" : "text"}
                                         id="password"
                                         placeholder="Confirm new password"

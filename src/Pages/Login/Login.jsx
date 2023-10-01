@@ -114,7 +114,7 @@ const Login = () => {
                                     <div className="px-3 py-2.5 rounded-l-md bg-gray-50 border-r">
                                         @
                                     </div>
-                                    <input style={{"border": "2px solid #2d3748"}}
+                                    <input style={{"border": "2px solid #cbd5e0"}}
                                         type="text"
                                         placeholder="Enter the details"
                                         id="username"
@@ -146,7 +146,7 @@ const Login = () => {
                                         }
                                     </button>
                                     <input
-                                    style={{"border": "2px solid #2d3748"}}
+                                    style={{"border": "2px solid #cbd5e0"}}
                                         type={!isPasswordHidden ? "password" : "text"}
                                         id="password"
                                         placeholder="enter the password"
