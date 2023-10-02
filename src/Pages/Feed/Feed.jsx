@@ -211,10 +211,10 @@ const Feed = () => {
     <>
     <NavBar />
     { !loading &&
-        <div className="bg-green-50 min-h-screen"> 
+        <div className="bg-white min-h-screen"> 
         <div className="p-4 w-full md:w-1/2 mx-auto">
-          <div className="flex flex-row justify-end items-center mb-2">
-              <button onClick={()=>{setIsAccordionOpen(!isAccordionOpen)}} className="ml-2 text-xl font-semibold text-center bg-gray-500 text-white rounded-md p-1 shadow-xl float-right">Add Post</button>
+          <div className="flex flex-row justify-end items-center mb-1">
+              <button onClick={()=>{setIsAccordionOpen(!isAccordionOpen)}} className="ml-2 text-md font-semibold text-center bg-green-500 text-white rounded-md p-1 shadow-xl float-right">Add Post</button>
           </div>
             {isAccordionOpen && <PostModal setIsAccordionOpen={setIsAccordionOpen}/>}
         </div>

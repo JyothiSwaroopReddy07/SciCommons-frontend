@@ -148,12 +148,12 @@ const Timeline = () => {
     <>
       <NavBar />
       { !loading &&
-          <div className="bg-green-50 mt-[-10px] w-full min-h-screen"> 
+          <div className="bg-white mt-[-10px] w-full min-h-screen"> 
             <div className="container mx-auto px-4 w-full md:w-1/2 mt-2 pt-3">
               <h1 className="text-3xl font-semibold text-center">My Timeline</h1>
               <div className="w-full mx-auto">
-                <div className="flex flex-row justify-end items-center mb-2">
-                    <button onClick={()=>{setIsAccordionOpen(!isAccordionOpen)}} className="ml-2 text-xl font-semibold text-center bg-gray-500 text-white rounded-md p-1 shadow-xl float-right">Add Post</button>
+                <div className="flex flex-row justify-end items-center mb-1">
+                    <button onClick={()=>{setIsAccordionOpen(!isAccordionOpen)}} className="ml-2 text-md font-semibold text-center bg-green-500 text-white rounded-md p-1 shadow-xl float-right">Add Post</button>
                 </div>
                   {isAccordionOpen && <PostModal setIsAccordionOpen={setIsAccordionOpen} getPosts={getPosts}/>}
               </div>

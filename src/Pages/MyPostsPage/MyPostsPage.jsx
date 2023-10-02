@@ -106,7 +106,7 @@ const MyPostsPage = () => {
 
     const [loading, setLoading] = useState(true);
     const [isAccordionOpen, setIsAccordionOpen] = useState(false);
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState(null);
     const {token,user} = useGlobalContext();
 
     const loadData = async(res) => {
@@ -122,7 +122,7 @@ const MyPostsPage = () => {
             }
         };
         try{
-            const res = await axios.get(`https://scicommons-backend.onrender.com/api/user/${user.username}/posts/`, config);
+            const res = await axios.get(`https://scicommons-backend.onrender.com/api/user/myposts/`, config);
             await loadData(res.data.success);
         } catch(err) {
             console.log(err);
@@ -131,10 +131,7 @@ const MyPostsPage = () => {
     }
 
     useEffect(() => {
-        const fetchData = async () => {
-            await fetchPosts();
-        }
-        fetchData();
+        fetchPosts();
     },[]);
     
       const onDeletePost = async(id) => {
@@ -154,14 +151,14 @@ const MyPostsPage = () => {
   return (
     <>
      <NavBar />
-     {loading && <Loader/>}
-    { !loading &&
+     {(loading || posts===null) && <Loader/>}
+    { !loading && posts!==null && 
         <> 
         <div className="p-4 w-full md:w-1/2 mx-auto">
             <h1 className="text-3xl font-semibold text-center">My Posts</h1>
             <div className="w-full mx-auto">
-                <div className="flex flex-row justify-end items-center mb-2">
-                    <button onClick={()=>{setIsAccordionOpen(!isAccordionOpen)}} className="ml-2 text-xl font-semibold text-center bg-gray-500 text-white rounded-md p-1 shadow-xl float-right">Add Post</button>
+                <div className="flex flex-row justify-end items-center mb-1">
+                    <button onClick={()=>{setIsAccordionOpen(!isAccordionOpen)}} className="ml-2 text-md font-semibold text-center bg-green-500 text-white rounded-md p-1 shadow-xl float-right">Add Post</button>
                 </div>
                   {isAccordionOpen && <PostModal setIsAccordionOpen={setIsAccordionOpen} getPosts={fetchPosts}/>}
             </div>

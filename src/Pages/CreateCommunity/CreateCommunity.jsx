@@ -228,7 +228,6 @@ const CreateCommunity = () => {
         </button>
       </form>
     </div>
-    <Footer/>
     </>
   );
 };

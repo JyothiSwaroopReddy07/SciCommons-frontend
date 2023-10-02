@@ -634,7 +634,6 @@ const SubmitArticle = () => {
       <PubMedSearch/>
     </>)
     }
-    <Footer/>
     </>
   );
 };
