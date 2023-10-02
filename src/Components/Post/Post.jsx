@@ -114,9 +114,17 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
       navigate(`/profile/${post.username}`)
     }
   
-    const handleShare = () => {
-      // Implement share logic here
-      console.log('Share post:', post);
+    const handleShare = (e) => {
+      e.preventDefault();
+      ToastMaker("Link Copied to Clipboard", 3500, {
+        valign: 'top',
+        styles : {
+            backgroundColor: 'green',
+            fontSize: '20px',
+        }
+      })
+      e.stopPropagation();
+      navigator.clipboard.writeText(`https://scicommons.onrender.com/post/${post.id}`);
     };
   
       const findTime = (date) => {
@@ -228,8 +236,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
               }
               <span className="text-sm md:ml-2">{formatCount(bookmarks)}</span>
             </button>
-            {/* Share Button */}
-            <button style={{cursor:"pointer"}} onClick={handleShare}>
+            <button style={{cursor:"pointer"}} onClick={(e)=>{handleShare(e)}}>
               <IoPaperPlaneOutline className="text-xl" />
             </button>
           </div>

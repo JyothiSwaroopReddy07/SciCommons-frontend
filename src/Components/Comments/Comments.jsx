@@ -227,8 +227,8 @@ const Comments = ({ comment, article, colour }) => {
   const navigate = useNavigate();
 
   const colorClasses = {
-    0: 'bg-slate-100',
-    1: 'bg-white',
+    0: 'bg-white',
+    1: 'bg-green-100',
   };
 
   const findTime = (date) => {
@@ -506,7 +506,7 @@ const Comments = ({ comment, article, colour }) => {
               <span className="inline-flex items-center gap-1.5 rounded text-xs p-[2px] font-medium bg-red-500 text-white">{comment.Type}</span>
               <span className="inline-flex items-center gap-1.5 ml-3 rounded text-xs p-[2px] font-medium bg-cyan-500 text-white">{comment.tag}</span>
               <span className="inline-flex items-center gap-1.5 ml-3 rounded text-xs p-[2px] font-medium bg-orange-500 text-white">{comment.comment_type}</span>
-              {fillUserType()}
+              {fillUserType(comment)}
           </div>
             <div className="container w-full flex flex-row mt-2">
               <div className="m-1 flex flex-row items-center z-20">
