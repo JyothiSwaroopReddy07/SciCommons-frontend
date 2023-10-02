@@ -11,7 +11,9 @@ import Popper from 'popper.js';
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
 import './Post.css';
-import {useGlobalContext} from '../../Context/StateContext'
+import {useGlobalContext} from '../../Context/StateContext';
+import {ColorRing} from "react-loader-spinner";
+import {AiOutlineSend} from 'react-icons/ai';
 
 
 
@@ -19,9 +21,46 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
     const [liked, setLiked] = useState(post.liked);
     const [bookmark, setBookmark] = useState(post.isbookmarked);
     const [likes, setLikes] = useState(post.likes);
+    const [comments_count, setCommentsCount] = useState(post.comments_count);
     const [bookmarks, setBookmarks] = useState(post.bookmarks);
     const {user, token} = useGlobalContext()
+    const [loadSubmit, setLoadSubmit] = useState(false);
     const navigate = useNavigate();
+
+    const handleComment = async (e) => {
+      if(token === null) {
+        navigate("/login");
+      }
+      e.preventDefault();
+      setLoadSubmit(true);
+      const comment = document.getElementsByName("comment")[0].value;
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      try {
+        const res = await axios.post(
+          `https://scicommons-backend.onrender.com/api/feedcomment/`,
+          { post: post.id, comment: comment },
+          config
+        );
+        document.getElementsByName("comment")[0].value = "";
+        ToastMaker("Comment added successfully!!!!", 3000, {
+          valign: "top",
+          styles: {
+            backgroundColor: "green",
+            fontSize: "20px",
+          },
+        });
+        setCommentsCount(comments_count + 1);
+        setLoadSubmit(false);
+      } catch (err) {
+        console.log(err);
+      }
+      setLoadSubmit(false);
+    };
   
     const handleLike = async(e) => {
       if(token === null) {
@@ -57,7 +96,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
       
     };
   
-    const handleComment = (e) => {
+    const handleComments = (e) => {
       e.preventDefault()
       navigate(`/post/${post.id}`)
     };
@@ -220,12 +259,11 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
               <span className="text-sm md:ml-2">{formatCount(likes)}</span>
             </button>
             {/* Comment Button */}
-            <button style={{cursor:"pointer"}} onClick={handleComment} className="flex">
+            <button style={{cursor:"pointer"}} onClick={handleComments} className="flex">
               <IoChatbubbleOutline className="text-xl" />
-              <span className="text-sm md:ml-2">{formatCount(post.comments_count)}</span>
+              <span className="text-sm md:ml-2">{formatCount(comments_count)}</span>
               
             </button>
-            {/* Bookmark Button */}
             <button style={{cursor:"pointer"}} onClick={handleBookmark} className="flex">
               {
                   (bookmark) ? (
@@ -242,6 +280,43 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
           </div>
         </div>
         </Link>
+        <div className=" mt-2 bg-white w-full">
+              <div className="flex flex-row items-center justify-between">
+                {(user===null ||user.profile_pic_url.includes("None")) ? (
+                  <SlUser className="w-8 h-8 mr-2" />
+                ) : (
+                  <img
+                    src={user.profile_pic_url}
+                    alt={user.username}
+                    className="w-10 h-10 rounded-full mr-4"
+                  />
+                )}
+                <input
+                style={{"border": "2px solid #cbd5e0"}}
+                  type="text"
+                  placeholder="Add a comment..."
+                  className="w-full border rounded-lg p-2 mr-2 rounded-xl"
+                  name="comment"
+                />
+                <button
+                style={{cursor:"pointer"}}
+                  onClick={handleComment}
+                  className="bg-green-400 rounded-lg p-2"
+                >
+                  {loadSubmit ? (
+                    <ColorRing
+                    height="30"
+                    width="30"
+                    radius="4"
+                    color="white"
+                    ariaLabel="loading"
+                    />
+                  ) : (
+                    <AiOutlineSend className="text-xl" />
+                  )}
+                </button>
+              </div>
+            </div>
       </div>
       </>
     );

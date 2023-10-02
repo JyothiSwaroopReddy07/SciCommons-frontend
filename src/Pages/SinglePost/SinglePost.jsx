@@ -237,10 +237,10 @@ const SinglePost = () => {
                 >
                   {loadSubmit ? (
                     <ColorRing
-                    height="20"
-                    width="20"
+                    height="30"
+                    width="30"
                     radius="4"
-                    color="green"
+                    color="white"
                     ariaLabel="loading"
                     />
                   ) : (
