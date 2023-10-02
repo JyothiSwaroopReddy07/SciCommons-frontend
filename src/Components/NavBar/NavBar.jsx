@@ -79,7 +79,7 @@ const NavBar = () => {
 
     return (
       <>
-        <nav className="sticky top-0 bg-slate-100 md:text-sm z-50">
+        <nav className="sticky top-0 bg-white md:text-sm z-50 shadow-lg">
             <div className="gap-x-7 items-center px-4 md:flex md:px-8">
                 <div className="flex items-center justify-between py-5 md:block">
                   <div className="flex flex-row items-center  justify-between">
