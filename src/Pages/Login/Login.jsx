@@ -1,4 +1,4 @@
-import React, {useState, useRef, Fragment} from 'react'
+import React, {useState, useRef, Fragment, useEffect} from 'react'
 import './Login.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ const Login = () => {
     const username = useRef(null)
     const password = useRef(null)
     const [loading, setLoading] = useState(false)
-    const {user, setUser, setToken} = useGlobalContext();
+    const {user, setUser,token, setToken} = useGlobalContext();
 
     const isValidEmail = (email) => {
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -24,6 +24,12 @@ const Login = () => {
     const loadUserData = async (res) => {
         setUser(res);
     }
+
+    useEffect(()=>{
+        if(token!==null){
+            navigate("/");
+        }
+    },[])
 
     const getCurrentUser = async () => {
         try {

@@ -31,6 +31,7 @@ import './SinglePost.css';
 import Post from "../../Components/Post/Post";
 import SocialComment from "../../Components/SocialComment/SocialComment";
 import { useGlobalContext } from "../../Context/StateContext";
+import { ColorRing } from "react-loader-spinner";
 
 
 const SinglePost = () => {
@@ -235,7 +236,13 @@ const SinglePost = () => {
                   className="bg-green-400 rounded-lg p-2"
                 >
                   {loadSubmit ? (
-                    <CSpinner />
+                    <ColorRing
+                    height="20"
+                    width="20"
+                    radius="4"
+                    color="green"
+                    ariaLabel="loading"
+                    />
                   ) : (
                     <AiOutlineSend className="text-xl" />
                   )}

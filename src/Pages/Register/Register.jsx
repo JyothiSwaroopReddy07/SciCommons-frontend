@@ -1,10 +1,11 @@
-import React, {useState, useRef} from 'react'
+import React, {useState, useRef, useEffect} from 'react'
 import './Register.css'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import Loader from '../../Components/Loader/Loader';
 import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
+import {useGlobalContext} from '../../Context/StateContext';
 
 
 const Register = () => {
@@ -19,6 +20,13 @@ const Register = () => {
     const first_name = useRef(null)
     const last_name = useRef(null)
     const email = useRef(null)
+    const {token} = useGlobalContext();
+
+    useEffect(()=>{
+        if(token!==null){
+            navigate("/");
+        }
+    },[])
 
     const handleSubmit = async (e) => {
         e.preventDefault()
