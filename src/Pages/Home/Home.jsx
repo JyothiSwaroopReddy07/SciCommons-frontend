@@ -572,8 +572,7 @@ const Home = () => {
                       <div  className="faq-01__answer js-faq-item">
                         <div  className="content_box">
                           <div  className="faq-01__answer_text">
-                            Reviewers are selected in a random fashion to ensure
-                            unbiased reviews.
+                          Reviewers are chosen randomly to guarantee impartial assessments. By employing this method, the system aims to prevent any potential biases that could influence the review process. This random selection ensures that each submission receives a fair evaluation, upholding the integrity and credibility of the reviewing mechanism. It's a critical step in maintaining objectivity and trust in the review process.
                           </div>
                         </div>
                       </div>
@@ -586,8 +585,7 @@ const Home = () => {
                       type="button"
                     >
                       <div  className="faq-01__question_text text-green-500">
-                        Are users assigned a random handle name for each
-                        article?
+                        Are users assigned a random handle name for each article?
                         <div  className="faq-01__arrow_icon">
                           <span  className="icon">
                             <svg
@@ -642,8 +640,7 @@ const Home = () => {
                       <div  className="faq-01__answer js-faq-item">
                         <div  className="content_box">
                           <div  className="faq-01__answer_text">
-                            Yes, users are assigned a random handle name for
-                            each article to maintain anonymity.
+                          Indeed, users are provided with a random handle name for each article to ensure anonymity. This system promotes unbiased interactions and feedback, as the identity of the contributor remains concealed, allowing the content to be the primary focus.
                           </div>
                         </div>
                       </div>
@@ -656,8 +653,7 @@ const Home = () => {
                       type="button"
                     >
                       <div  className="faq-01__question_text text-green-500">
-                        Are users rated based on the reactions score they get
-                        for a review?
+                      Are users rated based on the reaction scores they receive for a review?
                         <div  className="faq-01__arrow_icon">
                           <span  className="icon">
                             <svg
@@ -712,9 +708,7 @@ const Home = () => {
                       <div  className="faq-01__answer js-faq-item">
                         <div  className="content_box">
                           <div  className="faq-01__answer_text">
-                            Yes, users are rated based on the reactions score
-                            they receive for their reviews. This helps maintain
-                            the quality of reviews on our platform.
+                          Indeed, users are evaluated based on the reaction scores they garner for their reviews. This scoring system is instrumental in upholding the quality of reviews on our platform. By providing a metric for feedback, we can encourage constructive criticism and ensure that reviewers are motivated to offer insightful and valuable feedback. Such measures are vital to foster a credible and trustworthy review environment.
                           </div>
                         </div>
                       </div>
@@ -727,7 +721,7 @@ const Home = () => {
                       type="button"
                     >
                       <div  className="faq-01__question_text text-green-500">
-                        Can I make more than a single review to an article?
+                      Can I submit more than one review for an article?
                         <div  className="faq-01__arrow_icon">
                           <span  className="icon">
                             <svg
@@ -782,8 +776,7 @@ const Home = () => {
                       <div  className="faq-01__answer js-faq-item">
                         <div  className="content_box">
                           <div  className="faq-01__answer_text">
-                            No, you can only make one review per article.
-                            However, you can edit your review if needed.
+                          No, each user is allowed only one review for an article to ensure diverse feedback. However, if you wish to modify or update your thoughts, you have the flexibility to edit your existing review. This ensures that you can refine your feedback while still adhering to the platform's guidelines.
                           </div>
                         </div>
                       </div>
@@ -796,8 +789,7 @@ const Home = () => {
                       type="button"
                     >
                       <div  className="faq-01__question_text text-green-500">
-                        Is the review process open even after the article is
-                        published?
+                      Is the review process still open after the article has been published?
                         <div  className="faq-01__arrow_icon">
                           <span  className="icon">
                             <svg
@@ -852,9 +844,7 @@ const Home = () => {
                       <div  className="faq-01__answer js-faq-item">
                         <div  className="content_box">
                           <div  className="faq-01__answer_text">
-                            Yes, the review process remains open even after the
-                            article is published. This allows for continuous
-                            feedback and improvement.
+                          Yes, the review process continues even after the article has been published. By keeping it open, we encourage ongoing dialogue and ensure that authors receive continuous feedback. This approach facilitates iterative improvement and adapts to the evolving perspectives of readers and experts.
                           </div>
                         </div>
                       </div>
