@@ -212,8 +212,8 @@ const SinglePost = () => {
               <Post post={post} />
            </div>
             <div className="border p-4 mt-[-20px] shadow-2xl bg-white w-full md:w-1/2 mx-auto">
-              {user!==null && <div className="flex flex-row items-center justify-between mb-2">
-                {user.profile_pic_url.includes("None") ? (
+              <div className="flex flex-row items-center justify-between mb-2">
+                {(user===null ||user.profile_pic_url.includes("None")) ? (
                   <SlUser className="w-8 h-8 mr-2" />
                 ) : (
                   <img
@@ -240,7 +240,7 @@ const SinglePost = () => {
                     <AiOutlineSend className="text-xl" />
                   )}
                 </button>
-              </div>}
+              </div>
             </div>
             <div className="mx-auto border p-6 w-full md:w-1/2 bg-white">
               <div className="text-3xl font-semibold text-green-600">
