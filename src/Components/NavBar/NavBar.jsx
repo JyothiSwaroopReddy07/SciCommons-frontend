@@ -182,7 +182,7 @@ const Dropdown = ({ color, onLogout,User}) => {
             <div className="relative inline-flex align-middle w-full">
               <button
                 className={
-                  "text-white font-bold uppercase text-sm px-6 rounded outline-none focus:outline-none bg-slate-100"
+                  "text-white font-bold uppercase text-sm px-6 rounded outline-none focus:outline-none bg-white"
                 }
                 style={{ transition: "all .15s ease", cursor:"pointer" }}
                 type="button"
