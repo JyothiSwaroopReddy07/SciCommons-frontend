@@ -212,43 +212,6 @@ const SinglePost = () => {
           <div className="bg-white w-full md:w-1/2 mx-auto">
               <Post post={post} />
            </div>
-            <div className="border p-4 mt-[-20px] shadow-2xl bg-white w-full md:w-1/2 mx-auto">
-              <div className="flex flex-row items-center justify-between mb-2">
-                {(user===null ||user.profile_pic_url.includes("None")) ? (
-                  <SlUser className="w-8 h-8 mr-2" />
-                ) : (
-                  <img
-                    src={user.profile_pic_url}
-                    alt={user.username}
-                    className="w-10 h-10 rounded-full mr-4"
-                  />
-                )}
-                <input
-                style={{"border": "2px solid #cbd5e0"}}
-                  type="text"
-                  placeholder="Add a comment..."
-                  className="w-full border rounded-lg p-2 mr-2 rounded-xl"
-                  name="comment"
-                />
-                <button
-                style={{cursor:"pointer"}}
-                  onClick={handleComment}
-                  className="bg-green-400 rounded-lg p-2"
-                >
-                  {loadSubmit ? (
-                    <ColorRing
-                    height="30"
-                    width="30"
-                    radius="4"
-                    color="white"
-                    ariaLabel="loading"
-                    />
-                  ) : (
-                    <AiOutlineSend className="text-xl" />
-                  )}
-                </button>
-              </div>
-            </div>
             <div className="mx-auto border p-6 w-full md:w-1/2 bg-white">
               <div className="text-3xl font-semibold text-green-600">
                 Comments {comments.length > 0 && `(${formatCount(comments.length)})`}
