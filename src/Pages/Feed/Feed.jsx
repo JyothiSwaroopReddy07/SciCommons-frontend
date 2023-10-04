@@ -81,7 +81,7 @@ const PostModal = ({setIsAccordionOpen}) => {
                     className="mb-4 rounded-xl"
                     name="image"
                     />
-                    <div>
+                    <div className="flex flex-row">
                       <button
                       type="submit"
                       className="bg-green-500 hover:bg-green-700 text-white h-8 px-2 rounded"

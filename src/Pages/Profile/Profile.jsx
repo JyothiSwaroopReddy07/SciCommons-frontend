@@ -32,12 +32,12 @@ const Loading = () => {
   )
 }
 
-const Following = ({setFollowingModal}) => {
+const Following = ({setFollowingModal, User}) => {
 
   const [loading, setLoading] = useState(false);
   const [followers, setFollowers] = useState([]);
   const {token, user} = useGlobalContext();
-
+  const navigate = useNavigate();
   const {username} = useParams();
 
   const loadData = async(res) => {
@@ -47,6 +47,9 @@ const Following = ({setFollowingModal}) => {
 
   const handleFollow = async(e,index) => {
     e.preventDefault();
+    if(token===null){
+      navigate("/login");
+    }
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -87,14 +90,26 @@ const Following = ({setFollowingModal}) => {
   
   const fetchFollowers = async () => {
     setLoading(true);
-    const config = {
+    let config = null;
+    if(token===null){
+      config = {
         headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
         params: {
           username:username,
         },
+      }
+    } else {
+      config = {
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+          },
+          params: {
+            username:username,
+          },
+      }
     }
     try{
         const res = await axios.get("https://scicommons-backend.onrender.com/api/user/following/", config);
@@ -113,10 +128,10 @@ const Following = ({setFollowingModal}) => {
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
-        <div className="bg-white rounded-lg w-1/2 h-3/4 overflow-y-auto">
-          <div className="flex flex-col items-center p-4">
+        <div className="bg-white rounded-lg w-5/6 h-5/6 md:w-1/2 md:h-3/4 overflow-y-auto">
+          <div className="flex flex-col items-center p-2 md:p-4">
             <div className="flex flex-row justify-between w-full mb-2">
-              <h1 className="text-xl font-bold">Following</h1>
+              <h1 className="text-md md:text-xl font-bold">Following</h1>
               <button className="text-xl font-bold" onClick={()=>setFollowingModal(false)}><RxCross2 className="w-6 h-6"/></button>
             </div>
             <div className="flex flex-col items-center w-full">
@@ -130,29 +145,29 @@ const Following = ({setFollowingModal}) => {
                         key={follower.id}
                         className="flex flex-row items-center w-full"
                       >
-                      {follower.avatar.includes("None")?<SlUser className="w-12 h-12 text-black-800 mr-4"/>:
+                      {follower.avatar.includes("None")?<SlUser className="w-8 h-8 md:w-12 md:h-12 text-black-800 mr-4"/>:
                         <img
                           src={follower.avatar}
                           alt={follower.username}
-                          className="w-12 h-12 rounded-full mr-4"
+                          className="w-8 h-8 md:w-12 md:h-12 rounded-full mr-4"
                         />
                       }
                         <div className="flex flex-row justify-between w-full">
                           <Link
                             to={`/profile/${follower.username}`}
-                            className="text-lg font-bold text-green-600"
+                            className="text-sm md:text-lg font-bold text-green-600"
                           >
                             {follower.username}
                           </Link>
 
-                          {user.username!== follower.username &&<button 
+                          {User.username!== follower.username &&<button 
                             className={`rounded-lg ${follower.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={(e)=>{handleFollow(e,index)}}>{fillFollow(follower)}
                           </button>}
                         </div>
                       </div>))
                   )}
                     {followers.length === 0 && <div className="flex justify-center h-full w-full">
-                      <p className="text-2xl font-semibold">No Follows to show</p>
+                      <p className="text-lg md:text-2xl font-semibold">No Follows to show</p>
                       </div>}
 
                   </>)
@@ -165,12 +180,12 @@ const Following = ({setFollowingModal}) => {
   )
 }
 
-const Followers = ({setFollowersModal}) => {
+const Followers = ({setFollowersModal, User}) => {
 
   const [loading, setLoading] = useState(false);
   const [followers, setFollowers] = useState([]);
   const {token, user} = useGlobalContext();
-
+  const navigate = useNavigate();
   const {username} = useParams();
 
   const loadData = async(res) => {
@@ -180,6 +195,9 @@ const Followers = ({setFollowersModal}) => {
 
   const handleFollow = async(e,index) => {
     e.preventDefault();
+    if(token===null){
+      navigate("/login")
+    }
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -220,14 +238,26 @@ const Followers = ({setFollowersModal}) => {
   
   const fetchFollowers = async () => {
     setLoading(true);
-    const config = {
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+    let config = null;
+    if(token===null){
+      config={
+        headers:{
+          "Content-Type": "application/json",
         },
-        params: {
+        params:{
           username:username,
         },
+      }
+    } else {
+      config = {
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+          },
+          params: {
+            username:username,
+          },
+      }
     }
     try{
         const res = await axios.get("https://scicommons-backend.onrender.com/api/user/followers/", config);
@@ -246,10 +276,10 @@ const Followers = ({setFollowersModal}) => {
   return (
     <>
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
-        <div className="bg-white rounded-lg w-1/2 h-3/4 overflow-y-auto">
+        <div className="bg-white rounded-lg w-5/6 h-5/6 md:w-1/2 md:h-3/4 overflow-y-auto">
           <div className="flex flex-col items-center p-4">
-            <div className="flex flex-row justify-between w-full mb-2">
-              <h1 className="text-xl font-bold">Followers</h1>
+            <div className="flex flex-row justify-between  w-full mb-2">
+              <h1 className="text-md md:text-xl font-bold">Followers</h1>
               <button className="text-xl font-bold" onClick={()=>setFollowersModal(false)}><RxCross2 className="w-6 h-6"/></button>
             </div>
             <div className="flex flex-col items-center w-full">
@@ -263,11 +293,11 @@ const Followers = ({setFollowersModal}) => {
                         key={follower.id}
                         className="flex flex-row items-center w-full"
                       >
-                      {follower.avatar.includes("None")?<SlUser className="w-12 h-12 text-black-800 mr-4"/>:
+                      {follower.avatar.includes("None")?<SlUser className="w-8 h-8 md:w-12 md:h-12 text-black-800 mr-2 md:mr-4"/>:
                         <img
                           src={follower.avatar}
                           alt={follower.username}
-                          className="w-12 h-12 rounded-full mr-4"
+                          className="w-8 h-8 md:w-12 md:h-12 rounded-full mr-2 md:mr-4"
                         />
                       }
                         <div className="flex flex-row justify-between w-full">
@@ -278,14 +308,14 @@ const Followers = ({setFollowersModal}) => {
                             {follower.username}
                           </Link>
 
-                          {user.username!== follower.username &&<button 
+                          {User.username!== follower.username &&<button 
                             className={`rounded-lg ${follower.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={(e)=>{handleFollow(e,index)}}>{fillFollow(follower)}
                           </button>}
                         </div>
                       </div>))
                   )}
                     {followers.length === 0 && <div className="flex justify-center h-full w-full">
-                      <p className="text-2xl font-semibold">No Followers to show</p>
+                      <p className="text-lg md:text-2xl font-semibold">No Followers to show</p>
                       </div>}
 
                   </>)
@@ -741,9 +771,9 @@ const loadUserData = async(res) => {
           </div>
         </div>
       }
-      {(loading||User===null || articles===null || posts===null) && <Loader/>}
-      {followers && <Followers setFollowersModal={setFollowers}/>}
-      {following && <Following setFollowingModal={setFollowing}/>} 
+      {(loading || User===null || articles===null || posts===null) && <Loader/>}
+      {followers && <Followers User={User} setFollowersModal={setFollowers}/>}
+      {following && <Following User={User} setFollowingModal={setFollowing}/>} 
     </>
   );
 };
