@@ -239,8 +239,8 @@ const DeleteModal = ({username,community, onDelete, userId,index, setShowDeleteM
         {!loading && (
             <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
                 <div className="w-full h-full flex flex-col items-center justify-center">
-                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
-                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Are you sure you want to delete this member?</h1>
+                    <div className="w-5/6 md:w-1/2 bg-white p-1 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-md md:text-xl font-bold text-gray-600 mb-4">Are you sure you want to delete this member?</h1>
                         <div className="w-full flex flex-row items-center justify-center">
                             <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" style={{cursor:"pointer"}} onClick={handleDelete}>Yes</button>
                             <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" style={{cursor:"pointer"}} onClick={() => {setShowDeleteModal(false)}}>No</button>
@@ -308,19 +308,19 @@ const EditModal = ({community, setShowEditModal, member, index, onEdit, handleRo
         {!loading && (
             <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
                 <div className="w-full h-full flex flex-col items-center justify-center">
-                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
-                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Edit Role</h1>
+                    <div className="w-5/6 md:w-1/2 bg-white p-1 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-md md:text-xl font-bold text-gray-600 mb-4">Edit Role</h1>
                         <div className="w-full flex flex-col items-center justify-center">
                             <div className="flex flex-row mt-4">
-                                <span className='text-lg font-semibold text-gray-800 mr-5 mt-1'>UserName: </span>
+                                <span className='text-sm md:text-lg font-semibold text-gray-800 mr-5 mt-1'>UserName: </span>
                                 <input style={{"border": "2px solid #cbd5e0"}} type="text" disabled value={member.username} className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
                             </div>
                             <div className="flex flex-row mt-4">
-                                <span className="text-lg font-semibold text-gray-800 mr-5 mt-1">Email: </span>
+                                <span className="text-sm md:text-lg font-semibold text-gray-800 mr-5 mt-1">Email: </span>
                                 <input style={{"border": "2px solid #cbd5e0"}} type="text" disabled value={member.email} className="w-full p-2 rounded-lg bg-gray-300 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
                             </div>
                             <div className="flex flex-row mt-4">
-                                <span className="text-lg font-semibold text-gray-800 mr-5 mt-1">Role:</span>
+                                <span className="text-sm md:text-lg font-semibold text-gray-800 mr-5 mt-1">Role:</span>
                                 <select onChange={(e)=>handleChange(e)} defaultValue={handleRole(member)} className="w-full p-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent">
                                     <option value="Admin">Admin</option>
                                     <option value="Moderator">Moderator</option>
@@ -390,12 +390,12 @@ const AddModal = ({community, setShowAddModal, loading, setLoading, onAdd}) => {
         {!loading && (
             <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
                 <div className="w-full h-full flex flex-col items-center justify-center">
-                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
-                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Add Member</h1>
+                    <div className="w-5/6 md:w-1/2 bg-white p-1 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-md md:text-xl font-bold text-gray-600 mb-4">Add Member</h1>
                         <div className="w-full flex flex-col items-center justify-center">
-                            <div className="flex flex-row mt-4">
-                                <span className='text-lg font-semibold text-gray-800 mr-5 mt-1'>UserName: </span>
-                                <input style={{"border": "2px solid #cbd5e0"}} type="text" id="username" onChange={(e)=> {username.current = e.target.value}} placeHolder="enter the username" className="w-full p-2 rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
+                            <div className="flex flex-col mt-4">
+                                <span className='text-sm md:text-lg font-semibold text-gray-800 mr-2 mt-1'>UserName: </span>
+                                <input style={{"border": "2px solid #cbd5e0"}} type="text" id="username" onChange={(e)=> {username.current = e.target.value}} placeHolder="enter the username" className="w-full rounded-lg bg-gray-100 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-600 focus:border-transparent"/>
                             </div>
                         </div>
                         <div className="w-full flex flex-row items-center justify-center mt-4">

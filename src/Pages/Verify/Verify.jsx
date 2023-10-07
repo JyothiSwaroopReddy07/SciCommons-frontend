@@ -10,6 +10,7 @@ const Verify = () => {
     const navigate = useNavigate()
     const [email,setEmail] = useState('')
     const [loading, setLoading] = useState(false);
+    const [disabled, setDisabled] = useState(false);
     const [otp,setOtp] = useState('');
     const {token} = useGlobalContext();
 
@@ -34,6 +35,9 @@ const Verify = () => {
                   fontSize: "20px",
                 },
             });
+            setDisabled(true);
+            
+
         } catch (error) {
             ToastMaker(error.response.data.error, 3000, {
                 valign: "top",
@@ -50,6 +54,28 @@ const Verify = () => {
     const handleChange = async (e) => {
         e.preventDefault();
         setLoading(true);
+        if(otp.length !== 6){
+            ToastMaker("OTP must have 6 digits", 3000, {
+                valign: "top",
+                styles: {
+                  backgroundColor: "red",
+                  fontSize: "20px",
+                },
+            });
+            setLoading(false);
+            return;
+        }
+        if(isNaN(otp)) {
+            ToastMaker("OTP must be a number", 3000, {
+                valign: "top",
+                styles: {
+                  backgroundColor: "red",
+                  fontSize: "20px",
+                },
+            });
+            setLoading(false);
+            return;
+        }
         try {
             const response = await axios.post(
                 `https://scicommons-backend.onrender.com/api/user/verify_email/`,
@@ -94,6 +120,8 @@ const Verify = () => {
                         type="email"
                         placeholder="Enter the email"
                         value={email}
+                        name="email"
+                        disabled = {disabled}
                         onChange={(e)=>{setEmail(e.target.value)}}
                         className="w-full bg-transparent outline-none rounded-lg"
                     />

@@ -28,6 +28,58 @@ const Register = () => {
         }
     },[])
 
+    const validatePassword = (password) => {
+
+        const specialCharRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\|'"\-=]/;
+        const uppercaseRegex = /[A-Z]/;
+        const lowercaseRegex = /[a-z]/;
+        const digitRegex = /[0-9]/;
+
+        const hasSpecialChar = specialCharRegex.test(password);
+        const hasUppercase = uppercaseRegex.test(password);
+        const hasLowercase = lowercaseRegex.test(password);
+        const hasDigit = digitRegex.test(password);
+        const isLengthValid = password.length >= 8;
+    
+        return hasSpecialChar && hasUppercase && hasLowercase && hasDigit && isLengthValid;
+    }
+
+    const validations = (data) => {
+        if((data.email.includes("@")&&data.email.includes(".")) === false) {
+            ToastMaker("Invalid Email", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            return false;
+        }
+
+        if(validatePassword(data.password)===false){
+            ToastMaker("Password must contain at least 8 characters, one uppercase, one lowercase, one digit and one special character", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            return false;
+        }
+
+        if(validatePassword(password2.current.value)===false) {
+            ToastMaker("Re-Entered Password must contain at least 8 characters, one uppercase, one lowercase, one digit and one special character", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            return false;
+        }
+        return true;
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         setLoading(true)
@@ -38,6 +90,12 @@ const Register = () => {
             'first_name': first_name.current.value,
             'last_name': last_name.current.value
         }
+
+        if(validations(data)===false){
+            setLoading(false);
+            return;
+        }
+
         if(password.current.value !== password2.current.value){
             ToastMaker("Passwords do not match", 3500,{
                 valign: 'top',
@@ -196,6 +254,10 @@ const Register = () => {
                                             ref={password2}
                                             className="w-full pr-12 pl-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                         />
+                                    </div>
+                                    <div className="relative max-w-screen mt-2">
+                                        <span className="text-green-600 text-sm font-bold">Note : </span>
+                                        <span className="text-xs text-gray-500 font-semibold">Passwords must be at least 8 characters long, contain at least one uppercase, one lowercase, one digit and one special character</span>
                                     </div>
                                 <button
                                     className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"

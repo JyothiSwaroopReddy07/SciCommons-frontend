@@ -36,6 +36,28 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
     const handleSubmit = async(e) => {
         e.preventDefault();
         setLoading(true);
+        if(title.length>200){
+            ToastMaker("Title should be less than 200 characters!!!", 3000, {
+                valign: "top",
+                styles: {
+                  backgroundColor: "red",
+                  fontSize: "20px",
+                },
+              });
+            setLoading(false);
+            return;
+        }
+        if(comment.length>20000){
+            ToastMaker("Comment should be less than 20000 characters!!!", 3000, {
+                valign: "top",
+                styles: {
+                  backgroundColor: "red",
+                  fontSize: "20px",
+                },
+              });
+            setLoading(false);
+            return;
+        }
         const config={
             headers: {
                 "Content-Type": "application/json",
@@ -96,12 +118,14 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
                                 className="w-full border border-gray-300 rounded p-2"
                                 required
                             />
+                            <span className="font-semibold text-xs">Number of characters: {title.length}/200</span>
                         </div>
                         <div className="mb-4">
                             <label htmlFor="comment" className="block font-medium mb-1">
                                 Comment
                             </label>
                             <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[40vh] overflow-y-auto" value={comment} onChange={handleCommentChange}/>
+                            <span className="text-xs font-semibold">Number of characters: {comment.length}/20000</span>
                         </div>
                         <button
                         type="submit"
@@ -142,6 +166,28 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
     const handleSubmit = async(e) => {
         e.preventDefault();
         setLoading(true);
+        if(title.length>200){
+            ToastMaker("Title should be less than 200 characters!!!", 3000, {
+                valign: "top",
+                styles: {
+                    backgroundColor: "red",
+                    fontSize: "20px",
+                },
+            });
+            setLoading(false);
+            return;
+        }
+        if(comment.length>20000){
+            ToastMaker("Comment should be less than 20000 characters!!!", 3000, {
+                valign: "top",
+                styles: {
+                    backgroundColor: "red",
+                    fontSize: "20px",
+                },
+            });
+            setLoading(false);
+            return;
+        }
         const config={
             headers: {
                 "Content-Type": "application/json",
@@ -210,12 +256,14 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
                                 className="w-full border border-gray-300 rounded p-2"
                                 required
                             />
+                            <span className="text-xs font-semibold">Number of characters: {title.length}/200</span>
                         </div>
                         <div className="mb-4">
                             <label htmlFor="comment" className="block font-medium mb-1">
                                 Comment
                             </label>
                             <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[40vh] overflow-y-auto" value={comment} onChange={handleBodyChange}/>
+                            <span className="text-xs font-semibold">Number of characters: {comment.length}/20000</span>
                         </div>
                         <div className="mb-1">
                             <label htmlFor="rating" className="block font-medium mb-1">
@@ -295,6 +343,28 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
     const handleSubmit = async(e) => {
         e.preventDefault();
         setLoading(true);
+        if(title.length>200){
+            ToastMaker("Title should be less than 200 characters!!!", 3000, {
+                valign: "top",
+                styles: {
+                    backgroundColor: "red",
+                    fontSize: "20px",
+                },
+            });
+            setLoading(false);
+            return;
+        }
+        if(comment.length>20000){
+            ToastMaker("Comment should be less than 20000 characters!!!", 3000, {
+                valign: "top",
+                styles: {
+                    backgroundColor: "red",
+                    fontSize: "20px",
+                },
+            });
+            setLoading(false);
+            return;
+        }
         const config={
             headers: {
                 "Content-Type": "application/json",
@@ -360,12 +430,14 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
                                 className="w-full border border-gray-300 rounded p-2"
                                 required
                             />
+                            <span className="text-xs font-semibold">Number of characters: {title.length}/200</span>
                         </div>
                         <div className="mb-4">
                             <label htmlFor="comment" className="block font-medium mb-1">
                                 Comment
                             </label>
                             <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[50vh] overflow-y-auto" value={comment} onChange={handleBodyChange}/>
+                            <span className="text-xs font-semibold">Number of character: {comment.length}/20000</span>
                         </div>
                         <div className="w-64 my-2">
                             <label htmlFor="select" className="block text-sm font-medium text-gray-700">

@@ -149,7 +149,7 @@ const Timeline = () => {
       <NavBar />
       { !loading &&
           <div className="bg-white mt-[-10px] w-full min-h-screen"> 
-            <div className="container mx-auto px-4 w-full md:w-1/2 mt-2 pt-3">
+            <div className="container mx-auto px-4 w-full md:w-1/2 mt-4 pt-3">
               <h1 className="text-3xl font-semibold text-center">My Timeline</h1>
               <div className="w-full mx-auto">
                 <div className="flex flex-row justify-end items-center mb-1">

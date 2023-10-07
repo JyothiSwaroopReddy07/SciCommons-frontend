@@ -4,7 +4,7 @@ import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
 import Loader from '../Loader/Loader';
 import {MdLocationPin, MdSubscriptions} from 'react-icons/md';
-import {BsGithub} from 'react-icons/bs';
+import {BsFillCloudArrowDownFill, BsGithub} from 'react-icons/bs';
 import {BiLogoGmail} from 'react-icons/bi';
 import {CgWebsite} from 'react-icons/cg';
 import {FaUsers, FaBook, FaPencilAlt} from 'react-icons/fa';
@@ -64,7 +64,74 @@ const CommunityEditPage = () => {
         e.preventDefault();
         
         setLoading(true)
-        const form_data = new FormData(e.target);   
+        const form_data = new FormData(e.target);
+        if(subtitle.length > 300){
+            ToastMaker("Subtitle should be less than 300 characters", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            setLoading(false)
+            return;
+        }
+        if(name.length > 300) {
+            ToastMaker("Community Name should be less than 300 characters", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            setLoading(false)
+            return;
+        }
+        if(location.length > 100) {
+            ToastMaker("location should be less than 100 characters", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            setLoading(false)
+            return;
+        }
+        if(github.length > 200) {
+            ToastMaker("Github link should be less than 200 characters", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            setLoading(false)
+            return;
+        }
+        if(website.length > 300) {
+            ToastMaker("Website link should be less than 300 characters", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            setLoading(false)
+            return;
+        }
+        if(email.length > 100) {
+            ToastMaker("Email should be less than 100 characters", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            setLoading(false)
+            return;
+        }
+
         try {
           const response = await axios.put(`https://scicommons-backend.onrender.com/api/community/${community.Community_name}/`, form_data, {
             headers: {
@@ -120,6 +187,13 @@ const CommunityEditPage = () => {
         setEmail(e.target.value)
     }
 
+    const fillLoad = () => {
+        if(loading){
+            return "Saving";
+        }
+        return "Save";
+    }
+
   return (
     <div className='w-full'>
     {(loading || community===null) && <div className="w-full"><Loader/></div> }
@@ -155,7 +229,7 @@ const CommunityEditPage = () => {
                 </div>
 
             {showModal ? (
-                <div className="w-full">
+                <div className="w-full flex flex-row items-center justify-center">
                     <div className="w-4/5 z-50 p-5 bg-white absolute top-20 overflow-y-auto h-3/4 mx-auto rounded">
                         <div className="mb-6">
                             <h1 className="text-md md:text-2xl font-semibold text-green-700 text-center">Edit Community Details</h1>
@@ -173,7 +247,7 @@ const CommunityEditPage = () => {
                             <form onSubmit={(e) => submitForm(e)} encType="multipart/form-data" className="w-full">
                             <label
                                 htmlFor="Community_name"
-                                className="block mb-4 text-sm font-medium text-gray-900"
+                                className="block mb-4 text-lg font-medium text-gray-900"
                                 >
                                 Community Name
                                 </label>
@@ -183,13 +257,15 @@ const CommunityEditPage = () => {
                                 id="Community_name"
                                 name="Community_name"
                                 value={community?.Community_name}
+                                onChange={(e)=>{setName(e.target.value)}}
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                 disabled
                                 />
+                                <span className="text-xs font-semibold">Number of characters: {name.length}/300</span>
                                 <div className="mb-6">
                                 <label
                                     htmlFor="subtitle"
-                                    className="block mb-2 text-sm font-medium text-gray-900"
+                                    className="block mb-2 text-lg font-medium text-gray-900"
                                 >
                                     Subtitle
                                 </label>
@@ -203,12 +279,13 @@ const CommunityEditPage = () => {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                     required
                                 />
+                                <span className="text-xs font-semibold">Number of characters : {subtitle.length}/300</span>
                                 </div>
 
                                 <div className="mb-6">
                                 <label
                                     htmlFor="description"
-                                    className="block mb-2 text-sm font-medium text-gray-900"
+                                    className="block mb-2 text-lg font-medium text-gray-900"
                                 >
                                     Description
                                 </label>
@@ -222,11 +299,12 @@ const CommunityEditPage = () => {
                                     placeholder=""
                                     required
                                 />
+                                <span className="text-xs font-semibold">Number of characters : {description.length}</span>
                                 </div>
                                 <div className="mb-6">
                                 <label
                                     htmlFor="location"
-                                    className="block mb-2 text-sm font-medium text-gray-900"
+                                    className="block mb-2 text-lg font-medium text-gray-900"
                                 >
                                     Location
                                 </label>
@@ -240,12 +318,13 @@ const CommunityEditPage = () => {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                     required
                                 />
+                                <span className="text-xs font-semibold">Number of characters : {location.length}/100</span>
                                 </div>
 
                                 <div className="mb-6">
                                 <label
                                     htmlFor="github"
-                                    className="block mb-2 text-sm font-medium text-gray-900"
+                                    className="block mb-2 text-lg font-medium text-gray-900"
                                 >
                                     Github Link (if any)
                                 </label>
@@ -258,12 +337,13 @@ const CommunityEditPage = () => {
                                     onChange={handleGithubChange}
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                 />
+                                <span className="text-xs font-semibold">Number of characters : {github.length}/200</span>
                                 </div>
 
                                 <div className="mb-6">
                                 <label
                                     htmlFor="website"
-                                    className="block mb-2 text-sm font-medium text-gray-900"
+                                    className="block mb-2 text-lg font-medium text-gray-900"
                                 >
                                     Website Link
                                 </label>
@@ -277,12 +357,13 @@ const CommunityEditPage = () => {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                     required
                                 />
+                                <span className="text-xs font-semibold">Number of characters : {website.length}/300</span>
                                 </div>
 
                                 <div className="mb-6">
                                 <label
                                     htmlFor="email"
-                                    className="block mb-2 text-sm font-medium text-gray-900"
+                                    className="block mb-2 text-lg font-medium text-gray-900"
                                 >
                                     Email (of the Community)
                                 </label>
@@ -296,6 +377,7 @@ const CommunityEditPage = () => {
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                                     required
                                 />
+                                <span className="text-xs font-semibold">Number of characters : {email.length}/100</span>
                                 </div>
 
                                 <button
@@ -307,7 +389,7 @@ const CommunityEditPage = () => {
                                     <div className="rounded-full border-2 border-t-2 border-green-100 h-4 w-4 animate-spin"></div>
                                 </div>
                                 )}
-                                {loading ? 'Loading...' : 'Save Changes'}
+                                {fillLoad()}
                                 </button>
                             </form>
                         </div>

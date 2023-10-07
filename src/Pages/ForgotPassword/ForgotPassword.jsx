@@ -15,6 +15,7 @@ const ForgotPassword = () => {
     const [loading, setLaoding] = useState(false);
     const [isPasswordHidden1, setPasswordHidden1] = useState(false)
     const [isPasswordHidden2, setPasswordHidden2] = useState(false)
+    const [disabled, setDisabled] = useState(false);
     const {token} = useGlobalContext()
 
     const navigate = useNavigate()
@@ -24,6 +25,88 @@ const ForgotPassword = () => {
             navigate('/')
         }
     },[])
+
+    const validatePassword = (password) => {
+
+        const specialCharRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\\|'"\-=]/;
+        const uppercaseRegex = /[A-Z]/;
+        const lowercaseRegex = /[a-z]/;
+        const digitRegex = /[0-9]/;
+
+        const hasSpecialChar = specialCharRegex.test(password);
+        const hasUppercase = uppercaseRegex.test(password);
+        const hasLowercase = lowercaseRegex.test(password);
+        const hasDigit = digitRegex.test(password);
+        const isLengthValid = password.length >= 8;
+    
+        return hasSpecialChar && hasUppercase && hasLowercase && hasDigit && isLengthValid;
+    }
+
+    const validations = (data) => {
+        if((data.email.includes("@") && data.email.includes(".")) === false) {
+            ToastMaker("Invalid Email", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            return false;
+        }
+
+        if(validatePassword(password1)===false){
+            ToastMaker("Password must contain at least 8 characters, one uppercase, one lowercase, one digit and one special character", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            return false;
+        }
+
+        if(validatePassword(password2)===false) {
+            ToastMaker("Re-Entered Password must contain at least 8 characters, one uppercase, one lowercase, one digit and one special character", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            return false;
+        }
+        if(password1!==password2) {
+            ToastMaker("The 2 passwords do not match", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            return false;
+        }
+        if(otp.length!==6){
+            ToastMaker("OTP must have 6 digits", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            return false;
+        }
+        if(isNaN(otp)) {
+            ToastMaker("OTP must be a number", 3500,{
+                valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
+            return false;
+        }
+        return true;
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,6 +123,7 @@ const ForgotPassword = () => {
                   fontSize: "20px",
                 },
               });
+            setDisabled(true);
         } catch (error) {
             ToastMaker(error.response.data.error, 3000, {
                 valign: "top",
@@ -56,6 +140,11 @@ const ForgotPassword = () => {
     const handleChange = async (e) => {
         e.preventDefault();
         setLaoding(true);
+        if(validations({email:email,password:password1})=== false) {
+            setLaoding(false);
+            return;
+        }
+
         try {
             const response = await axios.post(
                 `https://scicommons-backend.onrender.com/api/user/reset_password/`,
@@ -102,6 +191,7 @@ const ForgotPassword = () => {
                                         type="email"
                                         placeholder="Enter the email"
                                         value={email}
+                                        disabled = {disabled}
                                         onChange={(e)=>{setEmail(e.target.value)}}
                                         className="w-full bg-transparent outline-none rounded-lg"
                                     />

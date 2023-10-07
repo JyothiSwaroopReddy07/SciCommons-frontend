@@ -34,6 +34,17 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
       e.preventDefault();
       setLoadSubmit(true);
       const comment = document.getElementsByName("comment")[0].value;
+      if (comment.length > 200) {
+        ToastMaker("Comment is too large. Maximum allowed size is 200 characters", 3500, {
+          valign: 'top',
+            styles : {
+                backgroundColor: 'red',
+                fontSize: '20px',
+            }
+        })
+        setLoadSubmit(false);
+        return;
+      }
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -213,7 +224,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
     return (
       <>
       
-      <div className="border rounded-lg p-4 my-4 rounded-xl shadow-xl bg-white">
+      <div className="border p-2 my-4 shadow-lg md:shadow-xl bg-white">
         <div className="flex flex-row justify-between">
           <div className="flex items-center">
             {post.avatar.includes("None")?<SlUser className="w-6 h-6 mr-2"/>:
@@ -237,7 +248,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
           </div>
         </div>
         {/* Conditionally render image section */}
-        <div className="container w-full my-4">
+        <div className="container w-full my-2">
           <ReactQuill
             value={styleLinksWithColor(post.body)}
             readOnly={true}
@@ -292,10 +303,10 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
                   />
                 )}
                 <input
-                style={{"border": "2px solid #cbd5e0"}}
+                style={{"borderBottom": "2px solid #cbd5e0"}}
                   type="text"
                   placeholder="Add a comment..."
-                  className="w-full border rounded-lg p-2 mr-2 rounded-xl"
+                  className="w-full p-1 mr-2 active:border-2 active:border-green-50"
                   name="comment"
                 />
                 <button
@@ -362,6 +373,7 @@ const Dropdown = ({post, onDeletePost, handleEditChange}) => {
           },
       };
         try{
+          console.log(post.id);
           const res = await axios.delete(`https://scicommons-backend.onrender.com/api/feed/${post.id}/`, config);
           await onDeletePost(post.id);
           ToastMaker("Post Deleted Successfully", "success")
@@ -430,6 +442,7 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
 
     const [updatedImage, setUpdatedImage] = useState(null);
     const [updatedBody, setUpdatedBody] = useState(post.body);
+    const [loading, setLoading] = useState(false);
     const {token} = useGlobalContext();
     const navigate = useNavigate();
   
@@ -454,7 +467,17 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
       const form_data = new FormData(e.target);
   
       form_data.append('body', updatedBody);
-  
+      console.log(updatedBody, updatedBody.length);
+      if(updatedBody.length >500) {
+        ToastMaker('Post body is too large. Maximum allowed size is 500 characters', 3500,{
+          valign: 'top',
+            styles : {
+                backgroundColor: 'red',
+                fontSize: '20px',
+            }
+        })
+        return;
+      }
       const file = form_data.get('image');
       if (file && file.size > 10485760) {
         ToastMaker('File size is too large. Maximum allowed size is 10 MB', 3500,{
@@ -469,7 +492,7 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
       } else {
         console.log('File size is ok')
       }
-      
+      setLoading(true);
       const config = {
           headers: {
               "Content-Type": "multipart/form-data",
@@ -478,6 +501,9 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
           },
       };
       try{
+        if(updatedImage === null) {
+          form_data.delete('image');
+        }
           const res = await axios.put(`https://scicommons-backend.onrender.com/api/feed/${post.id}/`, form_data, config);
           ToastMaker('Post Edited Successfully', 3500,{
             valign: 'top',
@@ -494,28 +520,39 @@ const PostEditModal = ({post, setShowEdit, handleEditChange}) => {
       catch(err) {
           console.log(err)
       }
+      setLoading(false);
     };
+
+    const fillEdit = () => {
+      if(loading){
+        return "submitting";
+      }
+      return "Edit";
+    }
   
     return (
       <>
-          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 opacity-200 z-50">
-          <div className="p-4 bg-slate-100 w-2/3 h-100 rounded-md shadow-md">
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+          <div className="p-4 bg-slate-100 w-5/6 md:w-2/3 h-100 rounded-md shadow-md">
               <form onSubmit={(e)=>handleEditSubmit(e)} encType="multipart/form-data">
-                <ReactQuill theme="snow" value={updatedBody} onChange={handleBodyChange} className="w-full p-2 mb-4 resize-none border rounded"/>
-                  <div className="flex justify-between items-center">
+                <ReactQuill theme="snow" value={updatedBody} onChange={handleBodyChange} className="w-full p-2 mb-4 bg-white resize-none border rounded"/>
+                <span className="text-sm font-semibold">Number of character: {updatedBody.length}</span>
+                  <div className="flex justify-between items-center mt-2">
                       <input
                       style={{"border": "2px solid #cbd5e0"}}
                       type="file"
                       accept="image/*"
                       className="mb-4 rounded-xl"
                       name="image"
+                      value={updatedImage}
+                      onChange={(e)=>{e.preventDefault(); handleImageChange(e)}}
                       />
                       <div className="flex flex-row">
                         <button
                         type="submit"
                         className="bg-green-500 hover:bg-green-700 text-white h-8 px-2 mr-1 rounded"
                         >
-                        Edit
+                        {fillEdit()}
                         </button>
                         <button style={{cursor:"pointer"}} onClick={()=> setShowEdit(false)} className="bg-red-500 hover:bg-red-700 px-2 h-8 text-white rounded">Cancel</button>
                         </div>

@@ -42,8 +42,8 @@ const AcceptModal = ({setShowAccept,article,community, handleModified}) => {
         <>
             <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
                 <div className="w-full h-full flex flex-col items-center justify-center">
-                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
-                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Are you sure you want to accept this paper for reviewal process?</h1>
+                    <div className="w-5/6 md:w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-md md:text-xl font-bold text-gray-600 mb-4">Are you sure you want to accept this paper for reviewal process?</h1>
                         <div className="w-full flex flex-row items-center justify-center">
                             <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" style={{cursor:"pointer"}} onClick={handleAccept}>{loading?"loading...":"Yes"}</button>
                             <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" style={{cursor:"pointer"}} onClick={() => {setShowAccept(false)}}>No</button>
@@ -97,8 +97,8 @@ const RejectModal = ({setShowReject,article,community, handleReject}) => {
         <>
             <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
                 <div className="w-full h-full flex flex-col items-center justify-center">
-                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
-                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Are you sure you want to reject this paper?</h1>
+                    <div className="w-5/6 md:w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-md md:text-xl font-bold text-gray-600 mb-4">Are you sure you want to reject this paper?</h1>
                         <div className="w-full flex flex-row items-center justify-center">
                             <button className="text-sm font-semibold text-white p-2 px-5 mr-5 rounded-lg bg-green-600 flex" style={{cursor:"pointer"}} onClick={handleDelete}>{loading?"loading...":"Yes"}</button>
                             <button className="text-sm font-semibold text-white p-2 px-5 rounded-lg bg-red-600 flex ml-2" style={{cursor:"pointer"}} onClick={() => {setShowReject(false)}}>No</button>
@@ -114,11 +114,24 @@ const PublishModal = ({setShowPublish,article,community}) => {
 
     const [loading, setLoading] = useState(false);
     const {token} = useGlobalContext();
+    const [doi, setDoi] = useState("");
+    const [license, setLicense] = useState("");
 
     const handlePublish = async (e) => {
         e.preventDefault();
         const form_data = new FormData(e.target);
         setLoading(true)
+        if(doi.length>255 || license.length>255){
+            ToastMaker("Doi,License must have less than 255 characters!!!", 3500,{
+                valign: 'top',
+                    styles : {
+                        backgroundColor: 'red',
+                        fontSize: '20px',
+                    }
+                })
+            setLoading(false)
+            return;
+        }
         try {
             const config = {
                 headers: {
@@ -153,14 +166,16 @@ const PublishModal = ({setShowPublish,article,community}) => {
 
     return (
         <>
-            <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50">
+            <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-10 z-50">
                 <div className="w-full h-full flex flex-col items-center justify-center"> 
-                    <div className="w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
-                        <h1 className="text-2xl font-bold text-gray-600 mb-4">Update Publication details</h1>
+                    <div className="w-5/6 md:w-1/2 bg-white p-5 rounded-lg flex flex-col items-center justify-center">
+                        <h1 className="text-md md:text-xl font-bold text-gray-600 mb-4">Update Publication details</h1>
                         <form onSubmit={(e) => handlePublish(e)} encType="multipart/form-data">
                             <div className="w-full flex flex-col items-center justify-center">
-                                    <input style={{"border": "2px solid #cbd5e0"}} className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="doi" type="text" placeholder="Add Doi"/>
-                                    <input style={{"border": "2px solid #cbd5e0"}} className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="license" on type="text" placeholder="Add License"/>
+                                    <input style={{"border": "2px solid #cbd5e0"}} className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="doi" type="text" value={doi} onChange={(e)=>{setDoi(e.target.value)}} placeholder="Add Doi"/>
+                                    <span className="text-xs font-semibold">Number of characters: {doi.length}/255</span>
+                                    <input style={{"border": "2px solid #cbd5e0"}} className="border-2 border-gray-400 rounded-md w-full h-10 px-2 mt-3" name="license" on type="text" value={license} onChange={(e)=>{setLicense(e.target.value)}} placeholder="Add License"/>
+                                    <span className="text-xs font-semibold">Number of characters: {license.length}/255</span>
                                     <input style={{"border": "2px solid #cbd5e0"}} type="file" required accept="application/pdf" name="published_article_file" className="block w-full px-5 py-2 mt-2 text-sm text-gray-600 bg-white border border-gray-200 rounded-lg file:bg-gray-200 file:text-gray-700 file:text-sm file:px-4 file:py-1 file:border-none file:rounded-full  placeholder-gray-400/70  focus:border-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
                                 
                             </div>
@@ -287,7 +302,7 @@ const AdminArticlePage = ({community}) => {
                         <div>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
-                                className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
+                                className="absolute top-0 bottom-0 w-4 h-4 md:w-6 md:h-6 my-auto text-gray-400 md:left-3"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke="currentColor"
@@ -305,13 +320,13 @@ const AdminArticlePage = ({community}) => {
                                 placeholder="Search using keywords, authors, articles"
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="w-full py-3 pl-12 pr-4 text-green-600 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-green-600"
+                                className="w-full py-1 pl-4 pr-2 md:py-3 md:pl-12 md:pr-4 text-green-600 border rounded-md outline-none bg-gray-50 focus:bg-white focus:border-green-600"
                             />
                         </div>
                         <button
                             type="submit"
                             onClick={handleSearch}
-                            className="absolute top-0 bottom-0 right-0 px-4 py-3 text-sm font-semibold text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:bg-gray-700"
+                            className="absolute top-0 bottom-0 right-0 p-1 md:px-4 md:py-3 text-sm font-semibold text-white bg-gray-600 rounded-md hover:bg-gray-700 focus:bg-gray-700"
                         >
                             Search
                         </button>

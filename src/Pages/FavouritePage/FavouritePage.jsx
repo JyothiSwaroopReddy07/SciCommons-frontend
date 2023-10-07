@@ -144,7 +144,6 @@ const FavouritePage = () => {
                     { loading ? <Loader /> :  <ArticleCard articles={sortedArticles} /> }
                 </div>
             </div>
-            <Footer />
         </>
     )
 }

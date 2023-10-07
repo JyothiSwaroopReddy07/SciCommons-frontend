@@ -26,6 +26,28 @@ const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComme
   const handleSubmit = async(e) => {
       e.preventDefault();
       setLoading(true);
+      if(title.length >200){
+        ToastMaker("Title is too long!!!", 3000, {
+          valign: "top",
+          styles: {
+            backgroundColor: "red",
+            fontSize: "20px",
+          },
+        });
+        setLoading(false);
+        return;
+      }
+      if(comment.length >20000){
+        ToastMaker("Comment is too long!!!", 3000, {
+          valign: "top",
+          styles: {
+            backgroundColor: "red",
+            fontSize: "20px",
+          },
+        });
+        setLoading(false);
+        return;
+      }
       const config={
           headers: {
               "Content-Type": "application/json",
@@ -83,12 +105,14 @@ const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComme
                               className="w-full border border-gray-300 rounded p-2"
                               required
                           />
+                          <span className="text-xs font-semibold">Number of characters: {title.length}/200</span>
                       </div>
                       <div className="mb-4">
                           <label htmlFor="comment" className="block font-medium mb-1">
                               Comment
                           </label>
                           <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[40vh] overflow-y-auto" value={comment} onChange={handleCommentChange}/>
+                          <span className="text-xs font-semibold">Number of characters: {comment.length}/20000</span>
                       </div>
                       <button
                       type="submit"
@@ -126,6 +150,28 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
   const handleSubmit = async(e) => {
       e.preventDefault();
       setLoading(true);
+      if(title.length>200){
+        ToastMaker("Title is too long!!!", 3000, {
+          valign: "top",
+          styles: {
+            backgroundColor: "red",
+            fontSize: "20px",
+          },
+        });
+        setLoading(false);
+        return;
+      }
+      if(comment.length >20000){
+        ToastMaker("Comment is too long!!!", 3000, {
+          valign: "top",
+          styles: {
+            backgroundColor: "red",
+            fontSize: "20px",
+          },
+        });
+        setLoading(false);
+        return;
+      }
       const config={
           headers: {
               "Content-Type": "application/json",
@@ -183,12 +229,14 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
                               className="w-full border border-gray-300 rounded p-2"
                               required
                           />
+                          <span className="text-xs font-semibold">Number of characters: {title.length}/200</span>
                       </div>
                       <div className="mb-4">
                           <label htmlFor="comment" className="block font-medium mb-1">
                               Comment
                           </label>
                           <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[40vh] overflow-y-auto" value={comment} onChange={handleCommentChange}/>
+                          <span className="text-xs font-smibold">Number of characters: {comment.length}/20000</span>
                       </div>
                       <button
                       type="submit"
@@ -228,7 +276,7 @@ const Comments = ({ comment, article, colour }) => {
 
   const colorClasses = {
     0: 'bg-white',
-    1: 'bg-green-100',
+    1: 'bg-slate-100',
   };
 
   const findTime = (date) => {

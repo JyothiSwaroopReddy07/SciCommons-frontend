@@ -30,7 +30,17 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
   const handleComment = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+    if(body.length>200) {
+      ToastMaker("Comment should be less than 200 characters", 3000, {
+        valign: "top",
+        styles: {
+          backgroundColor: "red",
+          fontSize: "20px",
+        },
+      });
+      setLoading(false);
+      return;
+    }
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -68,7 +78,7 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
       <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
         <div className="bg-white w-2/3 rounded-lg shadow-lg p-6 max-h-[75vh] overflow-y-auto">
           <div className="flex flex-col mb-2 mt-2 w-full">
-            <div className="flex flex-row ">
+            <div className="flex flex-col ">
               {user.profile_pic_url.includes("None") ? (
                 <SlUser className="w-6 h-6 sticky rounded-full mr-4" />
               ) : (
@@ -84,6 +94,7 @@ const ReplyModal = ({ comment, setShowReply, handleReply, addReply }) => {
                 value={body}
                 onChange={handleBodyChange}
               />
+              <span className="text-xs font-semibold">Number of characters: {body.length}/200</span>
             </div>
             <div className="flex flex-row justify-center">
               <button
@@ -132,6 +143,18 @@ const EditModal = ({ comment, setShowEdit, changeComment }) => {
         Authorization: `Bearer ${token}`,
       },
     };
+
+    if(body.length>200){
+      ToastMaker("Comment should be less than 200 characters", 3000, {
+        valign: "top",
+        styles: {
+          backgroundColor: "red",
+          fontSize: "20px",
+        },
+      });
+      setLoading(false);
+      return;
+    }
     try {
       const res = await axios.put(
         `https://scicommons-backend.onrender.com/api/feedcomment/${comment.id}/`,
@@ -164,6 +187,7 @@ const EditModal = ({ comment, setShowEdit, changeComment }) => {
           value={body}
           onChange={handleBodyChange}
         />
+        <span className="text-xs my-2 font-semibold">Number of characters: {body.length}/200</span>
         <div className="flex justify-end">
           <button
             className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold py-2 px-4 rounded mr-2"

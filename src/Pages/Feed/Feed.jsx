@@ -70,10 +70,10 @@ const PostModal = ({setIsAccordionOpen}) => {
   return (
     <>
       <div className="w-full h-full fixed block top-0 left-0 bg-gray-900 bg-opacity-50 z-50 flex flex-row items-center justify-center">
-          <div className="p-4 bg-slate-100 w-full md:w-1/2 rounded-md shadow-md max-h-4/5">
+          <div className="p-4 bg-slate-100 w-5/6 md:w-1/2 rounded-md shadow-md max-h-4/5">
           <form onSubmit={(e)=>handleSubmit(e)} encType="multipart/form-data">
                 <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[40vh] overflow-y-auto" value={body} onChange={handleBodyChange}/>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col justify-between items-center">
                     <input
                     style={{"border": "2px solid #cbd5e0"}}
                     type="file"
@@ -81,7 +81,7 @@ const PostModal = ({setIsAccordionOpen}) => {
                     className="mb-4 rounded-xl"
                     name="image"
                     />
-                    <div className="flex flex-row">
+                    <div className="flex flex-row justify-between">
                       <button
                       type="submit"
                       className="bg-green-500 hover:bg-green-700 text-white h-8 px-2 rounded"
@@ -211,14 +211,14 @@ const Feed = () => {
     <>
     <NavBar />
     { !loading &&
-        <div className="bg-white min-h-screen"> 
-        <div className="p-4 w-full md:w-1/2 mx-auto">
-          <div className="flex flex-row justify-end items-center mb-1">
+        <div className="bg-green-50 md:bg-white min-h-screen"> 
+        <div className="p-2 w-full md:w-1/2 mx-auto">
+          <div className="flex flex-row justify-end items-center">
               <button onClick={()=>{setIsAccordionOpen(!isAccordionOpen)}} className="ml-2 text-md font-semibold text-center bg-green-500 text-white rounded-md p-1 shadow-xl float-right">Add Post</button>
           </div>
             {isAccordionOpen && <PostModal setIsAccordionOpen={setIsAccordionOpen}/>}
         </div>
-        <div className="container mx-auto px-4 w-full md:w-1/2">
+        <div className="mx-auto w-full md:w-1/2">
           {posts.length > 0 && posts.map((post) => (
               <Post key={post.id} post={post} onDeletePost={onDeletePost} handleEditChange={handleEditChange} />
           ))}
@@ -230,7 +230,7 @@ const Feed = () => {
           }
           {
             posts.length === 0 && <div className="flex justify-center h-screen">
-              <p className="text-2xl font-semibold">No Posts to show</p>
+              <p className="text-md md:text-2xl font-semibold">No Posts to show</p>
             </div>
           }
 

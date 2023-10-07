@@ -130,7 +130,7 @@ const PubMedSearch = () => {
       <div className="m-4">
         {loading && <Loader/>}
         {!loading && results.length > 0 && results.map(article => (
-          <div key={article.url} className="shadow-xl bg-gray-50 rounded-lg p-2 my-2 w-2/3 md:w-5/6 mx-auto">
+          <div key={article.url} className="shadow-xl bg-gray-50 rounded-lg p-2 my-2 w-full md:w-5/6 mx-auto">
             <h2 className="text-3xl text-gray-600 font-bold">{article.title}</h2>
             <br/>
             <p className="text-sm"><span className="text-green-600 font-bold">Author(s) : </span>{article.authors.map((author)=>{
@@ -163,6 +163,12 @@ const SubmitArticle = () => {
       username: "",
     },
   ]);
+  const [keywords, setKeywords] = useState("");
+  const [Abstract, setAbstract] = useState("");
+  const [link, setLink] = useState("");
+  const [video, setVideo] = useState("");
+  const [Code, setCode] = useState("");
+  const [name,setName] = useState("");
 
   const [unregistered_authors, setUnRegistredAuthors] = useState([
     {
@@ -184,7 +190,16 @@ const SubmitArticle = () => {
   const validateKeywords = (value) => {
     // Regular expression to match characters other than alphabets, commas, and spaces
     const regex = /[^a-zA-Z, ]/;
-  
+    if(value.length > 255) {
+      ToastMaker("Keywords should be less than 255 characters", 3500,{ 
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      return false;
+    }
     // Check if the value contains any invalid characters
     if (regex.test(value)) {
       return false;
@@ -204,8 +219,96 @@ const SubmitArticle = () => {
       if(unregistered_authors[i].fullName === "" || unregistered_authors[i].email === ""){ 
         continue;
       } else{
+        if((unregistered_authors[i].email.includes("@") && unregistered_authors[i].email.includes(".")) === false){
+          ToastMaker("Please enter the correct email!!!", 3500,{
+            valign: 'top',
+              styles : {
+                  backgroundColor: 'red',
+                  fontSize: '20px',
+              }
+          })
+          setLoading(false);
+          return;
+        }
+        if(unregistered_authors[i].email.length >255){
+          ToastMaker("Email should be less than 255 characters", 3500,{
+            valign: 'top',
+              styles : {
+                  backgroundColor: 'red',
+                  fontSize: '20px',
+              }
+          })
+          setLoading(false);
+          return;
+        }
+        if(unregistered_authors[i].fullName.length > 255){
+          ToastMaker("Full Name should be less than 255 characters", 3500,{
+            valign: 'top',
+              styles : {
+                  backgroundColor: 'red',
+                  fontSize: '20px',
+              }
+          })
+          setLoading(false);
+          return;
+        }
         unregistered.push(unregistered_authors[i]);
       }
+    }
+    if(form_data.get('Abstract').length > 5000){
+      ToastMaker("Abstract should be less than 5000 characters", 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(form_data.get('article_name').length > 300){
+      ToastMaker("Abstract should be less than 300 characters", 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(form_data.get('video').length > 255){
+      ToastMaker("Video Link should be less than 255 characters", 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(form_data.get('link').length > 255){
+      ToastMaker("Article Link should be less than 255 characters", 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(form_data.get('Code').length > 100){
+      ToastMaker("Code Link should be less than 100 characters", 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
     }
     if(validateKeywords(form_data.get('keywords'))=== false){
       ToastMaker("Please enter the correct keywords following the format specified", 3500,{
@@ -215,6 +318,7 @@ const SubmitArticle = () => {
               fontSize: '20px',
           }
       })
+      setLoading(false);
       return;
     }
     for(let i=0; i < authors.length; i++){
@@ -233,6 +337,14 @@ const SubmitArticle = () => {
             },
           })
           if(response.data.success.results.length === 0 || (response.data.success.results[0].username !== authors[i].username)){
+            setLoading(false);
+            ToastMaker("Please enter the correct usernames!!!", 3500,{
+              valign: 'top',
+                styles : {
+                    backgroundColor: 'red',
+                    fontSize: '20px',
+                }
+            })
             return;
           }
           else {
@@ -247,11 +359,11 @@ const SubmitArticle = () => {
                   fontSize: '20px',
               }
           })
+          setLoading(false);
           return;
         }
       }
     }
-
 
     form_data.delete('authors');
     form_data.delete('communities');
@@ -290,6 +402,7 @@ const SubmitArticle = () => {
           }
       })
       console.log(error);
+      setLoading(false);
       return;
     }
     setLoading(false);
@@ -397,9 +510,12 @@ const SubmitArticle = () => {
               type="text"
               id="article_name"
               name="article_name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
               required
             />
+            <span className="text-xs font-semibold">Number of characters: {name.length}/300</span>
           </div>
           <div>
             <label
@@ -503,9 +619,12 @@ const SubmitArticle = () => {
             type="text"
             id="keywords"
             name="keywords"
+            value={keywords}
+            onChange={(e) => setKeywords(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
+          <span className="text-xs font-semibold">Number of characters: {keywords.length}/255</span>
         </div>
         <div className="mb-6">
           <label
@@ -519,8 +638,11 @@ const SubmitArticle = () => {
             type="url"
             id="link"
             name="link"
+            value={link}
+            onChange={(e) => setLink(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
           />
+          <span className="text-xs font-semibold">Number of characters: {link.length}/255</span>
         </div>
 
         <div className="mb-6">
@@ -535,8 +657,11 @@ const SubmitArticle = () => {
             type="url"
             id="video"
             name="video"
+            value={video}
+            onChange={(e) => setVideo(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
           />
+          <span className="text-xs font-semibold">Number of characters: {video.length}/255</span>
         </div>
 
         <div className="mb-6">
@@ -550,9 +675,12 @@ const SubmitArticle = () => {
           style={{"border": "2px solid #cbd5e0"}}
             type="url"
             id="Code"
+            value={Code}
+            onChange={(e) => setCode(e.target.value)}
             name="Code"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
           />
+          <span className="text-xs font-semibold">Number of characters: {Code.length}/100</span>
         </div>
         <div className="mb-6">
             <label htmlFor="file" className="block mb-2 text-sm font-medium text-gray-900">File</label>
@@ -570,9 +698,11 @@ const SubmitArticle = () => {
             name="Abstract"
             rows={4}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
-            placeholder=""
+            value={Abstract}
+            onChange={(e) => setAbstract(e.target.value)}
             required
           />
+          <span className="text-xs font-semibold">Number of characters: {Abstract.length}/5000</span>
         </div>
         <div className=" flex flex-row items-start space-x-5">
           <div className="max-w-xs">
@@ -601,7 +731,6 @@ const SubmitArticle = () => {
             style={{"border": "2px solid #cbd5e0"}}
               id="remember"
               type="checkbox"
-              value=""
               className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-green-300"
               required
             />

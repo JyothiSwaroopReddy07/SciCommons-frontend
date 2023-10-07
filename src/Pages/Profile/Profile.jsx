@@ -145,11 +145,11 @@ const Following = ({setFollowingModal, User}) => {
                         key={follower.id}
                         className="flex flex-row items-center w-full"
                       >
-                      {follower.avatar.includes("None")?<SlUser className="w-8 h-8 md:w-12 md:h-12 text-black-800 mr-4"/>:
+                      {follower.avatar.includes("None")?<SlUser className="w-6 h-6 md:w-10 md:h-10 text-black-800 mr-4"/>:
                         <img
                           src={follower.avatar}
                           alt={follower.username}
-                          className="w-8 h-8 md:w-12 md:h-12 rounded-full mr-4"
+                          className="w-6 h-6 md:w-10 md:h-10 rounded-full mr-4"
                         />
                       }
                         <div className="flex flex-row justify-between w-full">
@@ -161,13 +161,13 @@ const Following = ({setFollowingModal, User}) => {
                           </Link>
 
                           {User.username!== follower.username &&<button 
-                            className={`rounded-lg ${follower.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={(e)=>{handleFollow(e,index)}}>{fillFollow(follower)}
+                            className={`rounded-lg ${follower.isFollowing?"bg-gray-500":"bg-green-500"} text-xs md:text-sm text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={(e)=>{handleFollow(e,index)}}>{fillFollow(follower)}
                           </button>}
                         </div>
                       </div>))
                   )}
                     {followers.length === 0 && <div className="flex justify-center h-full w-full">
-                      <p className="text-lg md:text-2xl font-semibold">No Follows to show</p>
+                      <p className="text-sm md:text-md font-semibold">No Follows to show</p>
                       </div>}
 
                   </>)
@@ -293,11 +293,11 @@ const Followers = ({setFollowersModal, User}) => {
                         key={follower.id}
                         className="flex flex-row items-center w-full"
                       >
-                      {follower.avatar.includes("None")?<SlUser className="w-8 h-8 md:w-12 md:h-12 text-black-800 mr-2 md:mr-4"/>:
+                      {follower.avatar.includes("None")?<SlUser className="w-6 h-6 md:w-10 md:h-10 text-black-800 mr-2 md:mr-4"/>:
                         <img
                           src={follower.avatar}
                           alt={follower.username}
-                          className="w-8 h-8 md:w-12 md:h-12 rounded-full mr-2 md:mr-4"
+                          className="w-6 h-6 md:w-10 md:h-10 rounded-full mr-2 md:mr-4"
                         />
                       }
                         <div className="flex flex-row justify-between w-full">
@@ -309,13 +309,13 @@ const Followers = ({setFollowersModal, User}) => {
                           </Link>
 
                           {User.username!== follower.username &&<button 
-                            className={`rounded-lg ${follower.isFollowing?"bg-gray-500":"bg-green-500"} text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={(e)=>{handleFollow(e,index)}}>{fillFollow(follower)}
+                            className={`rounded-lg ${follower.isFollowing?"bg-gray-500":"bg-green-500"} text-xs md:text-sm text-white px-2 py-1`} style={{cursor:"pointer"}} onClick={(e)=>{handleFollow(e,index)}}>{fillFollow(follower)}
                           </button>}
                         </div>
                       </div>))
                   )}
                     {followers.length === 0 && <div className="flex justify-center h-full w-full">
-                      <p className="text-lg md:text-2xl font-semibold">No Followers to show</p>
+                      <p className="text-sm md:text-md font-semibold">No Followers to show</p>
                       </div>}
 
                   </>)

@@ -135,7 +135,6 @@ const Communities = () => {
             }
             </div>
         </div>
-        <Footer />
                 
     </>
   )

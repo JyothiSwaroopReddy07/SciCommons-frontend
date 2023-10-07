@@ -108,7 +108,7 @@ const BookMarks = () => {
           </div>
           <div className="container mx-auto px-4 w-full md:w-1/2 mt-2">
             {posts.length > 0 &&
-              posts.map((post) => <Post key={post.id} post={post} removePosts={removePosts}/>)}
+              posts.map((post) => <Post key={post.id} post={post} onDeletePost={removePosts}/>)}
             {posts.length === 0 && (
               <div className="flex flex-col justify-center items-center h-screen">
                 <p className="text-2xl font-semibold">

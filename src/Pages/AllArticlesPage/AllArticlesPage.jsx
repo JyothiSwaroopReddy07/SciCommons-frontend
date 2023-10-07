@@ -213,7 +213,6 @@ const AllArticlesPage = () => {
                 </div>}
             </div>
             </div>
-            <Footer />
         </>
     )
 }

@@ -14,6 +14,8 @@ const JoinRequest = () => {
     const [loading, setLoading] = useState(false);
     const [community, setCommunity] = useState(null);
     const {token} = useGlobalContext();
+    const [about, setAbout] = useState("");
+    const [summary, setSummary] = useState("");
 
 
     const loadCommunity = async (res) => {
@@ -57,6 +59,28 @@ const JoinRequest = () => {
       e.preventDefault();
       setLoading(true)
       const form_data = new FormData(e.target);
+      if(form_data.get('about').length >500) {
+        ToastMaker("About yourself should be less than 500 characters", 3500,{
+          valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+        setLoading(false)
+        return;
+      }
+        if(form_data.get('summary').length >500) {
+            ToastMaker("Summary should be less than 500 characters", 3500,{
+            valign: 'top',
+            styles : {
+                backgroundColor: 'red',
+                fontSize: '20px',
+            }
+        })
+            setLoading(false)
+            return;
+        }
       try {
         const response = await axios.post(`https://scicommons-backend.onrender.com/api/community/${communityName}/join_request/`, form_data, {
           headers: {
@@ -92,6 +116,13 @@ const JoinRequest = () => {
         setLoading(false);
     };
 
+    const fillLoad = () => {
+        if(loading){
+            return "Submitting";
+        }
+        return "Submit";
+    }
+
   return (
     <>
           <NavBar/>
@@ -113,10 +144,13 @@ const JoinRequest = () => {
                     id="about"
                     name="about"
                     rows={12}
+                    value={about}
+                    onChange={(e) => setAbout(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                     placeholder=""
                     required
                 />
+                <span className="text-xs font-semibold">Number of characters: {about.length}/500</span>
                 </div>
 
                 <div className="mb-6">
@@ -130,10 +164,13 @@ const JoinRequest = () => {
                     id="summary"
                     name="summary"
                     rows={12}
+                    value={summary}
+                    onChange={(e)=> setSummary(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
                     placeholder=""
                     required
                 />
+                <span className="text-xs font-semibold">Number of characters: {summary.length}/500</span>
                 </div>
 
                 <div className="flex items-start mb-6 mt-3">
@@ -171,7 +208,7 @@ const JoinRequest = () => {
                     <div className="rounded-full border-2 border-t-2 border-green-100 h-4 w-4 animate-spin"></div>
                 </div>
                 )}
-                {loading ? 'Loading...' : 'Submit'}
+                {fillLoad()}
                 </button>
             </form>
             </div>

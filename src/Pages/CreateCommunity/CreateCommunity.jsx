@@ -16,6 +16,15 @@ const CreateCommunity = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [Community_name, setCommunity_name] = useState("");
+  const [subtitle, setSubtitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [location, setLocation] = useState("");
+  const [github, setGithub] = useState("");
+  const [website, setWebsite] = useState("");
+
+
   const [errors, setErrors] = useState({
     Community_name: "",
   });
@@ -24,7 +33,72 @@ const CreateCommunity = () => {
     e.preventDefault();
     setLoading(true)
     const form_data = new FormData(e.target);
-    
+    if(email.length > 100) {
+      ToastMaker("Email is too long", 3500,{
+          valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(Community_name.length > 300) {
+      ToastMaker("Community name is too long", 3500,{
+          valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(subtitle.length > 300) {
+      ToastMaker("Subtitle is too long", 3500,{
+          valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(location.length > 100) {
+      ToastMaker("Location is too long", 3500,{
+          valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(github.length > 200) {
+      ToastMaker("Github link is too long", 3500,{
+          valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(website.length > 300) {
+      ToastMaker("Website link is too long", 3500,{
+          valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
     try {
       const response = await axios.post(baseURL, form_data, {
         headers: {
@@ -54,6 +128,13 @@ const CreateCommunity = () => {
     }
   };
 
+  const fillLoad = () => {
+    if(loading){
+      return "Submitting";
+    }
+    return "Submit";
+  }
+
 
   return (
     <>
@@ -78,6 +159,8 @@ const CreateCommunity = () => {
               type="text"
               id="Community_name"
               name="Community_name"
+              value={Community_name}
+              onChange={(e)=>{setCommunity_name(e.target.value)}}
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
               required
             />
@@ -86,6 +169,7 @@ const CreateCommunity = () => {
                     <p className="text-red-500 text-xs italic">{errors.Community_name}</p>
                 )
             }
+            <span className="text-xs font-semibold">Number of characters: {Community_name.length}/300</span>
           </div>
         </div>
 
@@ -101,9 +185,12 @@ const CreateCommunity = () => {
             type="text"
             id="subtitle"
             name="subtitle"
+            value={subtitle}
+            onChange={(e)=>{setSubtitle(e.target.value)}}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
+          <span className="text-xs font-semibold">Number of characters: {subtitle.length}/300</span>
         </div>
 
         <div className="mb-6">
@@ -117,10 +204,13 @@ const CreateCommunity = () => {
             id="description"
             name="description"
             rows={8}
+            value={description}
+            onChange={(e)=>{setDescription(e.target.value)}}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             placeholder=""
             required
           />
+          <span className="text-xs font-semibold">Number of characters: {description.length}</span>
         </div>
         <div className="mb-6">
           <label
@@ -134,9 +224,12 @@ const CreateCommunity = () => {
             type="test"
             id="location"
             name="location"
+            value={location}
+            onChange={(e)=>{setLocation(e.target.value)}}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
+          <span className="text-xs font-semibold">Number of characters: {location.length}/100</span>
         </div>
 
         <div className="mb-6">
@@ -151,8 +244,11 @@ const CreateCommunity = () => {
             type="url"
             id="github"
             name="github"
+            value={github}
+            onChange={(e)=>{setGithub(e.target.value)}}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
           />
+          <span className="text-xs font-semibold">Number of characters: {github.length}/200</span>
         </div>
 
         <div className="mb-6">
@@ -167,9 +263,12 @@ const CreateCommunity = () => {
             type="url"
             id="website"
             name="website"
+            value={website}
+            onChange={(e)=>{setWebsite(e.target.value)}}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
+          <span className="text-xs font-semibold">Number of characters: {website.length}/300</span>
         </div>
 
         <div className="mb-6">
@@ -184,9 +283,12 @@ const CreateCommunity = () => {
             type="email"
             id="email"
             name="email"
+            value={email}
+            onChange={(e)=>setEmail(e.target.value)}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5"
             required
           />
+          <span className="text-xs font-semibold">Number of characters: {email.length}/100</span>
         </div>
 
         <div className="flex items-start mb-6 mt-3">
@@ -224,7 +326,7 @@ const CreateCommunity = () => {
             <div className="rounded-full border-2 border-t-2 border-green-100 h-4 w-4 animate-spin"></div>
           </div>
         )}
-          {loading ? 'Loading...' : 'Submit'}
+          {fillLoad()}
         </button>
       </form>
     </div>
