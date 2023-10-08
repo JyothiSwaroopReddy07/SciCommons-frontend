@@ -262,6 +262,10 @@ const ForgotPassword = () => {
                                         className="w-full pr-12 pl-3 py-2 text-gray-700 bg-transparent outline-none border focus:border-green-600 shadow-sm rounded-lg"
                                     />
                     </div>
+                    <div className="relative max-w-screen mt-2">
+                        <span className="text-green-600 text-sm font-bold">Note : </span>
+                        <span className="text-xs text-gray-500 font-semibold">Passwords must be at least 8 characters long, contain at least one uppercase, one lowercase, one digit and one special character</span>
+                    </div>
                     <div className="m-2">
                         <button className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"
                                 style={{cursor:"pointer"}} onClick={handleChange}>Submit</button>

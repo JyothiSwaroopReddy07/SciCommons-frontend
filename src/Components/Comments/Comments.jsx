@@ -83,7 +83,12 @@ const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComme
       }
   }
 
-
+  const fillLoad = () => {
+    if(loading){
+      return "Posting...";
+    }
+    return "Post Comment"
+  }
   return (
       <>
           <div className="fixed inset-0 flex items-center justify-center w-full z-50 bg-gray-800 bg-opacity-50">
@@ -118,9 +123,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComme
                       type="submit"
                       className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-white rounded mr-2 font-semibold"
                       >
-                          {
-                              loading ? "Posting..." : "Post Comment"
-                          }
+                          {fillLoad()}
                       </button>
                       <button
                           className="px-4 py-2 bg-red-500 text-white rounded font-semibold"
@@ -207,6 +210,12 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
       }
   }
 
+  const fillLoad = () => {
+    if(loading){
+      return "Posting...";
+    }
+    return "Post Comment";
+  }
 
   return (
       <>
@@ -242,9 +251,7 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
                       type="submit"
                       className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-white rounded mr-2 font-semibold"
                       >
-                          {
-                              loading ? "Posting..." : "Post Comment"
-                          }
+                        {fillLoad()}
                       </button>
                       <button
                           className="px-4 py-2 bg-red-500 text-white rounded font-semibold"
@@ -328,13 +335,13 @@ const Comments = ({ comment, article, colour }) => {
   };
 
   const fillUserType = () => {
-    if(article.isArticleModerator){
+    if(article.isArticleModerator && comment.personal){
       return (<span className="inline-flex items-center gap-1.5 ml-3 p-[2px] rounded text-xs font-medium bg-purple-500 text-white">Moderator</span>)
     }
-    else if(article.isArticleReviewer){
+    else if(article.isArticleReviewer && comment.personal){
       return (<span className="inline-flex items-center gap-1.5 ml-3 p-[2px] rounded text-xs font-medium bg-purple-500 text-white">Reviewer</span>)
     }
-    else if(article.isAuthor) {
+    else if(article.isAuthor && comment.personal) {
       return (<span className="inline-flex items-center gap-1.5 ml-3 p-[2px] rounded text-xs font-medium bg-purple-500 text-white">Author</span>)
     }
   }
