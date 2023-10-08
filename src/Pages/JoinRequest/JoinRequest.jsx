@@ -59,8 +59,8 @@ const JoinRequest = () => {
       e.preventDefault();
       setLoading(true)
       const form_data = new FormData(e.target);
-      if(form_data.get('about').length >500) {
-        ToastMaker("About yourself should be less than 500 characters", 3500,{
+      if(form_data.get('about').length >5000) {
+        ToastMaker("About yourself should be less than 5000 characters", 3500,{
           valign: 'top',
           styles : {
               backgroundColor: 'red',
@@ -70,8 +70,8 @@ const JoinRequest = () => {
         setLoading(false)
         return;
       }
-        if(form_data.get('summary').length >500) {
-            ToastMaker("Summary should be less than 500 characters", 3500,{
+        if(form_data.get('summary').length >5000) {
+            ToastMaker("Summary should be less than 5000 characters", 3500,{
             valign: 'top',
             styles : {
                 backgroundColor: 'red',
@@ -150,7 +150,7 @@ const JoinRequest = () => {
                     placeholder=""
                     required
                 />
-                <span className="text-xs font-semibold">Number of characters: {about.length}/500</span>
+                <span className="text-xs font-semibold">Number of characters: {about.length}/5000</span>
                 </div>
 
                 <div className="mb-6">
@@ -170,7 +170,7 @@ const JoinRequest = () => {
                     placeholder=""
                     required
                 />
-                <span className="text-xs font-semibold">Number of characters: {summary.length}/500</span>
+                <span className="text-xs font-semibold">Number of characters: {summary.length}/5000</span>
                 </div>
 
                 <div className="flex items-start mb-6 mt-3">
