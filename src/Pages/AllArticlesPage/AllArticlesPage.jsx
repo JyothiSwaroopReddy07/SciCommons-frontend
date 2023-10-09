@@ -15,7 +15,7 @@ const AllArticlesPage = () => {
     const [articles, setArticles] = useState([]);
     const [loading, setLoading] = useState(false);
     const [selectedOption, setSelectedOption] = useState('All');
-    const [orderOption,setOrderOption] = useState("default");
+    const [orderOption,setOrderOption] = useState("Ascending");
     const [loadingmore, setLoadingMore] = useState(false);
     const {token} = useGlobalContext();
 
@@ -91,6 +91,7 @@ const AllArticlesPage = () => {
         } else {
             filter = "most_"+filter;
         }
+        console.log(filter);
         try{
             const response = await axios.get(`https://scicommons-backend.onrender.com/api/article/?search=${searchTerm}`,{
                 params:{
@@ -197,8 +198,8 @@ const AllArticlesPage = () => {
                                 value={orderOption}
                                 onChange={handleOrderChange}
                             >
-                                <option value="Ascending">Ascending</option>
                                 <option value="Descending">Descending</option>
+                                <option value="Ascending">Ascending</option>
                             </select>
                         </div>
                     </div>

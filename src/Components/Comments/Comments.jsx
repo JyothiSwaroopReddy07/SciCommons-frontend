@@ -334,17 +334,6 @@ const Comments = ({ comment, article, colour }) => {
     return coloredLinks;
   };
 
-  const fillUserType = () => {
-    if(article.isArticleModerator && comment.personal){
-      return (<span className="inline-flex items-center gap-1.5 ml-3 p-[2px] rounded text-xs font-medium bg-purple-500 text-white">Moderator</span>)
-    }
-    else if(article.isArticleReviewer && comment.personal){
-      return (<span className="inline-flex items-center gap-1.5 ml-3 p-[2px] rounded text-xs font-medium bg-purple-500 text-white">Reviewer</span>)
-    }
-    else if(article.isAuthor && comment.personal) {
-      return (<span className="inline-flex items-center gap-1.5 ml-3 p-[2px] rounded text-xs font-medium bg-purple-500 text-white">Author</span>)
-    }
-  }
 
   const fillConfidence = () => {
     if(comment.confidence === 1){
@@ -557,12 +546,12 @@ const Comments = ({ comment, article, colour }) => {
           </div>
           {show && (
           <>
-          <div className="w-full" style={{cursor:"pointer"}} onClick={()=>{setShow(!show)}}>
-              <span className="inline-flex items-center gap-1.5 rounded text-xs p-[2px] font-medium bg-red-500 text-white">{comment.Type}</span>
-              <span className="inline-flex items-center gap-1.5 ml-3 rounded text-xs p-[2px] font-medium bg-cyan-500 text-white">{comment.tag}</span>
-              <span className="inline-flex items-center gap-1.5 ml-3 rounded text-xs p-[2px] font-medium bg-orange-500 text-white">{comment.comment_type}</span>
-              {fillUserType(comment)}
-          </div>
+            <div className="w-full" style={{cursor:"pointer"}} onClick={()=>{setShow(!show)}}>
+                <span className="inline-flex items-center gap-1.5 rounded text-xs p-[2px] font-medium bg-red-500 text-white">{comment.Type}</span>
+                <span className="inline-flex items-center gap-1.5 ml-3 rounded text-xs p-[2px] font-medium bg-cyan-500 text-white">{comment.tag}</span>
+                <span className="inline-flex items-center gap-1.5 ml-3 rounded text-xs p-[2px] font-medium bg-orange-500 text-white">{comment.comment_type}</span>
+                {comment.role!=="none" &&<span className="inline-flex items-center gap-1.5 ml-3 rounded text-xs p-[2px] font-medium bg-purple-500 text-white">{comment.role}</span>}
+            </div>
             <div className="container w-full flex flex-row mt-2">
               <div className="m-1 flex flex-row items-center z-20">
               <div className="text-xl font-semibold m-1 w-10 h-10 bg-gray-600 text-white flex flex-row justify-center items-center rounded-xl shadow-xl">{formatCount(overallrating)}</div>

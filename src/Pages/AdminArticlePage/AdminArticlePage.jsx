@@ -219,14 +219,12 @@ const AdminArticlePage = ({community}) => {
             {
                 let newarticle = articles[i];
                 newarticle.status = "in review";
-                console.log('review', newarticle)
                 newarticles.push(newarticle) 
             }
             else{
                 newarticles.push(articles[i])
             }
         }
-        console.log(newarticles);
         await loadData(newarticles);
     }
 
@@ -235,8 +233,6 @@ const AdminArticlePage = ({community}) => {
         let newarticles = [...articles]
         newarticles[articleIndex].status = "rejected";
         await loadData(newarticles);
-        console.log(sortedArticles);
-        console.log(articles)
     }
 
     const handleOptionChange = async(e) => {

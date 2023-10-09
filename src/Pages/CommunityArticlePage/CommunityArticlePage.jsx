@@ -61,7 +61,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
             setLoading(false);
             return;
         }
-        
+
         const config= {
             headers: {
                 "Content-Type": "application/json",
@@ -100,6 +100,13 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
         }
     }
 
+    const fillLoad = () => {
+        if(loading){
+            return "Posting...";
+        }
+        return "Post Comment";
+    }
+
 
     return (
         <>
@@ -135,9 +142,7 @@ const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => 
                         type="submit"
                         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-white rounded mr-2 font-semibold"
                         >
-                            {
-                                loading ? "Posting..." : "Post Comment"
-                            }
+                            {fillLoad()}
                         </button>
                         <button
                             className="px-4 py-2 bg-red-500 text-white rounded font-semibold"
@@ -242,6 +247,13 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
         setConfidence(event.target.value);
     };
 
+    const fillLoad = () => {
+        if(loading){
+            return "Posting...";
+        }
+        return "Post Review";
+    }
+
 
     return (
         <>
@@ -317,9 +329,7 @@ const ArticleReviewModal = ({setShowReviewModal, article, handleComment}) => {
                         type="submit"
                         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-white rounded mr-2 font-semibold"
                         >
-                            {
-                                loading ? "Posting..." : "Post Review"
-                            }
+                            {fillLoad()}
                         </button>
                         <button
                             className="px-4 py-2 bg-red-500 text-white rounded font-semibold"
@@ -417,6 +427,13 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
         setDecision(event.target.value);
     };
 
+    const fillLoad = () => {
+        if(loading){
+            return "Posting...";
+        }
+        return "Post Decision";
+    }
+
     return (
         <>
             <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
@@ -466,9 +483,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
                         type="submit"
                         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-2 font-semibold"
                         >
-                            {
-                                loading ? "Posting..." : "Post Decision"
-                            }
+                            {fillLoad()}
                         </button>
                         <button
                             className="px-4 py-2 bg-red-500 text-white rounded font-semibold"
@@ -499,6 +514,11 @@ const  CommunityArticlePage = () => {
     const [showDecisionModal, setShowDecisionModal] = useState(false);
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [loadComments, setLoadComments] = useState(false);
+    const [loadingComment, setLoadingComment] = useState(false);
+    const [Type, setType] = useState("null");
+    const [comment_type, setCommentType] = useState("null");
+    const [order, setOrder] = useState("recent");
+    const [orderOption, setOrderOption] = useState("Ascending");
     const {token} = useGlobalContext();
 
     const loadArticleData = async (res) => {
@@ -588,13 +608,23 @@ const  CommunityArticlePage = () => {
     }
 
     const getComments = async () => {
+        let filter = null;
+        setLoadingComment(true);
+        if(orderOption==="Descending"){
+            filter = "most_" + order;
+        } else{
+            filter = "least_" + order;
+        }
         const config={
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${token}`,
                 },
                 params:{
-                    article: articleId
+                    article: articleId,
+                    order: filter,
+                    Type: Type==="null"?null:Type,
+                    comment_type: comment_type==="null"?null:comment_type,
                 }
         };
         try {
@@ -603,6 +633,7 @@ const  CommunityArticlePage = () => {
         } catch(err){
             console.log(err);
         }
+        setLoadingComment(false);
     }
 
     useEffect (() => {
@@ -707,6 +738,12 @@ const  CommunityArticlePage = () => {
 
     const loadMore = async () => {
         setLoadComments(true);
+        let filter = null;
+        if(orderOption==="Descending"){
+            filter = "most_" + order;
+        } else{
+            filter = "least_" + order;
+        }
         const config = {
           headers: {
             "Content-Type": "application/json",
@@ -714,6 +751,9 @@ const  CommunityArticlePage = () => {
           },
           params: {
             article:articleId,
+            order: filter,
+            Type: Type==="null"?null:Type,
+            comment_type: comment_type==="null"?null:comment_type,
           },
         };
         try {
@@ -738,6 +778,22 @@ const  CommunityArticlePage = () => {
         } else {
             return (count / 1000000).toFixed(1) + 'M';
         }
+    }
+
+    const handleTypeChange = (e) => {
+        setType(e.target.value);
+    }
+
+    const handleCommentTypeChange = (e) => {
+        setCommentType(e.target.value);
+    }
+
+    const handleOrderChange = (e) => {
+        setOrder(e.target.value);
+    }
+
+    const handleOrderOptionChange = (e) => {
+        setOrderOption(e.target.value);
     }
 
     return (
@@ -900,12 +956,63 @@ const  CommunityArticlePage = () => {
                         </div>
                     </div>
                     <div className="w-full">
+                    <div className="flex flex-row justify-around p-3 items-center w-full mb-3 mt-3 bg-zinc-200 rounded-lg shadow-md">
+                            <div className="relative inline-flex mr-2">
+                                <select
+                                    className="bg-white text-gray-800 text-sm md:text-md border-2 rounded-md border-green-600 focus:border-2 focus:border-green-600 px-4 py-1 transition duration-150 ease-in-out"
+                                    value={Type}
+                                    onChange={(e)=>handleTypeChange(e)}
+                                >
+                                    <option value="null">All</option>
+                                    <option value="review">Review</option>
+                                    <option value="decision">Decision</option>
+                                </select>
+                            </div>
+                            <div className="relative inline-flex mr-2">
+                                <select
+                                    className="bg-white text-gray-800 text-sm md:text-md border-2 rounded-md border-green-600 focus:border-2 focus:border-green-600 px-4 py-1 transition duration-150 ease-in-out"
+                                    value={comment_type}
+                                    onChange={(e)=>handleCommentTypeChange(e)}
+                                >
+                                    <option value="null">All</option>
+                                    <option value="OfficialComment">Official Comment</option>
+                                    <option value="PublicComment">Public Comment</option>
+                                </select>
+                            </div>
+                            <div className="relative inline-flex mr-2">
+                                <select
+                                    className="bg-white text-gray-800 text-sm md:text-md border-2 rounded-md border-green-600 focus:border-2 focus:border-green-600 px-4 py-1 transition duration-150 ease-in-out"
+                                    value={order}
+                                    onChange={(e)=>handleOrderChange(e)}
+                                >
+                                    <option value="recent">Date</option>
+                                    <option value="rated">Comment Rating</option>
+                                    <option value="reputated">User Reputation</option>
+                                </select>
+                            </div>
+                            <div className="relative inline-flex mr-2">
+                                <select
+                                    className="bg-white text-gray-800 text-sm md:text-md border-2 rounded-md border-green-600 focus:border-2 focus:border-green-600 px-4 py-1 transition duration-150 ease-in-out"
+                                    value={orderOption}
+                                    onChange={(e)=>handleOrderOptionChange(e)}
+                                >
+                                    <option value="Descending">Descending</option>
+                                    <option value="Ascending">Ascending</option>
+                                </select>
+                            </div>
+                            <div className="relative inline-flex mr-2">
+                                <button className="text-sm md:text-md bg-green-500 rounded-lg p-1 text-white font-semibold" onClick={getComments}>Apply Filters</button>
+                            </div>
+                        </div>
                         <div className='p-3'>
-                            {  comments.length>0 && comments.map((comment) => (
+                            { !loadingComment && comments.length>0 && comments.map((comment) => (
                                         <Comments key={comment.id} comment={comment} article={article} colour={1}/>
                                 ))  
                             }
-                            <div className="w-full flex flex-row justify-center items-center">
+                            {
+                                loadingComment && <Loader/>
+                            }
+                            {!loadingComment && comments.length === 0 && <div className="w-full flex flex-row justify-center items-center">
                                 <button
                                     style={{cursor:"pointer"}}
                                         onClick={loadMore}
@@ -913,7 +1020,7 @@ const  CommunityArticlePage = () => {
                                     >
                                         {loadComments ? "Loading..." : fillLoad()}
                                 </button>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                  </div>

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import img from './file.png'
 import cal from './calendar.png'
 import folder from './folder.png'
@@ -18,6 +18,7 @@ import 'react-quill/dist/quill.snow.css';
 import ToastMaker from "toastmaker";
 import "toastmaker/dist/toastmaker.css";
 import {useGlobalContext} from '../../Context/StateContext';
+import { GrOrderedList } from 'react-icons/gr'
 
 
 const ArticleCommentModal = ({setShowCommentModal, article, handleComment }) => {
@@ -491,6 +492,11 @@ const  ArticlePage = () => {
     const [showReviewModal, setShowReviewModal] = useState(false);
     const [loadComments, setLoadComments] = useState(false);
     const {token} = useGlobalContext();
+    const [Type, setType]= useState("null");
+    const [comment_type, setCommentType] = useState("null");
+    const [order, setOrder] = useState("recent");
+    const [orderOption, setOrderOption] = useState("Ascending");
+    const [loadingComment, setLoadingComment] = useState(false);
 
     const loadArticleData = async (res) => {
         setArticle(res);
@@ -515,66 +521,79 @@ const  ArticlePage = () => {
         }
     }
 
-    useEffect (() => {
-        const getArticle = async () => {
-            setLoading(true)
-            let config = null;
-            if(token!== null) {
-                config = {
+
+    const getComments = async () => {
+        setLoadingComment(true);
+        let config=null;
+        let filter = null;
+        if(orderOption==="Descending"){
+            filter = "most_" + order;
+        } else{
+            filter = "least_" + order;
+        }
+        if(token!==null) {
+            config={
                     headers: {
-                        Authorization: `Bearer ${token}`, 
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
                     },
-                };
-            }
-            try {
-                const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
-
-                await loadArticleData(res.data.success);
-                console.log(res.data.success);
-            } catch(err){
-                console.log(err);
-                if(err.response.data.detail==="Not found."){
-                    ToastMaker("Article doesn't exists!!!", 3000, {
-                        valign: "top",
-                        styles: {
-                          backgroundColor: "red",
-                          fontSize: "20px",
-                        },
-                      });
-                }
-                navigate("/404")
-            }
-            setLoading(false);
-        }
-
-        const getComments = async () => {
-            setLoading(true);
-            let config=null;
-            if(token!==null) {
-                config={
-                        headers: {
-                            "Content-Type": "application/json",
-                            Authorization: `Bearer ${token}`,
-                        },
-                        params:{
-                            article: articleId
-                        }
-                };
-            } else {
-                config = {
-                    params: {
-                        article: articleId
+                    params:{
+                        article: articleId,
+                        order: filter,
+                        Type: Type==="null"?null:Type,
+                        comment_type: comment_type==="null"?null:comment_type,
                     }
+            };
+        } else {
+            config = {
+                params: {
+                    article: articleId,
+                    order: filter,
+                    Type: Type==="null"?null:Type,
+                    comment_type: comment_type==="null"?null:comment_type,
                 }
             }
-            try {
-                const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`, config);
-                await loadCommentData(res.data.success.results);
-            } catch(err){
-                console.log(err);
-            }
-            setLoading(false);
         }
+        try {
+            const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/`, config);
+            await loadCommentData(res.data.success.results);
+        } catch(err){
+            console.log(err);
+        }
+        setLoadingComment(false);
+    }
+
+    const getArticle = async () => {
+        setLoading(true)
+        let config = null;
+        if(token!== null) {
+            config = {
+                headers: {
+                    Authorization: `Bearer ${token}`, 
+                },
+            };
+        }
+        try {
+            const res = await axios.get(`https://scicommons-backend.onrender.com/api/article/${articleId}`,config);
+
+            await loadArticleData(res.data.success);
+        } catch(err){
+            console.log(err);
+            if(err.response.data.detail==="Not found."){
+                ToastMaker("Article doesn't exists!!!", 3000, {
+                    valign: "top",
+                    styles: {
+                      backgroundColor: "red",
+                      fontSize: "20px",
+                    },
+                  });
+            }
+            navigate("/404")
+        }
+        setLoading(false);
+    }
+
+    useEffect (() => {
         getArticle();
         getComments();
     },[]);
@@ -644,9 +663,6 @@ const  ArticlePage = () => {
         }
     }
 
-    const onclickFuntion = (indext)=>{
-        setcurrentState(indext);
-    };
 
     const handleShow = () => {
         if(token === null) {
@@ -675,6 +691,12 @@ const  ArticlePage = () => {
 
     const loadMore = async () => {
         setLoadComments(true);
+        let filter = null;
+        if(orderOption==="Descending"){
+            filter = "most_" + order;
+        } else{
+            filter = "least_" + order;
+        }
         let config = null;
         if(token!== null){
             config = {
@@ -684,9 +706,21 @@ const  ArticlePage = () => {
                 },
                 params: {
                     article:articleId,
+                    order:filter,
+                    Type: Type==="null"?null:Type,
+                    comment_type: comment_type==="null"?null:comment_type,
                 },
             };
-        };
+        } else {
+            config = {
+                params: {
+                    article:articleId,
+                    order:filter,
+                    Type: Type==="null"?null:Type,
+                    comment_type: comment_type==="null"?null:comment_type,
+                },
+            }
+        }
         try {
           const res = await axios.get(`https://scicommons-backend.onrender.com/api/comment/?limit=20&offset=${comments.length}`, config);
           await loadCommentData([...comments, ...res.data.success.results]);
@@ -709,6 +743,22 @@ const  ArticlePage = () => {
         } else {
             return (count / 1000000).toFixed(1) + 'M';
         }
+    }
+
+    const handleTypeChange = (e) => {
+        setType(e.target.value);
+    }
+
+    const handleCommentTypeChange = (e) => {
+        setCommentType(e.target.value);
+    }
+
+    const handleOrderChange = (e) => {
+        setOrder(e.target.value);
+    }
+
+    const handleOrderOptionChange = (e) => {
+        setOrderOption(e.target.value);
     }
 
     return (
@@ -850,7 +900,7 @@ const  ArticlePage = () => {
             </div>
                  <div className="flex flex-col w-full md:w-5/6 bg-white mt-[1rem] mx-auto p-2 overflow-hidden">
                     <div className="w-full">
-                        <div className='flex flex-row justify-center mt-4 text-3xl font-bold text-gray-600'>
+                        <div className='flex flex-row justify-center mt-4 text-4xl font-bold text-gray-600'>
                             Reviews
                             {/* <button className={currentState === 2 ? 'mb-2 text-sm md:text-xl text-green-600 px-2 font-bold md:px-5 py-2 border-b-2 border-green-600' : 'mb-2 text-sm font-bold md:text-xl px-2 md:px-5 text-gray-600 border-b-2 border-gray-200  py-2'} 
                             style={{ borderBottom:currentState===2  ? '2px solid #68D391' : '2px solid #000',cursor:"pointer" }} onClick={()=> onclickFuntion(2)}>
@@ -867,12 +917,63 @@ const  ArticlePage = () => {
                         </div>
                     </div>
                     <div className="w-full min-h-screen">
+                        <div className="flex flex-row justify-around p-3 items-center w-full mb-3 mt-3 bg-zinc-200 rounded-lg shadow-md">
+                            <div className="relative inline-flex mr-2">
+                                <select
+                                    className="bg-white text-gray-800 text-sm md:text-md border-2 rounded-md border-green-600 focus:border-2 focus:border-green-600 px-4 py-1 transition duration-150 ease-in-out"
+                                    value={Type}
+                                    onChange={(e)=>handleTypeChange(e)}
+                                >
+                                    <option value="null">All</option>
+                                    <option value="review">Review</option>
+                                    <option value="decision">Decision</option>
+                                </select>
+                            </div>
+                            <div className="relative inline-flex mr-2">
+                                <select
+                                    className="bg-white text-gray-800 text-sm md:text-md border-2 rounded-md border-green-600 focus:border-2 focus:border-green-600 px-4 py-1 transition duration-150 ease-in-out"
+                                    value={comment_type}
+                                    onChange={(e)=>handleCommentTypeChange(e)}
+                                >
+                                    <option value="null">All</option>
+                                    <option value="OfficialComment">Official Comment</option>
+                                    <option value="PublicComment">Public Comment</option>
+                                </select>
+                            </div>
+                            <div className="relative inline-flex mr-2">
+                                <select
+                                    className="bg-white text-gray-800 text-sm md:text-md border-2 rounded-md border-green-600 focus:border-2 focus:border-green-600 px-4 py-1 transition duration-150 ease-in-out"
+                                    value={order}
+                                    onChange={(e)=>handleOrderChange(e)}
+                                >
+                                    <option value="recent">Date</option>
+                                    <option value="rated">Comment Rating</option>
+                                    <option value="reputated">User Reputation</option>
+                                </select>
+                            </div>
+                            <div className="relative inline-flex mr-2">
+                                <select
+                                    className="bg-white text-gray-800 text-sm md:text-md border-2 rounded-md border-green-600 focus:border-2 focus:border-green-600 px-4 py-1 transition duration-150 ease-in-out"
+                                    value={orderOption}
+                                    onChange={(e)=>handleOrderOptionChange(e)}
+                                >
+                                    <option value="Descending">Descending</option>
+                                    <option value="Ascending">Ascending</option>
+                                </select>
+                            </div>
+                            <div className="relative inline-flex mr-2">
+                                <button className="text-sm md:text-md bg-green-500 rounded-lg p-1 text-white font-semibold" onClick={getComments}>Apply Filters</button>
+                            </div>
+                        </div>
                         <div className='p-3'>
-                            {  comments.length>0 && comments.map((comment) => (
+                            { !loadingComment && comments.length>0 && comments.map((comment) => (
                                         <Comments key={comment.id} comment={comment} article={article} colour={1}/>
                                 ))  
                             }
-                            <div className="w-full flex flex-row justify-center items-center">
+                            {
+                                loadingComment && <Loader/>
+                            }
+                            {!loadingComment && comments.length === 0 && <div className="w-full flex flex-row justify-center items-center">
                                 <button
                                     style={{cursor:"pointer"}}
                                         onClick={loadMore}
@@ -880,7 +981,7 @@ const  ArticlePage = () => {
                                     >
                                         {loadComments ? "Loading..." : fillLoad()}
                                 </button>
-                            </div>
+                            </div>}
                         </div>
                     </div>
                  </div>

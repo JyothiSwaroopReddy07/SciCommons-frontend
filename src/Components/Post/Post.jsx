@@ -373,7 +373,7 @@ const Dropdown = ({post, onDeletePost, handleEditChange}) => {
           },
       };
         try{
-          console.log(post.id);
+
           const res = await axios.delete(`https://scicommons-backend.onrender.com/api/feed/${post.id}/`, config);
           await onDeletePost(post.id);
           ToastMaker("Post Deleted Successfully", "success")

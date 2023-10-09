@@ -1,5 +1,5 @@
 // src/Feed.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { IoHeartOutline, IoHeart, IoChatbubbleOutline, IoBookmarkOutline,IoBookmark, IoPaperPlaneOutline } from 'react-icons/io5';
 import NavBar from '../../Components/NavBar/NavBar';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
@@ -110,6 +110,7 @@ const Feed = () => {
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
+  const selectedOption = useRef('most_recent');
   const navigate = useNavigate();
   const {token} = useGlobalContext();
 
@@ -136,7 +137,11 @@ const Feed = () => {
       }
     }
     try{
-        const res = await axios.get("https://scicommons-backend.onrender.com/api/feed/", config)
+        const res = await axios.get("https://scicommons-backend.onrender.com/api/feed/",{
+          params: {
+            order: selectedOption.current,
+          }
+        }, config)
         if(res.data.success.results.length === 0) {
           await loadData([])
         }else {
@@ -169,7 +174,11 @@ const Feed = () => {
       }
     }
     try{
-        const res = await axios.get(`https://scicommons-backend.onrender.com/api/feed/?limit=20&offset=${posts.length}`, config)
+        const res = await axios.get(`https://scicommons-backend.onrender.com/api/feed/?limit=20&offset=${posts.length}`,{
+          params: {
+            order: selectedOption.current,
+          }
+        }, config)
         if(res.data.success.results.length === 0){
             setLoadingMore(false)
             ToastMaker("No more posts to load", 3500,{
@@ -206,18 +215,32 @@ const Feed = () => {
     await loadData(updatedPosts);
   }
 
+  const handleOptionChange = async(e) => {
+    selectedOption.current = e.target.value;
+    await getPosts();
+  };
+
 
   return (
     <>
     <NavBar />
-    { !loading &&
         <div className="bg-green-50 md:bg-white min-h-screen"> 
         <div className="p-2 w-full md:w-1/2 mx-auto">
-          <div className="flex flex-row justify-end items-center">
-              <button onClick={()=>{setIsAccordionOpen(!isAccordionOpen)}} className="ml-2 text-md font-semibold text-center bg-green-500 text-white rounded-md p-1 shadow-xl float-right">Add Post</button>
+          <div className="flex flex-row justify-between items-center mt-2">
+            <select
+              className="bg-gray-100 text-gray-800 text-sm md:text-lg border rounded-lg px-4 py-1 transition duration-150 ease-in-out"
+              value={selectedOption.current}
+              onChange={handleOptionChange}>
+                <option value="most_recent">Recent</option>
+                <option value="most_commented">Comments</option>
+                <option value="most_liked">likes</option>
+                <option value="most_bookmarked">Bookmarks</option>
+            </select>
+            <button onClick={()=>{setIsAccordionOpen(!isAccordionOpen)}} className="ml-2 text-md font-semibold text-center bg-green-500 text-white rounded-md p-1 shadow-xl float-right">Add Post</button>
           </div>
             {isAccordionOpen && <PostModal setIsAccordionOpen={setIsAccordionOpen}/>}
         </div>
+      { !loading &&
         <div className="mx-auto w-full md:w-1/2">
           {posts.length > 0 && posts.map((post) => (
               <Post key={post.id} post={post} onDeletePost={onDeletePost} handleEditChange={handleEditChange} />
@@ -235,8 +258,8 @@ const Feed = () => {
           }
 
         </div>
-        </div>
-        }
+      }
+      </div>
         {loading && <Loader/>}
     </>
   );

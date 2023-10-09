@@ -381,8 +381,6 @@ const SubmitArticle = () => {
       form_data.append(`unregistered_authors[${i+1}]`, JSON.stringify(unregistered[i]));
     }
 
-    console.log(form_data);
-
     form_data.append('communities[0]', JSON.stringify(0));
 
     setLoading(true);
