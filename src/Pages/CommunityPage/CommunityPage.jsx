@@ -360,7 +360,7 @@ const CommunityPage = () => {
                         </div>
                         <div className="mt-8 flex flex-row justify-end">
                                 <button className="bg-teal-500 text-white md:px-4 md:py-2 rounded-xl mr-3 p-1" style={{cursor:"pointer"}} onClick={()=> {if(token===null){navigate("/login")} else {navigate(`/join-community/${community.Community_name}`)}}}>Join Community</button>
-                                    <button
+                                    {/* <button
                                         className={`${
                                             subscribed
                                             ? 'bg-gray-400 text-gray-700 cursor-default'
@@ -370,7 +370,7 @@ const CommunityPage = () => {
                                         onClick={handleSubscribe}
                                         >
                                         {getButtonLabel()}
-                                    </button>
+                                    </button> */}
                         </div>
                 </div>
                 <div className="flex flex-col items-center justify-center w-full bg-gray-50 mb-5">
