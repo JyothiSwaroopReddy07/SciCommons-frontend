@@ -779,7 +779,7 @@ const  ArticlePage = () => {
                             <div className="flex flex-row">
                                 <div className="icon" style={{cursor:"pointer"}} onClick={handleFavourites}>
                                     {
-                                        article.isFavourite === true ? (<AiFillHeart className='w-[4rem] h-[2rem]'/>):(<AiOutlineHeart className='w-[4rem] h-[2rem]'/>) 
+                                        article.isFavourite === true ? (<AiFillHeart className='w-[2rem] h-[2rem]'/>):(<AiOutlineHeart className='w-[2rem] h-[2rem]'/>) 
                                     }
                                 </div>
                                 <div className="icon" style={{cursor: "pointer"}} onClick={handleFile}>
@@ -894,7 +894,7 @@ const  ArticlePage = () => {
                                     {currentState!==1 && "add comment"}
                                 </span>
                                 <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>(navigate(`/chat/${articleId}`))}>
-                                    Talk Page
+                                    Chat Page
                                 </span>
                             </div>
 

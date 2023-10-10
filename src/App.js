@@ -31,7 +31,7 @@ import ForgotPassword from './Pages/ForgotPassword/ForgotPassword';
 import Verify from './Pages/Verify/Verify';
 import PrivateRoute from './Pages/PrivateRoute/PrivateRoute';
 // import AllMessages from './Pages/AllMessagesPage/AllMessagesPage';
-// import ChatPage from './Pages/ChatPage/ChatPage';
+import ChatPage from './Pages/ChatPage/ChatPage';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 function App() {
@@ -64,7 +64,7 @@ function App() {
         <Route path="/myarticles/:articleId" element={<PrivateRoute redirectTo="/login" component={<AuthorArticlePage/>} />}/>
         <Route path="/myactivity" element={<PrivateRoute redirectTo="/login" component={<UserActivity/>}/>}/>
         <Route path="/community/:communityName/:articleId" element={<PrivateRoute redirectTo="/login" component={<CommunityArticlePage/>}/>}/>
-        {/* <Route path="/chat/:id" element={<PrivateRoute redirectTo="/login" component={<ChatPage/>}/>}/> */}
+        <Route path="/chat/:id" element={<PrivateRoute redirectTo="/login" component={<ChatPage/>}/>}/>
         {/* <Route path="/messages" element={<PrivateRoute redirectTo="/login" component={<AllMessages/>}/>}/> */}
         <Route path="/myprofile" element={<PrivateRoute redirectTo="/login" component={<MyProfile/>}/>}/> 
         <Route path="/forgotpassword" element={<ForgotPassword/>}/>

@@ -797,6 +797,9 @@ const AuthorArticlePage = () => {
                             <span className="block box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={handleShow}>
                               Add Community
                             </span>
+                            <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>(navigate(`/chat/${articleId}`))}>
+                                    Chat Page
+                            </span>
                         </div>
                     </div>
                 </div>

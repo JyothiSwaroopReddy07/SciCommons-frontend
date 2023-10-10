@@ -625,6 +625,7 @@ const  CommunityArticlePage = () => {
                     order: filter,
                     Type: Type==="null"?null:Type,
                     comment_type: comment_type==="null"?null:comment_type,
+                    tag: communityName,
                 }
         };
         try {
@@ -754,6 +755,7 @@ const  CommunityArticlePage = () => {
             order: filter,
             Type: Type==="null"?null:Type,
             comment_type: comment_type==="null"?null:comment_type,
+            tag: communityName,
           },
         };
         try {
@@ -930,6 +932,9 @@ const  CommunityArticlePage = () => {
                                     {article.isArticleModerator && currentState === 1 && "add decision"}
                                     {article.isArticleModerator === false && currentState === 1 && "add review"}
                                     {currentState!==1 && "add comment"}
+                                </span>
+                                <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>(navigate(`/chat/${articleId}`))}>
+                                    Chat Page
                                 </span>
                             </div>
                         </div>
