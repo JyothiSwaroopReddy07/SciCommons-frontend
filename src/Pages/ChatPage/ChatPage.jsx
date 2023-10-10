@@ -1,90 +1,102 @@
-
-import React, { useState, useEffect } from "react";
-import { MessageBox, ChatItem } from "react-chat-elements";
-import { TextField, Button, Grid } from "@material-ui/core";
+import Fab from "@mui/material/Fab"
+import Grid from "@mui/material/Grid"
+import Container from "@mui/material/Container"
+import { useParams } from "react-router";
+import TextField from "@mui/material/TextField";
+import Send from "@mui/icons-material/Send";
+import Box from "@mui/material/Box";
+import {useEffect, useState} from "react";
+import ListItemText from '@mui/material/ListItemText';
 import axios from "axios";
-import {useNavigate, useParams} from 'react-router-dom';
-import {useGlobalContext} from '../../Context/StateContext';
+import { useGlobalContext } from "../../Context/StateContext";
 
-const ChatPage = () => {
-  const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState([]);
-  const {channel} = useParams();
-  const {token, user} = useGlobalContext();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    if(token===null){
-        navigate('/login')
-    }
+let chatSocket;
+const Chat = () => {
+    const [Messages, setMessages] = useState([]);
+    const [Message, setMessage] = useState({'message':'','name':''});
+    const { id } = useParams();
+    const {token} = useGlobalContext();
+    const name = localStorage.getItem("user_id");
+
+
+    useEffect(() => {
+
+            chatSocket = new WebSocket(
+                'wss://'
+                + 'scicommons-backend.onrender.com'
+                + '/ws/chat/'
+                + id
+                + '/'
+            );
     
-    const wsProtocol = window.location.protocol === "https:" ? "wss" : "ws";
-    const channelName = channel.toString() <= user.username.toString() ? `chat_${channel}_${user.username}` : `chat_${user.username}_${channel}`;
-    const wsUrl = `${wsProtocol}://${window.location.host}/ws/chat/${channelName}/`;
+    }, [])
 
-    const ws = new WebSocket(wsUrl);
-    ws.onopen = () => {
-      console.log("WebSocket connection opened.");
-    };
-
-    ws.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      const newMessage = {
-        position: data.sender === user.username ? "right" : "left",
-        type: "text",
-        text: data.message,
-        date: new Date(),
-      };
-      setMessages([...messages, newMessage]);
-    };
-
-    ws.onclose = () => {
-      console.log("WebSocket connection closed.");
-    };
-
-    return () => {
-      ws.close();
-    };
-  }, [channel, user, messages]);
-
-  const sendMessage = () => {
-    if (message.trim() !== "") {
-      const data = {
-        message: message,
-      };
-
-      axios.post(`https://scicommons-backend.onrender.com/api/chat/`, data).then((response) => {
-        setMessage("");
-      });
+    const getMessages = () => {
+        const config = {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            params: {
+                article: id,
+            }
+        }
+        axios.get(`https://scicommons-backend.onrender.com/api/article_chat/`,config)
+        .then((response) => {
+            setMessages(response.data);
+        })
+        .catch((error) => {
+            console.error('Error fetching chat messages:', error);
+        });
     }
-  };
 
-  return (
-    <div className="w-full md:w-1/2 bg-green-50">
-      <div className="bg-white mx-auto">
-        <MessageBox
-          title={channel}
-          titleColor="black"
-          messages={messages}
-        />
-      </div>
-      <Grid container spacing={2} className="bg-white">
-        <Grid item xs={10}>
-          <TextField
-            fullWidth
-            placeholder="Type your message..."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </Grid>
-        <Grid item xs={2}>
-          <Button variant="contained" color="primary" onClick={sendMessage}>
-            Send
-          </Button>
-        </Grid>
-      </Grid>
-    </div>
-  );
+    useEffect(() => {
+        getMessages();
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            setMessages([...Messages,data.message])
+        };
+    }, [Messages])
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        if(Message)
+        {
+            chatSocket.send(JSON.stringify({
+                'message': Message,
+                'article': id
+            }));
+            setMessage({'message':'','name':''});
+        }
+    }
+    return (
+        <>
+        <Container>
+                <Box sx={{"maxHeight":"80vh","height":"80vh", "overflowY":"scroll"}}>
+                    { Messages.map((msg, i) => {
+                    return (
+                        <div key={i} style={{"margin":"20px"}}>
+                            <ListItemText align={msg.personal ? "right" : "left"} primary={msg.message}></ListItemText>
+                            <ListItemText align={msg.personal ? "right" : "left"} secondary={`user ${msg.sender}`}></ListItemText>                            
+                        </div>)
+                    })}
+                </Box>
+            
+            <Box component="form" onSubmit={handleSubmit}>
+                <Grid container spacing={3}>
+                    <Grid item xs={9} sm={11}>
+                        <TextField fullWidth onKeyPress={(e)=> e.key === 'Enter' ? handleSubmit : null}
+                        onChange={(e)=> setMessage({'message':e.target.value,'name':name})} variant="standard" value={Message.message} />
+                    </Grid>
+                    <Grid item xs={3} sm={1}>
+                        <Fab component="button" type="submit" color="primary"><Send/></Fab>
+                    </Grid>
+                </Grid>
+            </Box>
+        </Container>
+        </>
+    )
 }
 
-export default ChatPage;
+export default Chat

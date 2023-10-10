@@ -893,7 +893,11 @@ const  ArticlePage = () => {
                                     {currentState === 1 && "add review"}
                                     {currentState!==1 && "add comment"}
                                 </span>
+                                <span className="box-content text-white bg-[#4d8093] text-[0.55 rem] border-solid ml-2 md:font-bold p-2 pt-0 rounded" style={{cursor:"pointer"}} onClick={()=>(navigate(`/chat/${articleId}`))}>
+                                    Talk Page
+                                </span>
                             </div>
+
                         </div>
                     </div>
                 </div>
