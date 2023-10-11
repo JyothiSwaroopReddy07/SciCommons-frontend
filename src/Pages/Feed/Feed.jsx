@@ -25,11 +25,35 @@ const PostModal = ({setIsAccordionOpen}) => {
 
   const [body, setBody] = useState('');
   const {token} = useGlobalContext();
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async(e) => {
+    setLoading(true);
     if(token===null) {
       navigate('/login')
+    }
+    if(body===""){
+      ToastMaker('Body can not be empty!!!', 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
+    }
+    if(body.length>2000){
+      ToastMaker('Body can not exceed 2000 characters!!!', 3500,{
+        valign: 'top',
+          styles : {
+              backgroundColor: 'red',
+              fontSize: '20px',
+          }
+      })
+      setLoading(false);
+      return;
     }
     e.preventDefault();
     const form_data = new FormData(e.target);
@@ -58,14 +82,28 @@ const PostModal = ({setIsAccordionOpen}) => {
     };
     try{
         const res = await axios.post("https://scicommons-backend.onrender.com/api/feed/", form_data, config);
-        ToastMaker("Post Added Successfully", "success")
-        setIsAccordionOpen(false)
+        ToastMaker('Post created successfully!!!', 3500,{
+          valign: 'top',
+            styles : {
+                backgroundColor: 'green',
+                fontSize: '20px',
+            }
+        })
         e.target.reset()
+        setIsAccordionOpen(false)
     }
     catch(err) {
         console.log(err)
     }
+    setLoading(false);
   };
+
+  const fillLoad = () => {
+    if(loading){
+      return "Posting...";
+    }
+    return "Post";
+  }
 
   return (
     <>
@@ -73,6 +111,7 @@ const PostModal = ({setIsAccordionOpen}) => {
           <div className="p-4 bg-slate-100 w-5/6 md:w-1/2 rounded-md shadow-md max-h-4/5">
           <form onSubmit={(e)=>handleSubmit(e)} encType="multipart/form-data">
                 <ReactQuill theme="snow" className="bg-white w-full p-2 mb-4 resize-none border rounded max-h-[40vh] overflow-y-auto" value={body} onChange={handleBodyChange}/>
+                <span className="text-xs font-semibold">Number of characters: {body.length}/2000</span>
                 <div className="flex flex-col justify-between items-center">
                     <input
                     style={{"border": "2px solid #cbd5e0"}}
@@ -86,7 +125,7 @@ const PostModal = ({setIsAccordionOpen}) => {
                       type="submit"
                       className="bg-green-500 hover:bg-green-700 text-white h-8 px-2 rounded"
                       >
-                      Post
+                      {fillLoad()}
                       </button>
                       <button
                       onClick={()=>{setIsAccordionOpen(false)}}
@@ -102,6 +141,7 @@ const PostModal = ({setIsAccordionOpen}) => {
     </>
   )
 }
+  
 
 
 const Feed = () => {

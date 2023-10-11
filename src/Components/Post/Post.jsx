@@ -22,6 +22,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
     const [bookmark, setBookmark] = useState(post.isbookmarked);
     const [likes, setLikes] = useState(post.likes);
     const [comments_count, setCommentsCount] = useState(post.comments_count);
+    const [comment,setComment] = useState("");
     const [bookmarks, setBookmarks] = useState(post.bookmarks);
     const {user, token} = useGlobalContext()
     const [loadSubmit, setLoadSubmit] = useState(false);
@@ -33,7 +34,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
       }
       e.preventDefault();
       setLoadSubmit(true);
-      const comment = document.getElementsByName("comment")[0].value;
+      
       if (comment.length > 200) {
         ToastMaker("Comment is too large. Maximum allowed size is 200 characters", 3500, {
           valign: 'top',
@@ -57,7 +58,6 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
           { post: post.id, comment: comment },
           config
         );
-        document.getElementsByName("comment")[0].value = "";
         ToastMaker("Comment added successfully!!!!", 3000, {
           valign: "top",
           styles: {
@@ -66,6 +66,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
           },
         });
         setCommentsCount(comments_count + 1);
+        setComment("");
         setLoadSubmit(false);
       } catch (err) {
         console.log(err);
@@ -256,7 +257,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
           />
         </div>
         {!post.image_url.includes("None") && <img src={post.image_url} alt={post.caption} className="w-full my-4" />}
-        {/* Display text content */}
+
         <Link to={`/post/${post.id}`}>
         <div className="w-full">
           <div className="flex flex-row justify-between">
@@ -299,7 +300,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
                   <img
                     src={user.profile_pic_url}
                     alt={user.username}
-                    className="w-10 h-10 rounded-full mr-4"
+                    className="w-6 h-6 rounded-full mr-4"
                   />
                 )}
                 <input
@@ -308,10 +309,12 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
                   placeholder="Add a comment..."
                   className="w-full p-1 mr-2 active:border-2 active:border-green-50"
                   name="comment"
+                  value={comment}
+                  onChange={(e)=>{setComment(e.target.value)}}
                 />
                 <button
                 style={{cursor:"pointer"}}
-                  onClick={handleComment}
+                  onClick={(e)=>{handleComment(e)}}
                   className="bg-green-400 rounded-lg p-2"
                 >
                   {loadSubmit ? (
