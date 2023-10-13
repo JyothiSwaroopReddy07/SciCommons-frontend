@@ -218,14 +218,6 @@ const Dropdown = ({ color, onLogout,User}) => {
                   Your Profile
                 </a>
                 <a
-                  href="/myactivity"
-                  className={
-                    "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-white text-gray-800 hover:bg-gray-200"
-                  }
-                >
-                  Your Activity
-                </a>
-                <a
                   href="/notifications"
                   className={
                     "text-sm py-2 px-4 font-normal block w-full whitespace-no-wrap bg-white text-gray-800 hover:bg-gray-200"

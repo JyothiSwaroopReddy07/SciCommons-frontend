@@ -62,7 +62,7 @@ function App() {
         <Route path="/myposts" element={<PrivateRoute redirectTo="/login" component={<MyPostsPage/>}/>}/>
         <Route path="/myarticles" element={<PrivateRoute redirectTo="/login" component={<MyArticlesPage/>}/>}/>
         <Route path="/myarticles/:articleId" element={<PrivateRoute redirectTo="/login" component={<AuthorArticlePage/>} />}/>
-        <Route path="/myactivity" element={<PrivateRoute redirectTo="/login" component={<UserActivity/>}/>}/>
+        {/* <Route path="/myactivity" element={<PrivateRoute redirectTo="/login" component={<UserActivity/>}/>}/> */}
         <Route path="/community/:communityName/:articleId" element={<PrivateRoute redirectTo="/login" component={<CommunityArticlePage/>}/>}/>
         <Route path="/chat/:id" element={<PrivateRoute redirectTo="/login" component={<ChatPage/>}/>}/>
         {/* <Route path="/messages" element={<PrivateRoute redirectTo="/login" component={<AllMessages/>}/>}/> */}
