@@ -644,7 +644,7 @@ const AuthorArticlePage = () => {
   return (
     <div className="bg-white min-h-screen">
       <Navbar />
-      {loading && <Loader />}
+      {(loading|| article===null) && <Loader />}
       {!loading && article!==null && (
         <div className="bg-white">
           <div className="flex justify-center bg-white w-full md:w-5/6 mt-[1rem] mx-auto p-2 overflow-hidden">
