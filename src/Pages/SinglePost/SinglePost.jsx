@@ -47,6 +47,7 @@ const SinglePost = () => {
   const [loadSubmit, setLoadSubmit] = useState(false);
   const [loadComments, setLoadComments] = useState(false);
   const navigate = useNavigate();
+  const [comment, setComment] = useState("");
 
   const { postId } = useParams();
   const loadData = async (res) => {
@@ -157,7 +158,6 @@ const SinglePost = () => {
     }
     e.preventDefault();
     setLoadSubmit(true);
-    const comment = document.getElementsByName("comment")[0].value;
     const config = {
       headers: {
         "Content-Type": "application/json",
@@ -175,8 +175,8 @@ const SinglePost = () => {
       res.data.comment.commentliked = 0;
       res.data.comment.commentlikes = 0;
       res.data.comment.personal = true;
+      setComment("");
       await loadCommentsData([res.data.comment, ...comments]);
-      document.getElementsByName("comment")[0].value = "";
       ToastMaker("Comment added successfully!!!!", 3000, {
         valign: "top",
         styles: {
@@ -211,7 +211,47 @@ const SinglePost = () => {
           <>
           <div className="bg-white w-full md:w-1/2 mx-auto">
               <Post post={post} />
+              <div className="mt-[-15px] bg-white w-full">
+              <div className="flex flex-row items-center justify-between p-2">
+                {(user===null ||user.profile_pic_url.includes("None")) ? (
+                  <SlUser className="w-8 h-8 mr-2" />
+                ) : (
+                  <img
+                    src={user.profile_pic_url}
+                    alt={user.username}
+                    className="w-8 h-8 rounded-full mr-4"
+                  />
+                )}
+                <input
+                style={{"border": "2px solid #cbd5e0"}}
+                  type="text"
+                  placeholder="Add a comment..."
+                  className="w-full p-1 mr-2 active:border-2 active:border-green-50"
+                  name="comment"
+                  value={comment}
+                  onChange={(e)=>{setComment(e.target.value)}}
+                />
+                <button
+                style={{cursor:"pointer"}}
+                  onClick={(e)=>{handleComment(e)}}
+                  className="bg-green-400 rounded-lg p-2"
+                >
+                  {loadSubmit ? (
+                    <ColorRing
+                    height="30"
+                    width="30"
+                    radius="4"
+                    color="white"
+                    ariaLabel="loading"
+                    />
+                  ) : (
+                    <AiOutlineSend className="text-xl" />
+                  )}
+                </button>
+              </div>
+            </div>
            </div>
+           
             <div className="mx-auto border p-6 w-full md:w-1/2 bg-white">
               <div className="text-3xl font-semibold text-green-600">
                 Comments {comments.length > 0 && `(${formatCount(comments.length)})`}

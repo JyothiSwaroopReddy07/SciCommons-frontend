@@ -28,51 +28,6 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
     const [loadSubmit, setLoadSubmit] = useState(false);
     const navigate = useNavigate();
 
-    const handleComment = async (e) => {
-      if(token === null) {
-        navigate("/login");
-      }
-      e.preventDefault();
-      setLoadSubmit(true);
-      
-      if (comment.length > 200) {
-        ToastMaker("Comment is too large. Maximum allowed size is 200 characters", 3500, {
-          valign: 'top',
-            styles : {
-                backgroundColor: 'red',
-                fontSize: '20px',
-            }
-        })
-        setLoadSubmit(false);
-        return;
-      }
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      try {
-        const res = await axios.post(
-          `https://scicommons-backend.onrender.com/api/feedcomment/`,
-          { post: post.id, comment: comment },
-          config
-        );
-        ToastMaker("Comment added successfully!!!!", 3000, {
-          valign: "top",
-          styles: {
-            backgroundColor: "green",
-            fontSize: "20px",
-          },
-        });
-        setCommentsCount(comments_count + 1);
-        setComment("");
-        setLoadSubmit(false);
-      } catch (err) {
-        console.log(err);
-      }
-      setLoadSubmit(false);
-    };
   
     const handleLike = async(e) => {
       if(token === null) {
@@ -292,45 +247,6 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
           </div>
         </div>
         </Link>
-        <div className=" mt-2 bg-white w-full">
-              <div className="flex flex-row items-center justify-between">
-                {(user===null ||user.profile_pic_url.includes("None")) ? (
-                  <SlUser className="w-8 h-8 mr-2" />
-                ) : (
-                  <img
-                    src={user.profile_pic_url}
-                    alt={user.username}
-                    className="w-6 h-6 rounded-full mr-4"
-                  />
-                )}
-                <input
-                style={{"borderBottom": "2px solid #cbd5e0"}}
-                  type="text"
-                  placeholder="Add a comment..."
-                  className="w-full p-1 mr-2 active:border-2 active:border-green-50"
-                  name="comment"
-                  value={comment}
-                  onChange={(e)=>{setComment(e.target.value)}}
-                />
-                <button
-                style={{cursor:"pointer"}}
-                  onClick={(e)=>{handleComment(e)}}
-                  className="bg-green-400 rounded-lg p-2"
-                >
-                  {loadSubmit ? (
-                    <ColorRing
-                    height="30"
-                    width="30"
-                    radius="4"
-                    color="white"
-                    ariaLabel="loading"
-                    />
-                  ) : (
-                    <AiOutlineSend className="text-xl" />
-                  )}
-                </button>
-              </div>
-            </div>
       </div>
       </>
     );
