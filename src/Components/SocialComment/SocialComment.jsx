@@ -211,7 +211,7 @@ const EditModal = ({ comment, setShowEdit, changeComment }) => {
   );
 };
 
-const SocialComment = ({ key, comment }) => {
+const SocialComment = ({ comment }) => {
   const navigate = useNavigate();
  const {token,user} = useGlobalContext();
   const [value, setValue] = useState(comment.comment);
@@ -384,7 +384,7 @@ const SocialComment = ({ key, comment }) => {
 
   return (
     <>
-      <div className="rounded-lg pl-2 mt-2 bg-white border-l-2 border-green-600">
+      <div key={comment.id} className="rounded-lg pl-2 mt-2 bg-white border-l-2 border-green-600">
         <div className="flex mb-2">
           <div className="flex flex-row items-center">
             {comment.commentavatar.includes("None") ? (

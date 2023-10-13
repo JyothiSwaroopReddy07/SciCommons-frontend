@@ -21,7 +21,6 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
     const [liked, setLiked] = useState(post.liked);
     const [bookmark, setBookmark] = useState(post.isbookmarked);
     const [likes, setLikes] = useState(post.likes);
-    const [comments_count, setCommentsCount] = useState(post.comments_count);
     const [comment,setComment] = useState("");
     const [bookmarks, setBookmarks] = useState(post.bookmarks);
     const {user, token} = useGlobalContext()
@@ -228,7 +227,7 @@ const Post = ({ post, onDeletePost, handleEditChange }) => {
             {/* Comment Button */}
             <button style={{cursor:"pointer"}} onClick={handleComments} className="flex">
               <IoChatbubbleOutline className="text-xl" />
-              <span className="text-sm md:ml-2">{formatCount(comments_count)}</span>
+              <span className="text-sm md:ml-2">{formatCount(post.comments_count)}</span>
               
             </button>
             <button style={{cursor:"pointer"}} onClick={handleBookmark} className="flex">

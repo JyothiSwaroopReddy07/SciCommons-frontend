@@ -24,7 +24,6 @@ import FavouritePage from './Pages/FavouritePage/FavouritePage';
 import MyPostsPage from './Pages/MyPostsPage/MyPostsPage';
 import MyArticlesPage from './Pages/MyArticlesPage/MyArticlesPage';
 import AuthorArticlePage from './Pages/AuthorArticlePage/AuthorArticlePage';
-import UserActivity from './Pages/UserActivity/UserActivity';
 import CommunityArticlePage from './Pages/CommunityArticlePage/CommunityArticlePage';
 import MyProfile from './Pages/MyProfile/MyProfile';
 import ForgotPassword from './Pages/ForgotPassword/ForgotPassword';

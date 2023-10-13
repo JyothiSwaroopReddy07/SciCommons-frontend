@@ -60,9 +60,14 @@ const SinglePost = () => {
   };
 
   const loadCommentsData = async (res) => {
-
     setComments(res);
   };
+
+  const modifyComments = async () => {
+    const newPost = {...post};
+    newPost.comments_count+=1;
+    setPost(newPost);
+  }
 
   const loadMore = async () => {
     setLoadComments(true);
@@ -176,6 +181,8 @@ const SinglePost = () => {
       res.data.comment.commentlikes = 0;
       res.data.comment.personal = true;
       setComment("");
+      await modifyComments();
+      console.log("swaroop");
       await loadCommentsData([res.data.comment, ...comments]);
       ToastMaker("Comment added successfully!!!!", 3000, {
         valign: "top",
@@ -210,7 +217,7 @@ const SinglePost = () => {
         {!loading && post !== null && (
           <>
           <div className="bg-white w-full md:w-1/2 mx-auto">
-              <Post post={post} />
+              <Post post={post}/>
               <div className="mt-[-15px] bg-white w-full">
               <div className="flex flex-row items-center justify-between p-2">
                 {(user===null ||user.profile_pic_url.includes("None")) ? (
@@ -257,7 +264,7 @@ const SinglePost = () => {
                 Comments {comments.length > 0 && `(${formatCount(comments.length)})`}
               </div>
               {comments.length > 0 &&
-                comments.map((comment) => <SocialComment key={comment.id} comment={comment} />)}
+                comments.map((comment) => <SocialComment comment={comment} />)}
               <button
               style={{cursor:"pointer"}}
                 onClick={loadMore}
