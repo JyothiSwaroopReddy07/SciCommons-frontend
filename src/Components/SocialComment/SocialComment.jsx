@@ -211,7 +211,7 @@ const EditModal = ({ comment, setShowEdit, changeComment }) => {
   );
 };
 
-const SocialComment = ({ comment }) => {
+const SocialComment = ({ comment, post,setPost }) => {
   const navigate = useNavigate();
  const {token,user} = useGlobalContext();
   const [value, setValue] = useState(comment.comment);
@@ -316,7 +316,11 @@ const SocialComment = ({ comment }) => {
         `https://scicommons-backend.onrender.com/api/feedcomment/?limit=20&offset=${repliesData.length}`,
         config
       );
+      let temp = {...post};
+      temp.comments_count+=1;
+      setPost(temp);
       await loadData(res.data.success.results);
+      
     } catch (err) {
       console.log(err);
     }
@@ -479,7 +483,7 @@ const SocialComment = ({ comment }) => {
         <div className="ml-1">
           {repliesData.length > 0 &&
             repliesData.map((reply) => (
-              <SocialComment key={reply.id} comment={reply} />
+              <SocialComment key={reply.id} comment={reply} post={post} setPost={post} />
             ))}
         </div>
         {comment.replies > 0 && (

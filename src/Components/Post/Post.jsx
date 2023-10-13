@@ -12,8 +12,6 @@ import ToastMaker from 'toastmaker';
 import "toastmaker/dist/toastmaker.css";
 import './Post.css';
 import {useGlobalContext} from '../../Context/StateContext';
-import {ColorRing} from "react-loader-spinner";
-import {AiOutlineSend} from 'react-icons/ai';
 
 
 

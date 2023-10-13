@@ -261,10 +261,10 @@ const SinglePost = () => {
            
             <div className="mx-auto border p-6 w-full md:w-1/2 bg-white">
               <div className="text-3xl font-semibold text-green-600">
-                Comments {comments.length > 0 && `(${formatCount(comments.length)})`}
+                Comments {post.comments_count > 0 && `(${formatCount(post.comments_count)})`}
               </div>
               {comments.length > 0 &&
-                comments.map((comment) => <SocialComment comment={comment} />)}
+                comments.map((comment) => <SocialComment comment={comment} post={post} setPost={setPost}/>)}
               <button
               style={{cursor:"pointer"}}
                 onClick={loadMore}
