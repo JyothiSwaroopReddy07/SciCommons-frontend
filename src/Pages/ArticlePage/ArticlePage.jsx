@@ -376,7 +376,7 @@ const ArticleDecisionModal = ({setShowDecisionModal, article, handleComment}) =>
         const comment_Type = (article.isArticleModerator || article.isArticleReviewer || article.isAuthor)?"officialcomment":"publiccomment";
         try {
             const res = await axios.post(`https://scicommons-backend.onrender.com/api/comment/`,
-            {Title: title,Comment: comment, article: article.id,decision: decision, Type: 'decision',comment_Type: comment_Type, tag:"public",parent_comment:null}, 
+            {Title: title,Comment: comment, article: article.id,decision: decision, Type: 'decision',comment_Type: comment_Type, tag:"public",parent_comment:null,version:null}, 
             config);
             setLoading(false);
             setTitle("");
@@ -669,11 +669,7 @@ const  ArticlePage = () => {
             navigate("/login");
         }
         if(currentState===1){
-            if(article.isArticleModerator){
-                setShowDecisionModal(true);
-            } else {
-                setShowReviewModal(true);
-            }
+            setShowReviewModal(true);
         } else {
             setShowCommentModal(true);
         }

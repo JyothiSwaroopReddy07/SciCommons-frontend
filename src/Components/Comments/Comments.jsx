@@ -10,6 +10,8 @@ import { useGlobalContext} from '../../Context/StateContext';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { useNavigate } from "react-router-dom";
+import Popper from "popper.js";
+import {BiDotsVertical} from "react-icons/bi";
 
 
 const ArticleCommentModal = ({setShowCommentModal, article, Comment, handleComment }) => {
@@ -199,6 +201,15 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
             });
       } catch(err){
           setLoading(false);
+          try{
+          ToastMaker(err.response.data.error, 3000, {
+            valign: "top",
+            styles: {
+              backgroundColor: "red",
+              fontSize: "20px",
+            },
+          });
+        } catch(error){
           ToastMaker("Comment posting failed!!!", 3000, {
             valign: "top",
             styles: {
@@ -206,6 +217,7 @@ const ArticleCommentEditModal = ({setShowEditModal, article, Comment, version, h
               fontSize: "20px",
             },
           });
+        }
           console.log(err);
       }
   }
@@ -542,7 +554,9 @@ const Comments = ({ comment, article, colour }) => {
                     <button onClick={async(e)=>{e.preventDefault();await handleRefresh();setIndex(index-1)}} style={{cursor:"pointer"}} disabled={index===0} className={index===0?"text-gray-300":""}><IoIosArrowBack className="w-6 h-6"/></button>
                     {index+1} / {versions.length}
                     <button onClick={async(e)=>{e.preventDefault();await handleRefresh();setIndex(index+1)}} style={{cursor:"pointer"}} disabled={index===versions.length-1} className={index===versions.length-1?"text-gray-300":""}><IoIosArrowForward className="w-6 h-6"/></button>
+                    {article.isArticleModerator && <Dropdown article={article} comment={comment} color={colorClasses[colour]} />}
                 </div>
+                
           </div>
           {show && (
           <>
@@ -619,6 +633,113 @@ const Comments = ({ comment, article, colour }) => {
           }
           {showCommentModal && <ArticleCommentModal setShowCommentModal={setShowCommentModal} article={article} Comment={versions[index]} handleComment={handleComment}/>}
           {showEditModal && <ArticleCommentEditModal setShowEditModal={setShowEditModal} article={article} Comment={comment} version={versions[versions.length-1]} handleVersion={handleVersion}/>}
+      </div>
+    </>
+  );
+};
+
+const Dropdown = ({ article,comment,color}) => {
+  
+
+  const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
+  const btnDropdownRef = React.createRef();
+  const popoverDropdownRef = React.createRef();
+  const openDropdownPopover = () => {
+    new Popper(btnDropdownRef.current, popoverDropdownRef.current, {
+      placement: "bottom-start"
+    });
+    setDropdownPopoverShow(true);
+  };
+  const closeDropdownPopover = () => {
+    setDropdownPopoverShow(false);
+  };
+
+  const {token} = useGlobalContext();
+  const [block, setBlock] = useState(comment.blocked);
+
+  const handleBlock = async(e) => {
+      e.preventDefault();
+      const config = {
+          headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+          }
+      };
+      try{
+      const response = await axios.post(`https://scicommons-backend.onrender.com/api/comment/${comment.id}/block_user/`,config);
+      setBlock(!block);
+      console.log(response);
+      } catch(error){
+        console.log(error);
+      }
+  }
+
+  const handleDelete = async(e) => {
+    e.preventDefault();
+    const config = {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        }
+    };
+    try{
+    const response = await axios.delete(`https://scicommons-backend.onrender.com/api/comment/${comment.id}/`,config);
+    console.log(response);
+    window.location.reload();
+    } catch(error){
+      console.log(error);
+    }
+  }
+
+  return (
+    <>
+      <div className="flex flex-wrap">
+        <div className="w-full sm:w-6/12 md:w-4/12 px-4">
+          <div className="relative inline-flex align-middle w-full">
+            <button
+              className={
+                `text-white font-bold uppercase text-sm rounded outline-none focus:outline-none ${color}`
+              }
+              style={{ transition: "all .15s ease", cursor:"pointer" }}
+              type="button"
+              ref={btnDropdownRef}
+              onClick={() => {
+                dropdownPopoverShow
+                  ? closeDropdownPopover()
+                  : openDropdownPopover();
+              }}
+            >
+                  <BiDotsVertical className="w-6 h-6 text-black"/>
+            </button>
+            <div
+              ref={popoverDropdownRef}
+              className={
+                (dropdownPopoverShow ? "block " : "hidden ") +
+                "text-base z-50 float-right py-2 list-none text-left rounded shadow-lg mt-1 bg-white"
+              }
+              style={{ minWidth: "8rem" }}
+            >
+              <button
+                className={
+                  "text-sm py-2 px-4 w-full font-normal flex bg-white text-gray-800 hover:bg-gray-200"
+                }
+                style={{cursor:"pointer"}}
+                onClick={(e)=>{handleBlock(e)}}
+              >
+               {block ? "UnBlock User": "Block User"}
+              </button>
+              <button
+                className={
+                  "text-sm py-2 px-4 w-full font-normal flex bg-white text-red-500 hover:bg-gray-200 "
+                }
+                style={{cursor:"pointer"}}
+                onClick={(e)=>{handleDelete(e)}}
+              >
+               Delete
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
