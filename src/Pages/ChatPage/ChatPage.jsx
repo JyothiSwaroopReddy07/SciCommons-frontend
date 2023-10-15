@@ -214,7 +214,7 @@ const ChatPage = () => {
                             <BiDownArrowAlt size={30}/>
                     </button>} */}
                     <div className="flex items-center rounded-full border border-gray-600 bg-gray-50 sticky bottom-[15px] left-0  px-2 py-1 md:px-4 md:py-2">
-                            
+        
                                 <Input
                                     placeholder="Type a message..."
                                     multiline={false}
