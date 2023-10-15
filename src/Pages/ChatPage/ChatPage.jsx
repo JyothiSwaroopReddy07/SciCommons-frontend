@@ -24,7 +24,6 @@ const ChatPage = () => {
     const [Message, setMessage] = useState("");
     const { id } = useParams();
     const {token,user} = useGlobalContext();
-    const name = localStorage.getItem("user_id");
     const [loading, setLoading] = useState(false);
     const [loadings, setLoadings] = useState(false);
     const [article, setArticle] = useState(null);
@@ -146,7 +145,7 @@ const ChatPage = () => {
     //     };
     //   }, []);
 
-    const handleSubmit = async(text) => {
+    const handleSubmit = async() => {
         setLoadings(true);
         if(Message.body !== "")
         {
@@ -184,6 +183,14 @@ const ChatPage = () => {
         setMessages(messages)
       }
 
+      const handleKeyPress = async(event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault(); 
+          await handleSubmit(); 
+        }
+      };
+    
+
     return (
         <> 
             {(loading || Messages===null || article===null) && <Loader/>}
@@ -214,14 +221,14 @@ const ChatPage = () => {
                             <BiDownArrowAlt size={30}/>
                     </button>} */}
                     <div className="flex items-center rounded-full border border-gray-600 bg-gray-50 sticky bottom-[15px] left-0  px-2 py-1 md:px-4 md:py-2">
-        
                                 <Input
                                     placeholder="Type a message..."
                                     multiline={false}
                                     onChange={(e)=>{setMessage(e.target.value)}}
+                                    onKeyDown={handleKeyPress}
                                     value={Message}
                                     rightButtons={
-                                    <button className="text-green-600 hover:text-green-700" onClick={handleSubmit}>
+                                    <button type="submit" className="text-green-600 hover:text-green-700" onClick={handleSubmit}>
                                         {fillLoader()}
                                     </button>
                                     }
