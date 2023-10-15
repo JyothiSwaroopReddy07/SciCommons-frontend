@@ -23,51 +23,53 @@ const PubMedSearch = () => {
 
   const handleSearch = async () => {
     setLoading(true);
-    const response = await axios.get(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&retmode=json`);
-    const data = response.data;
-    let ids = data.esearchresult.idlist;
-    if(ids === undefined || ids === null) {
-      setResults([]);
+    try{
+        const response = await axios.get(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&retmode=json`);
+        const data = response.data;
+        let ids = data.esearchresult.idlist;
+        if(ids === undefined || ids === null) {
+          setResults([]);
+          setLoading(false);
+          return;
+        }
+        let articles = [];
+
+        const summaryResponse = await axios.get(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`);
+        const summaryData = summaryResponse.data;
+        if(summaryData.result === undefined || summaryData.result === null) {
+          setResults([]);
+          setLoading(false);
+          return;
+        }
+        articles = Object.values(summaryData.result).map(async (article) => {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+          if(article.uid === undefined) return;
+            try {
+              return {
+                uid: article.uid,
+                title: article.sorttitle,
+                authors: article.authors,
+                journal: article.source,
+                pubdate: article.pubdate,
+                url: `https://pubmed.ncbi.nlm.nih.gov/${article.uid}`,
+              };
+            } catch(error) {
+              console.log(error);
+            }
+          });
+
+        const resolvedArticles = await Promise.all(articles);
+        const newArticles = resolvedArticles.filter((article)=>{
+          if(article === undefined) return false;
+          return true;
+        })
+      await loadData(newArticles);
       setLoading(false);
-      return;
+    }catch(err){
+      console.log(err);
     }
-
-    let articles = [];
-
-    const summaryResponse = await axios.get(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`);
-    console.log(summaryResponse);
-    const summaryData = summaryResponse.data;
-    if(summaryData.result === undefined || summaryData.result === null) {
-      setResults([]);
-      setLoading(false);
-      return;
-    }
-    articles = Object.values(summaryData.result).map(async (article) => {
-      console.log(article);
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      if(article.uid === undefined) return;
-      try {
-      return {
-        uid: article.uid,
-        title: article.sorttitle,
-        authors: article.authors,
-        journal: article.source,
-        pubdate: article.pubdate,
-        url: `https://pubmed.ncbi.nlm.nih.gov/${article.uid}`,
-      };
-  } catch(error) {
-    console.log(error);
-  }
-});
-
-    const resolvedArticles = await Promise.all(articles);
-    const newArticles = resolvedArticles.filter((article)=>{
-      if(article === undefined) return false;
-      return true;
-    })
-    await loadData(newArticles);
     setLoading(false);
-  };
+}
 
   const handleSubmit = async (article) => {
     const baseURL = 'https://scicommons-backend.onrender.com/api/article/';

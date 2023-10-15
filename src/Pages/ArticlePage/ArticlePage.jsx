@@ -817,7 +817,7 @@ const  ArticlePage = () => {
                         </div>
                         <div className="bg-white">
                             <span className="text-[.75rem] p-0">
-                                <img className='w-[.875rem] inline mb-1' src={cal} ></img>
+                                {!article.link && (<><img className='w-[.875rem] inline mb-1' src={cal} ></img>
                                 <span className="pl-1">
                                     Published:
                                 </span>
@@ -825,7 +825,7 @@ const  ArticlePage = () => {
                                 <img className='w-[.875rem] inline mb-1 mr-1 ml-4' src={folder} ></img>
 
                                 {article.published===null?" Not Yet": `Accepted by ${article.published}`}
-                                <img className='w-[.875rem] inline mb-1 mr-1 ml-4' src={eye} ></img>
+                                <img className='w-[.875rem] inline mb-1 mr-1 ml-4' src={eye} ></img></>)}
 
                                 {article.status==="public"?"Everyone":"Private"}
                                 <AiFillHeart className='w-[.875rem] inline mb-1 mr-1 ml-4' />
