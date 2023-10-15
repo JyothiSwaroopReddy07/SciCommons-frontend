@@ -786,7 +786,7 @@ const  ArticlePage = () => {
                         <div className="py-1 bg-white">
 
                             <span className="italic font-sans text-md md:text-lg leading-[1.5rem] ">
-
+                                    {article.link && (<span className="text-green-500 font-bold">Added by: </span>)}
                                 {article.authors.map((data, i) => {
                                     return (
                                         <span key={i} style={{cursor:"pointer"}} onClick={(e)=>{e.preventDefault();handleProfile(data)}}>

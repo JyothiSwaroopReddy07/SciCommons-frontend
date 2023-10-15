@@ -23,8 +23,8 @@ const PubMedSearch = () => {
 
   const handleSearch = async () => {
     setLoading(true);
-    const response = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&retmode=json`);
-    const data = await response.json();
+    const response = await axios.get(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=${query}&retmode=json`);
+    const data = response.data;
     let ids = data.esearchresult.idlist;
     if(ids === undefined || ids === null) {
       setResults([]);
@@ -34,9 +34,16 @@ const PubMedSearch = () => {
 
     let articles = [];
 
-    const summaryResponse = await fetch(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`);
-    const summaryData = await summaryResponse.json();
+    const summaryResponse = await axios.get(`https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&id=${ids.join(',')}&retmode=json`);
+    console.log(summaryResponse);
+    const summaryData = summaryResponse.data;
+    if(summaryData.result === undefined || summaryData.result === null) {
+      setResults([]);
+      setLoading(false);
+      return;
+    }
     articles = Object.values(summaryData.result).map(async (article) => {
+      console.log(article);
       await new Promise(resolve => setTimeout(resolve, 1000));
       if(article.uid === undefined) return;
       try {
@@ -47,18 +54,9 @@ const PubMedSearch = () => {
         journal: article.source,
         pubdate: article.pubdate,
         url: `https://pubmed.ncbi.nlm.nih.gov/${article.uid}`,
-        // abstract: abstract,
       };
   } catch(error) {
     console.log(error);
-    return {
-      title: article.sorttitle,
-      authors: article.authors,
-      journal: article.source,
-      pubdate: article.pubdate,
-      url: `https://pubmed.ncbi.nlm.nih.gov/${article.uid}`,
-      abstract: 'Error fetching abstract',
-    };
   }
 });
 
@@ -124,8 +122,10 @@ const PubMedSearch = () => {
   return (
     <div className="w-full flex flex-col items-center min-h-screen">
       <div className="w-full h-20 flex flex-row justify-center">
-        <input style={{"border": "2px solid #cbd5e0"}} type="text" className="w-2/3 rounded-xl m-4 shadow-xl" placeholder="Enter article name to serach using pubmed" value={query} onChange={e => setQuery(e.target.value)} />
-        <button onClick={handleSearch} className="ml-2 my-4 bg-gray-600 text-white font-bold p-2 rounded-xl shadow-xl">Search</button>
+        <form onSubmit={(e) => {e.preventDefault(); handleSearch(e)}} className="w-full h-20 flex flex-row justify-center">
+          <input style={{"border": "2px solid #cbd5e0"}} type="text" className="w-2/3 rounded-xl m-4 shadow-xl" placeholder="Enter article name to search using pubmed" value={query} onChange={e => setQuery(e.target.value)} />
+          <button type="submit" onClick={handleSearch} className="ml-2 my-4 bg-gray-600 text-white font-bold p-2 rounded-xl shadow-xl">Search</button>
+        </form>
       </div>
       <div className="m-4">
         {loading && <Loader/>}
