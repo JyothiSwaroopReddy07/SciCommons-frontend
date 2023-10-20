@@ -128,7 +128,7 @@ const Verify = () => {
                 </div>
                 <div className="m-2">
                     <button className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"
-                        style={{cursor:"pointer"}} onClick={handleSubmit}>Send OTP</button>
+                        style={{cursor:"pointer"}} onClick={handleSubmit}>Send One Time Password</button>
                 </div>
             </div>
             <div className="w-full mx-auto mt-6">
@@ -136,7 +136,7 @@ const Verify = () => {
 
                     <input style={{"border": "2px solid #cbd5e0"}}
                         type="text"
-                        placeholder="Enter the otp"
+                        placeholder="Enter the one time password"
                         value={otp}
                         onChange={(e)=>{setOtp(e.target.value)}}
                         className="w-full bg-transparent outline-none rounded-lg"
@@ -144,7 +144,7 @@ const Verify = () => {
                 </div>
                 <div className="m-2">
                     <button className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"
-                        style={{cursor:"pointer"}} onClick={handleChange}>Verify Otp</button>
+                        style={{cursor:"pointer"}} onClick={handleChange}>Verify One time password</button>
                 </div>
             </div>
         </div>

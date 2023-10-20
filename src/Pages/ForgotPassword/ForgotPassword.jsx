@@ -198,13 +198,13 @@ const ForgotPassword = () => {
                     </div>
                     <div className="m-2">
                         <button className="w-full px-4 py-2 text-white font-medium bg-green-600 hover:bg-green-500 active:bg-green-600 rounded-lg duration-150"
-                                style={{cursor:"pointer"}} onClick={handleSubmit}>Send OTP</button>
+                                style={{cursor:"pointer"}} onClick={handleSubmit}>Send One Time Password </button>
                     </div>
                 </div>
                 <div className="w-full mx-auto m-4">
                     <h1 className="text-3xl font-bold text-gray-600 m-5 text-center">Reset Password</h1>
                     <div className="relative max-w-screen m-2">
-                        <input style={{"border": "2px solid #cbd5e0"}} type="text" className="w-full bg-transparent outline-none rounded-lg" placeholder="Enter OTP" value={otp} onChange={(e)=>{setOtp(e.target.value)}} />
+                        <input style={{"border": "2px solid #cbd5e0"}} type="text" className="w-full bg-transparent outline-none rounded-lg" placeholder="Enter One Time Password" value={otp} onChange={(e)=>{setOtp(e.target.value)}} />
                     </div>
                     <div className="relative max-w-screen m-2">
                                     <button className="text-gray-700 absolute right-3 inset-y-0 my-auto active:text-gray-600"

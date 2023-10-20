@@ -172,9 +172,6 @@ const AllArticlesPage = () => {
                 </form>
                 <div className="flex flex-row flex-wrap justify-center items-center mb-5 w-full md:w-2/3">
                     <div className="flex flex-row items-center mt-3">
-                        <div className="text-sm md:text-xl font-semibold mr-2">
-                            Apply Filters: 
-                        </div>
                         <div className="relative inline-flex mr-2">
                             <select
                                 className="bg-white text-gray-800 text-sm md:text-lg border rounded-lg px-4 py-1 transition duration-150 ease-in-out"
@@ -189,7 +186,7 @@ const AllArticlesPage = () => {
                         </div>
                     </div>
                     <div className="flex flex-row items-center mt-3">
-                        <div className="text-sm md:text-xl font-semibold mr-2">
+                        <div className="text-sm md:text-lg font-semibold mr-2">
                             Order: 
                         </div>
                         <div className="relative inline-flex mr-2">
@@ -203,6 +200,7 @@ const AllArticlesPage = () => {
                             </select>
                         </div>
                     </div>
+                    <button className="bg-green-500 text-md text-white shadow-lg mt-3 ml-3 p-1 rounded-lg" onClick={handleSearch}>Apply Filters</button>
                 </div>
 
             <div className="flex flex-col items-center justify-center mx-auto w-full bg-gray-50 mb-5">
